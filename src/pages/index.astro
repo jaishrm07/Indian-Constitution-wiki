@@ -1,11 +1,204 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { getCollection } from 'astro:content';
+import ContentCard from '../components/ContentCard.astro';
 import Layout from '../layouts/Layout.astro';
+import { getEntryHref, sortArticles, sortByDateDesc, sortByTitle, titleCaseStatus } from '../lib/content';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const [articles, topics, cases, amendments, currentAffairs] = await Promise.all([
+	getCollection('articles'),
+	getCollection('topics'),
+	getCollection('cases'),
+	getCollection('amendments'),
+	getCollection('current-affairs'),
+]);
+
+const featuredArticles = sortArticles(articles).slice(0, 4);
+const featuredTopics = sortByTitle(topics).slice(0, 4);
+const featuredCases = sortByTitle(cases).slice(0, 3);
+const featuredAmendments = [...amendments].sort((left, right) => right.data.year - left.data.year).slice(0, 3);
+const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0, 3);
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Constitution Atlas | Indian Constitution Reference"
+	description="A Wikipedia-style constitutional knowledge platform for the Indian Constitution, amendments, landmark cases, and current affairs."
+>
+	<section class="hero">
+		<div class="hero-copy">
+			<p class="eyebrow">Constitution Atlas</p>
+			<h1>Indian constitutional law, explained like a living reference work.</h1>
+			<p class="hero-text">
+				Browse Articles, landmark cases, amendments, and current constitutional debates in one linked reading
+				system built for students, journalists, and serious readers.
+			</p>
+			<form class="hero-search" action="/search" method="get">
+				<label class="sr-only" for="home-search">Search the site</label>
+				<input
+					id="home-search"
+					type="search"
+					name="q"
+					placeholder="Search Article 21, Kesavananda, federalism..."
+				/>
+				<button type="submit">Search</button>
+			</form>
+			<div class="hero-actions">
+				<a class="button-primary" href="/articles">Browse Articles</a>
+				<a class="button-secondary" href="/current-affairs">Track Current Affairs</a>
+			</div>
+		</div>
+		<div class="hero-panel">
+			<p class="panel-label">What this first build includes</p>
+			<ul class="hero-list">
+				<li>Article-by-article explainers with related case law</li>
+				<li>Current-affairs issue pages linked back to constitutional provisions</li>
+				<li>Amendment and doctrine pages that surface historical context</li>
+				<li>A search-first navigation model instead of a blog archive</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Start Here</p>
+				<h2>Browse the constitutional map</h2>
+			</div>
+			<p class="section-note">The reference layer anchors the live explainers.</p>
+		</div>
+		<div class="feature-grid">
+			<a class="feature-tile" href="/articles">
+				<span>Articles</span>
+				<strong>{articles.length} constitutional provisions</strong>
+				<p>Plain-English summaries, related cases, and linked issue pages.</p>
+			</a>
+			<a class="feature-tile" href="/topics">
+				<span>Topics</span>
+				<strong>{topics.length} thematic hubs</strong>
+				<p>Use broad themes like federalism and fundamental rights to navigate.</p>
+			</a>
+			<a class="feature-tile" href="/cases">
+				<span>Landmark Cases</span>
+				<strong>{cases.length} foundational judgments</strong>
+				<p>See how doctrine and interpretation shape constitutional meaning.</p>
+			</a>
+			<a class="feature-tile" href="/amendments">
+				<span>Amendments</span>
+				<strong>{amendments.length} constitutional changes</strong>
+				<p>Track how the document evolved and which Articles were affected.</p>
+			</a>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Articles</p>
+				<h2>Core provisions</h2>
+			</div>
+			<a class="section-link" href="/articles">See all Articles</a>
+		</div>
+		<div class="card-grid">
+			{
+				featuredArticles.map((article) => (
+					<ContentCard
+						eyebrow={`Article ${article.data.number}`}
+						title={article.data.title}
+						description={article.data.summary}
+						href={getEntryHref('articles', article.data.slug)}
+						meta={article.data.part}
+					/>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Topics</p>
+				<h2>Browse by constitutional theme</h2>
+			</div>
+			<a class="section-link" href="/topics">See all Topics</a>
+		</div>
+		<div class="card-grid">
+			{
+				featuredTopics.map((topic) => (
+					<ContentCard
+						eyebrow="Topic"
+						title={topic.data.title}
+						description={topic.data.summary}
+						href={getEntryHref('topics', topic.data.slug)}
+					/>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section-split">
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Cases</p>
+					<h2>Landmark judgments</h2>
+				</div>
+				<a class="section-link" href="/cases">View all</a>
+			</div>
+			<div class="stack">
+				{
+					featuredCases.map((item) => (
+						<ContentCard
+							eyebrow={item.data.year.toString()}
+							title={item.data.title}
+							description={item.data.summary}
+							href={getEntryHref('cases', item.data.slug)}
+							meta={item.data.citation}
+						/>
+					))
+				}
+			</div>
+		</div>
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Current Affairs</p>
+					<h2>Live constitutional explainers</h2>
+				</div>
+				<a class="section-link" href="/current-affairs">Track all</a>
+			</div>
+			<div class="stack">
+				{
+					latestCurrentAffairs.map((item) => (
+					<ContentCard
+						eyebrow={titleCaseStatus(item.data.status)}
+						title={item.data.title}
+						description={item.data.summary}
+						href={getEntryHref('current-affairs', item.data.slug)}
+							meta={`Updated ${item.data.updatedAt.toISOString().slice(0, 10)}`}
+						/>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Amendments</p>
+				<h2>Constitutional change over time</h2>
+			</div>
+			<a class="section-link" href="/amendments">See amendment archive</a>
+		</div>
+		<div class="timeline-strip">
+			{
+				featuredAmendments.map((amendment) => (
+					<a class="timeline-tile" href={getEntryHref('amendments', amendment.data.slug)}>
+						<span>{amendment.data.year}</span>
+						<strong>{amendment.data.title}</strong>
+						<p>{amendment.data.summary}</p>
+					</a>
+				))
+			}
+		</div>
+	</section>
 </Layout>

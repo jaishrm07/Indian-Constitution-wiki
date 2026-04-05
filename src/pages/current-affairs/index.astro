@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { formatDate, getEntryHref, sortByDateDesc, titleCaseStatus } from '../../lib/content';
+
+const currentAffairs = sortByDateDesc(await getCollection('current-affairs'), 'updatedAt');
+---
+
+<Layout title="Current Affairs | Constitution Atlas" description="Track constitutionally relevant current affairs and issue explainers.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Current Affairs</p>
+				<h1>Live constitutional explainers</h1>
+			</div>
+			<p class="muted">Only issues with a constitutional dimension belong here.</p>
+		</div>
+		<div class="card-grid">
+			{
+				currentAffairs.map((item) => (
+					<ContentCard
+						eyebrow={titleCaseStatus(item.data.status)}
+						title={item.data.title}
+						description={item.data.summary}
+						href={getEntryHref('current-affairs', item.data.slug)}
+						meta={`Updated ${formatDate(item.data.updatedAt)}`}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

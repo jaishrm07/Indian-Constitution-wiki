@@ -1,0 +1,24 @@
+---
+import { navItems, siteName } from '../lib/site';
+---
+
+<header class="site-header">
+	<div class="container site-header__inner">
+		<a class="brand" href="/">
+			<span class="brand-mark">CA</span>
+			<span class="brand-copy">
+				<strong>{siteName}</strong>
+				<small>Indian Constitution Reference</small>
+			</span>
+		</a>
+		<nav class="site-nav" aria-label="Main navigation">
+			{
+				navItems.map((item) => (
+					<a href={item.href} class={Astro.url.pathname.startsWith(item.href) ? 'is-active' : undefined}>
+						{item.label}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</header>

@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortArticles } from '../../lib/content';
+
+const articles = sortArticles(await getCollection('articles'));
+---
+
+<Layout title="Articles | Constitution Atlas" description="Browse constitutional Articles with plain-English summaries.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Articles</p>
+				<h1>Browse constitutional provisions</h1>
+			</div>
+			<p class="muted">{articles.length} Article pages in the initial seed set.</p>
+		</div>
+		<div class="card-grid">
+			{
+				articles.map((article) => (
+					<ContentCard
+						eyebrow={`Article ${article.data.number}`}
+						title={article.data.title}
+						description={article.data.summary}
+						href={getEntryHref('articles', article.data.slug)}
+						meta={article.data.part}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

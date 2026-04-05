@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortByTitle } from '../../lib/content';
+
+const topics = sortByTitle(await getCollection('topics'));
+---
+
+<Layout title="Topics | Constitution Atlas" description="Browse major themes across the Indian Constitution.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Topics</p>
+				<h1>Thematic hubs across the Constitution</h1>
+			</div>
+			<p class="muted">Use topics to jump across Articles, cases, and current affairs.</p>
+		</div>
+		<div class="card-grid">
+			{
+				topics.map((topic) => (
+					<ContentCard
+						eyebrow="Topic"
+						title={topic.data.title}
+						description={topic.data.summary}
+						href={getEntryHref('topics', topic.data.slug)}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

@@ -1,0 +1,23 @@
+---
+interface Props {
+	eyebrow: string;
+	title: string;
+	summary: string;
+	meta?: string[];
+}
+
+const { eyebrow, title, summary, meta = [] } = Astro.props;
+---
+
+<section class="page-intro">
+	<p class="eyebrow">{eyebrow}</p>
+	<h1>{title}</h1>
+	<p class="page-intro__summary">{summary}</p>
+	{
+		meta.length > 0 && (
+			<ul class="meta-list">
+				{meta.map((item) => <li>{item}</li>)}
+			</ul>
+		)
+	}
+</section>

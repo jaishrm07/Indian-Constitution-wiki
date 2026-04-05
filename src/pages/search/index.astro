@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortArticles } from '../../lib/content';
+
+const [articles, topics, cases, amendments, currentAffairs] = await Promise.all([
+	getCollection('articles'),
+	getCollection('topics'),
+	getCollection('cases'),
+	getCollection('amendments'),
+	getCollection('current-affairs'),
+]);
+
+const searchItems = [
+	...sortArticles(articles).map((item) => ({
+		type: 'Article',
+		title: item.data.title,
+		summary: item.data.summary,
+		href: getEntryHref('articles', item.data.slug),
+		searchText: `${item.data.title} ${item.data.summary} ${item.data.plainEnglish} ${item.data.part}`,
+	})),
+	...topics.map((item) => ({
+		type: 'Topic',
+		title: item.data.title,
+		summary: item.data.summary,
+		href: getEntryHref('topics', item.data.slug),
+		searchText: `${item.data.title} ${item.data.summary} ${item.data.intro}`,
+	})),
+	...cases.map((item) => ({
+		type: 'Case',
+		title: item.data.title,
+		summary: item.data.summary,
+		href: getEntryHref('cases', item.data.slug),
+		searchText: `${item.data.title} ${item.data.summary} ${item.data.issue} ${item.data.holding}`,
+	})),
+	...amendments.map((item) => ({
+		type: 'Amendment',
+		title: item.data.title,
+		summary: item.data.summary,
+		href: getEntryHref('amendments', item.data.slug),
+		searchText: `${item.data.title} ${item.data.summary} ${item.data.whatChanged}`,
+	})),
+	...currentAffairs.map((item) => ({
+		type: 'Current Affairs',
+		title: item.data.title,
+		summary: item.data.summary,
+		href: getEntryHref('current-affairs', item.data.slug),
+		searchText: `${item.data.title} ${item.data.summary} ${item.data.constitutionalQuestion} ${item.data.whyItMatters}`,
+	})),
+];
+
+const initialQuery = Astro.url.searchParams.get('q') ?? '';
+---
+
+<Layout title="Search | Constitution Atlas" description="Search Articles, cases, topics, amendments, and current affairs.">
+	<section class="list-shell search-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Search</p>
+				<h1>Find a constitutional provision, case, or issue</h1>
+			</div>
+		</div>
+		<input id="search-input" type="search" placeholder="Search Article 19, Bommai, emergency..." value={initialQuery} />
+		<div id="search-results" class="search-results"></div>
+	</section>
+
+	<script type="application/json" id="search-data" set:html={JSON.stringify(searchItems)} />
+	<script define:vars={{ initialQuery }}>
+		const items = JSON.parse(document.getElementById('search-data')?.textContent ?? '[]');
+		const input = document.getElementById('search-input');
+		const results = document.getElementById('search-results');
+
+		function renderResults(query) {
+			const normalized = query.trim().toLowerCase();
+			const filtered = normalized
+				? items.filter((item) => item.searchText.toLowerCase().includes(normalized))
+				: items.slice(0, 10);
+
+			if (!results) {
+				return;
+			}
+
+			if (filtered.length === 0) {
+				results.innerHTML = '<div class="search-result"><strong>No matches</strong><p>Try a broader constitutional term or Article number.</p></div>';
+				return;
+			}
+
+			results.innerHTML = filtered
+				.slice(0, 18)
+				.map(
+					(item) => `
+						<a class="search-result" href="${item.href}">
+							<p class="eyebrow">${item.type}</p>
+							<strong>${item.title}</strong>
+							<p>${item.summary}</p>
+						</a>
+					`,
+				)
+				.join('');
+		}
+
+		renderResults(initialQuery);
+
+		input?.addEventListener('input', (event) => {
+			const nextQuery = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value : '';
+			const url = new URL(window.location.href);
+			if (nextQuery.trim()) {
+				url.searchParams.set('q', nextQuery);
+			} else {
+				url.searchParams.delete('q');
+			}
+			window.history.replaceState({}, '', url);
+			renderResults(nextQuery);
+		});
+	</script>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, ordinal } from '../../lib/content';
+
+const amendments = [...(await getCollection('amendments'))].sort((left, right) => right.data.year - left.data.year);
+---
+
+<Layout title="Amendments | Constitution Atlas" description="Track major constitutional amendments and what they changed.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Amendments</p>
+				<h1>Major constitutional changes</h1>
+			</div>
+			<p class="muted">Each amendment page maps changes back to affected Articles and doctrines.</p>
+		</div>
+		<div class="card-grid">
+			{
+				amendments.map((item) => (
+					<ContentCard
+						eyebrow={`${ordinal(item.data.number)} Amendment`}
+						title={item.data.title}
+						description={item.data.summary}
+						href={getEntryHref('amendments', item.data.slug)}
+						meta={item.data.year.toString()}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

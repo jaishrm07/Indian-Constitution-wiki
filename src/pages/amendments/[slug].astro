@@ -1,0 +1,114 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Layout from '../../layouts/Layout.astro';
+import {
+	filterByAnyRelationship,
+	getEntryHref,
+	resolveBySlugs,
+	titleCaseStatus,
+	uniqueBySlug,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+	const amendments = await getCollection('amendments');
+	return amendments.map((entry) => ({
+		params: { slug: entry.data.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const [articles, topics, currentAffairs, sources] = await Promise.all([
+	getCollection('articles'),
+	getCollection('topics'),
+	getCollection('current-affairs'),
+	getCollection('sources'),
+]);
+
+const relatedArticles = resolveBySlugs(articles, entry.data.affectedArticles);
+const relatedTopics = resolveBySlugs(topics, entry.data.topics);
+const relatedSources = resolveBySlugs(sources, entry.data.sources);
+const relatedCurrentAffairs = uniqueBySlug([
+	...filterByAnyRelationship(currentAffairs, 'topics', entry.data.topics),
+	...filterByAnyRelationship(currentAffairs, 'articles', entry.data.affectedArticles),
+]);
+---
+
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+	<PageIntro
+		eyebrow={`${entry.data.year}`}
+		title={entry.data.title}
+		summary={entry.data.summary}
+		meta={[entry.data.whatChanged]}
+	/>
+
+	<section class="page-grid">
+		<article class="page-copy prose">
+			<section>
+				<h2>What changed</h2>
+				<p>{entry.data.whatChanged}</p>
+			</section>
+			<Content />
+		</article>
+
+		<aside class="page-sidebar">
+			<div class="info-panel">
+				<h3>Affected Articles</h3>
+				<div class="link-list">
+					{
+						relatedArticles.map((article) => (
+							<a class="tag-chip" href={getEntryHref('articles', article.data.slug)}>
+								Article {article.data.number}
+							</a>
+						))
+					}
+				</div>
+			</div>
+			<div class="info-panel">
+				<h3>Topics</h3>
+				<div class="link-list">
+					{relatedTopics.map((topic) => <a class="tag-chip" href={getEntryHref('topics', topic.data.slug)}>{topic.data.title}</a>)}
+				</div>
+			</div>
+			<div class="info-panel">
+				<h3>Sources</h3>
+				<ul class="link-list">
+					{
+						relatedSources.map((source) => (
+							<li>
+								<a href={source.data.url} target="_blank" rel="noreferrer">{source.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</aside>
+	</section>
+
+	{relatedCurrentAffairs.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Current Affairs</p>
+					<h2>Where this amendment logic reappears</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{
+					relatedCurrentAffairs.map((item) => (
+						<ContentCard
+							eyebrow={titleCaseStatus(item.data.status)}
+							title={item.data.title}
+							description={item.data.summary}
+							href={getEntryHref('current-affairs', item.data.slug)}
+						/>
+					))
+				}
+			</div>
+		</section>
+	)}
+</Layout>

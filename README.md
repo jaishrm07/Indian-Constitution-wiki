@@ -1,46 +1,41 @@
-# Astro Starter Kit: Basics
+# Constitution Atlas
+
+Constitution Atlas is a static-first Astro site for the Indian Constitution. The current build is structured as a reference platform with a live current-affairs layer:
+
+- `Articles` explain constitutional provisions in plain English
+- `Topics` group recurring themes like federalism and fundamental rights
+- `Cases` connect landmark judgments back to Articles and doctrine
+- `Amendments` track constitutional change over time
+- `Current Affairs` pages explain ongoing issues through a constitutional lens
+
+## Commands
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev
+npm run build
+npm run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Content Model
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+Content lives in `src/content/` and is typed through `src/content.config.ts`.
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+src/content/
+├── articles/
+├── cases/
+├── topics/
+├── amendments/
+├── current-affairs/
+└── sources/
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Each entry uses frontmatter for metadata and Markdown for body sections. Relationships are represented with slugs so pages can surface backlinks automatically.
 
-## 🧞 Commands
+## Near-Term Roadmap
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- add Parts, Schedules, glossary, and timeline collections
+- move search from a lightweight inline index to a dedicated static search solution
+- expand the editorial workflow for frequent current-affairs publishing
+- prepare Cloudflare Pages deployment

@@ -1,0 +1,155 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Layout from '../../layouts/Layout.astro';
+import {
+	filterByRelationship,
+	formatDate,
+	getEntryHref,
+	resolveBySlugs,
+	sortByDateDesc,
+	titleCaseStatus,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+	const articles = await getCollection('articles');
+	return articles.map((entry) => ({
+		params: { slug: entry.data.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const [articles, topics, cases, amendments, currentAffairs, sources] = await Promise.all([
+	getCollection('articles'),
+	getCollection('topics'),
+	getCollection('cases'),
+	getCollection('amendments'),
+	getCollection('current-affairs'),
+	getCollection('sources'),
+]);
+
+const relatedArticles = resolveBySlugs(articles, entry.data.relatedArticles);
+const relatedTopics = resolveBySlugs(topics, entry.data.topics);
+const relatedCases = filterByRelationship(cases, 'articles', entry.data.slug);
+const relatedAmendments = filterByRelationship(amendments, 'affectedArticles', entry.data.slug);
+const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs, 'articles', entry.data.slug), 'updatedAt');
+const relatedSources = resolveBySlugs(sources, entry.data.sources);
+---
+
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+	<PageIntro
+		eyebrow={`Article ${entry.data.number}`}
+		title={entry.data.title}
+		summary={entry.data.summary}
+		meta={[entry.data.part, entry.data.plainEnglish]}
+	/>
+
+	<section class="page-grid">
+		<article class="page-copy prose">
+			<section>
+				<h2>Plain-English reading</h2>
+				<p>{entry.data.plainEnglish}</p>
+			</section>
+			<Content />
+		</article>
+
+		<aside class="page-sidebar">
+			<div class="info-panel">
+				<h3>On this page</h3>
+				<ul class="link-list">
+					{headings.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+				</ul>
+			</div>
+
+			<div class="info-panel">
+				<h3>Linked Topics</h3>
+				<div class="link-list">
+					{relatedTopics.map((topic) => <a class="tag-chip" href={getEntryHref('topics', topic.data.slug)}>{topic.data.title}</a>)}
+				</div>
+			</div>
+
+			<div class="info-panel">
+				<h3>Sources</h3>
+				<ul class="link-list">
+					{
+						relatedSources.map((source) => (
+							<li>
+								<a href={source.data.url} target="_blank" rel="noreferrer">{source.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</aside>
+	</section>
+
+	{relatedCases.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Cases</p>
+					<h2>How courts interpret this Article</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{relatedCases.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
+			</div>
+		</section>
+	)}
+
+	{relatedAmendments.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Amendments</p>
+					<h2>Constitutional changes touching this Article</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{relatedAmendments.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('amendments', item.data.slug)} />)}
+			</div>
+		</section>
+	)}
+
+	{relatedCurrentAffairs.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Current Affairs</p>
+					<h2>Where this Article appears in live debates</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{
+					relatedCurrentAffairs.map((item) => (
+						<ContentCard
+							eyebrow={titleCaseStatus(item.data.status)}
+							title={item.data.title}
+							description={item.data.summary}
+							href={getEntryHref('current-affairs', item.data.slug)}
+							meta={`Updated ${formatDate(item.data.updatedAt)}`}
+						/>
+					))
+				}
+			</div>
+		</section>
+	)}
+
+	{relatedArticles.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Cross References</p>
+					<h2>Read alongside</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{relatedArticles.map((item) => <ContentCard eyebrow={`Article ${item.data.number}`} title={item.data.title} description={item.data.summary} href={getEntryHref('articles', item.data.slug)} meta={item.data.part} />)}
+			</div>
+		</section>
+	)}
+</Layout>

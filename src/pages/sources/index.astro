@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { sortByTitle } from '../../lib/content';
+
+const sources = sortByTitle(await getCollection('sources'));
+---
+
+<Layout title="Sources | Constitution Atlas" description="Source registry for the constitutional content on this site.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Sources</p>
+				<h1>Source registry</h1>
+			</div>
+			<p class="muted">Every content page should draw from this registry or extend it.</p>
+		</div>
+
+		<div class="stack">
+			{
+				sources.map((source) => (
+					<div class="search-result">
+						<p class="eyebrow">{source.data.sourceType}</p>
+						<strong>{source.data.title}</strong>
+						<p>{source.data.description}</p>
+						<a class="section-link" href={source.data.url} target="_blank" rel="noreferrer">
+							{source.data.publisher}
+						</a>
+					</div>
+				))
+			}
+		</div>
+	</section>
+</Layout>

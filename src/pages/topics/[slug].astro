@@ -1,0 +1,128 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Layout from '../../layouts/Layout.astro';
+import { filterByRelationship, formatDate, getEntryHref, resolveBySlugs, sortByDateDesc, titleCaseStatus } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const topics = await getCollection('topics');
+	return topics.map((entry) => ({
+		params: { slug: entry.data.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const [articles, cases, amendments, currentAffairs, sources] = await Promise.all([
+	getCollection('articles'),
+	getCollection('cases'),
+	getCollection('amendments'),
+	getCollection('current-affairs'),
+	getCollection('sources'),
+]);
+
+const relatedArticles = filterByRelationship(articles, 'topics', entry.data.slug);
+const relatedCases = filterByRelationship(cases, 'topics', entry.data.slug);
+const relatedAmendments = filterByRelationship(amendments, 'topics', entry.data.slug);
+const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs, 'topics', entry.data.slug), 'updatedAt');
+const relatedSources = resolveBySlugs(sources, entry.data.sources);
+---
+
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+	<PageIntro
+		eyebrow="Topic"
+		title={entry.data.title}
+		summary={entry.data.summary}
+		meta={[entry.data.intro]}
+	/>
+
+	<section class="page-grid">
+		<article class="page-copy prose">
+			<Content />
+		</article>
+
+		<aside class="page-sidebar">
+			<div class="info-panel">
+				<h3>Topic at a glance</h3>
+				<p class="muted">{entry.data.intro}</p>
+			</div>
+			<div class="info-panel">
+				<h3>Sources</h3>
+				<ul class="link-list">
+					{
+						relatedSources.map((source) => (
+							<li>
+								<a href={source.data.url} target="_blank" rel="noreferrer">{source.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</aside>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Articles</p>
+				<h2>Key provisions</h2>
+			</div>
+		</div>
+		<div class="card-grid">
+			{relatedArticles.map((item) => <ContentCard eyebrow={`Article ${item.data.number}`} title={item.data.title} description={item.data.summary} href={getEntryHref('articles', item.data.slug)} meta={item.data.part} />)}
+		</div>
+	</section>
+
+	<section class="section-split">
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Cases</p>
+					<h2>Judgments</h2>
+				</div>
+			</div>
+			<div class="stack">
+				{relatedCases.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
+			</div>
+		</div>
+
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Current Affairs</p>
+					<h2>Live explainers</h2>
+				</div>
+			</div>
+			<div class="stack">
+				{
+					relatedCurrentAffairs.map((item) => (
+						<ContentCard
+							eyebrow={titleCaseStatus(item.data.status)}
+							title={item.data.title}
+							description={item.data.summary}
+							href={getEntryHref('current-affairs', item.data.slug)}
+							meta={`Updated ${formatDate(item.data.updatedAt)}`}
+						/>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	{relatedAmendments.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Amendments</p>
+					<h2>Major moments of change</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{relatedAmendments.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('amendments', item.data.slug)} />)}
+			</div>
+		</section>
+	)}
+</Layout>

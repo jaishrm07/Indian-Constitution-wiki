@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortByTitle } from '../../lib/content';
+
+const cases = sortByTitle(await getCollection('cases'));
+---
+
+<Layout title="Cases | Constitution Atlas" description="Landmark Supreme Court judgments shaping the Constitution.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Cases</p>
+				<h1>Landmark constitutional judgments</h1>
+			</div>
+			<p class="muted">Case pages connect doctrine back to the Articles they reinterpret.</p>
+		</div>
+		<div class="card-grid">
+			{
+				cases.map((item) => (
+					<ContentCard
+						eyebrow={item.data.year.toString()}
+						title={item.data.title}
+						description={item.data.summary}
+						href={getEntryHref('cases', item.data.slug)}
+						meta={item.data.citation}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>
