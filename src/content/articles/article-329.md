@@ -19,6 +19,7 @@ relatedArticles:
   - article-328
   - article-329a
 topics:
+  - elections-and-democracy
   - elections-and-institutions
   - judiciary
 sources:

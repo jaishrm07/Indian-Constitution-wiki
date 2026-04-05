@@ -11,7 +11,8 @@ relatedArticles:
   - article-44
   - article-46
 schedules: []
-topics: []
+topics:
+  - education-rights
 sources:
   - constitution-of-india
 ---

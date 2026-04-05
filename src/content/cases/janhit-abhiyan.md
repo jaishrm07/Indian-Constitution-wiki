@@ -1,26 +1,25 @@
 ---
 title: Janhit Abhiyan v. Union of India
 slug: janhit-abhiyan
-citation: 2023 5 SCC 1
+citation: (2023) 5 SCC 1
 year: 2022
 court: Supreme Court of India
-summary: The Court upheld the 103rd Amendment's EWS reservation, confirming that economic criteria can be used within the equality code.
-issue: Whether economically weaker sections reservation under the 103rd Amendment violates the equality code or basic structure.
-holding: The Amendment was upheld by majority, including the exclusion of SC, ST, and OBC groups from the EWS quota.
-significance: This is the key modern case on affirmative action, economic classification, and the post-Indra Sawhney reservation framework.
+summary: The Court upheld the One Hundred and Third Amendment and accepted a separate EWS quota outside the existing reservation categories.
+issue: Can the Constitution permit a distinct economically weaker sections reservation that excludes communities already covered by other reservation frameworks.
+holding: The majority upheld the amendment and accepted the EWS framework as a valid constitutional design under the equality code.
+significance: The case reshaped reservation doctrine by validating a major redesign of affirmative action around economic criteria.
 articles:
   - article-14
   - article-15
   - article-16
   - article-46
-  - article-368
 parts:
   - part-iii
-  - part-xx
+  - part-iv
 topics:
   - reservations
   - equality-and-representation
-  - basic-structure
+  - fundamental-rights
 sources:
   - supreme-court-of-india
   - escr
@@ -28,8 +27,8 @@ sources:
 
 ## Why the case remains central
 
-Janhit Abhiyan reset the constitutional conversation about affirmative action by allowing economic disadvantage to work as an independent basis for reservation.
+Janhit Abhiyan matters because it widened the constitutional space for reservation design. It shifted the reservation debate beyond backward-class doctrine toward the status of economic criteria.
 
 ## Long-term impact
 
-Reservation debates after this case are no longer only about caste or social backwardness. They also have to account for how economic criteria fit inside the equality code.
+The decision is now unavoidable in any debate over reservation architecture, representational justice, and how equality doctrine absorbs new classifications.

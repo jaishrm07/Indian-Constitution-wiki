@@ -11,7 +11,9 @@ relatedArticles:
   - article-221
   - article-223
 schedules: []
-topics: []
+topics:
+  - judiciary
+  - judicial-appointments
 sources:
   - constitution-of-india
 ---

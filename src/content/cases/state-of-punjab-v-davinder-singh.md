@@ -1,26 +1,24 @@
 ---
 title: State of Punjab v. Davinder Singh
 slug: state-of-punjab-v-davinder-singh
-citation: 2024 INSC 562
+citation: Civil Appeal No. 2317 of 2011, judgment dated 1 August 2024
 year: 2024
 court: Supreme Court of India
-summary: The Court held that Scheduled Castes can be sub-classified for reservation purposes and rejected the view that Article 341 forbids all such differentiation.
-issue: Whether states may sub-classify Scheduled Castes to spread reservation benefits more equitably within the category.
-holding: The Court approved sub-classification within the Scheduled Castes framework, subject to constitutional justification and empirical support.
-significance: The case reshaped reservation doctrine by recognizing intra-category differentiation as a possible tool of substantive equality.
+summary: The Court held that States may sub-classify Scheduled Caste reservation benefits to address internal inequities within the larger constitutional category.
+issue: Whether the Constitution permits sub-classification within the Scheduled Castes for distributive fairness, or whether such internal differentiation violates the equality framework governing reservation.
+holding: The Court permitted sub-classification and treated distributive re-ordering within the constitutional category as compatible with the equality code, subject to constitutional discipline.
+significance: Davinder Singh is now central to contemporary debates on reservation design, internal disadvantage, and the relationship between formal classification and substantive equality.
 articles:
   - article-14
   - article-15
   - article-16
-  - article-335
   - article-341
-  - article-342
 parts:
+  - part-iii
   - part-xvi
 topics:
   - reservations
   - equality-and-representation
-  - fundamental-rights
 sources:
   - supreme-court-of-india
   - escr
@@ -28,8 +26,8 @@ sources:
 
 ## Why the case remains central
 
-Davinder Singh moved the reservation debate from broad category protection to internal distribution within Scheduled Castes. That makes it a major equality and representation precedent.
+The ruling moved reservation doctrine toward a more granular understanding of disadvantage inside constitutionally recognised communities.
 
 ## Long-term impact
 
-Future disputes over sub-classification, creamy-layer style reasoning, and the design of reservation policy inside SC/ST categories will continue to rely on this judgment.
+It has become an essential reference point for current disputes over sub-classification, representational fairness, and the constitutional architecture of affirmative action.

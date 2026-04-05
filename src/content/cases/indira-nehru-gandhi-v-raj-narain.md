@@ -4,24 +4,21 @@ slug: indira-nehru-gandhi-v-raj-narain
 citation: AIR 1975 SC 2299
 year: 1975
 court: Supreme Court of India
-summary: The Court struck down the 39th Amendment's attempt to shield the Prime Minister's election from judicial scrutiny and treated free and fair elections as part of the basic structure.
-issue: Whether Parliament could place the Prime Minister's election beyond judicial review and validate the challenged election by constitutional amendment.
-holding: The amendment was invalid to the extent that it destroyed basic-structure limits, and election disputes could not be insulated from constitutional review.
-significance: The case is a foundation for free and fair elections, basic-structure review, and the limits of political self-protection through amendment.
+summary: The Court protected the basic structure by invalidating an attempt to immunize the Prime Minister's election from ordinary judicial review.
+issue: Can Parliament amend the Constitution to remove an election dispute from the ordinary constitutional framework of adjudication and review.
+holding: The Court held that free and fair elections and judicial review could not be displaced through an amendment that insulated a particular election from constitutional scrutiny.
+significance: The judgment remains central to understanding basic structure, electoral integrity, and the constitutional limits on amendment power.
 articles:
   - article-14
-  - article-19
-  - article-324
-  - article-329
   - article-329a
   - article-368
 parts:
+  - part-iii
   - part-xv
   - part-xx
 topics:
-  - elections-and-democracy
-  - elections-and-institutions
   - basic-structure
+  - elections-and-democracy
 sources:
   - supreme-court-of-india
   - escr
@@ -29,8 +26,8 @@ sources:
 
 ## Why the case remains central
 
-This judgment linked electoral integrity to constitutional structure. It made clear that election law cannot be rewritten to insulate a politically sensitive result from review.
+The election case matters because it linked democratic legitimacy to constitutional structure. The Court treated electoral fairness and judicial review as structural commitments, not just statutory arrangements.
 
 ## Long-term impact
 
-Later disputes over electoral fairness, constitutional amendments, and the scope of judicial review still return to this case when the State tries to validate a contested election by amending the rules after the fact.
+Later disputes over amendment power, electoral design, and institutional insulation still return to this warning against constitutional self-protection by incumbents.

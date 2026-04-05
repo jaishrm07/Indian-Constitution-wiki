@@ -3,7 +3,7 @@ title: Limits on Constitutional Amendment
 slug: limits-on-constitutional-amendment
 eventDate: 2026-02-25
 publishedAt: 2026-03-01
-updatedAt: 2026-03-26
+updatedAt: 2026-04-05
 status: ongoing
 issueTypes:
   - structural-reform
@@ -32,9 +32,12 @@ parts:
 cases:
   - kesavananda-bharati
   - minerva-mills
+  - indira-nehru-gandhi-v-raj-narain
+  - supreme-court-advocates-on-record-association-njac
 topics:
   - basic-structure
   - federalism
+  - judiciary
 institutions:
   - parliament-of-india
   - supreme-court-of-india
@@ -43,6 +46,7 @@ sources:
   - constitution-of-india
   - legislative-department
   - supreme-court-of-india
+  - escr
 ---
 
 ## The constitutional frame

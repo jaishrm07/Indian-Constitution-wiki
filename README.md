@@ -16,10 +16,13 @@ Current corpus snapshot:
 - `26` Parts
 - `12` Schedules
 - `24` Amendments
-- `21` Cases
-- `21` Topics
-- `10` Current Affairs desks
-- `32` Timeline entries
+- `33` Cases
+- `22` Topics
+- `14` Current Affairs desks
+- `48` Timeline entries
+- `10` Institutions
+- `13` Glossary entries
+- `30` Source records
 
 ## Commands
 
@@ -70,10 +73,10 @@ Each entry uses frontmatter for metadata and Markdown for body sections. Relatio
 
 ## Next Priorities
 
-- deepen case-law coverage across weaker doctrine clusters
-- expand the current-affairs desk with a tighter review cadence
-- enrich the timeline and amendment layers further without diluting source discipline
-- strengthen source normalization for official PDFs, judgments, and parliamentary records
+- deepen remaining case-law gaps in election law, minority-rights doctrine, and judicial process
+- keep the current-affairs desk on a real review cadence using official process trails
+- enrich the timeline and amendment layers without reintroducing duplicate concept pages
+- keep tightening source normalization for official PDFs, judgments, and parliamentary records
 
 ## GitHub Pages Deployment
 

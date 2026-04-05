@@ -14,6 +14,7 @@ relatedArticles:
   - article-328
   - article-329
 topics:
+  - elections-and-democracy
   - elections-and-institutions
 sources:
   - constitution-of-india

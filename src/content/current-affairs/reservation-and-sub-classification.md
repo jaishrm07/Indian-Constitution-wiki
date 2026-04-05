@@ -3,7 +3,7 @@ title: Reservation and Sub-Classification Debates
 slug: reservation-and-sub-classification
 eventDate: 2026-02-18
 publishedAt: 2026-02-25
-updatedAt: 2026-04-01
+updatedAt: 2026-04-05
 status: ongoing
 issueTypes:
   - equality-and-representation
@@ -30,12 +30,16 @@ articles:
   - article-14
   - article-15
   - article-16
+  - article-341
 parts:
   - part-iii
+  - part-xvi
 cases:
   - indra-sawhney
+  - state-of-punjab-v-davinder-singh
 topics:
   - reservations
+  - equality-and-representation
   - fundamental-rights
 institutions:
   - state-governments
@@ -44,6 +48,7 @@ institutions:
 sources:
   - constitution-of-india
   - supreme-court-of-india
+  - escr
 ---
 
 ## The constitutional frame

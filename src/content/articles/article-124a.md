@@ -26,7 +26,10 @@ relatedArticles:
   - article-124
   - article-124b
 schedules: []
-topics: []
+topics:
+  - judiciary
+  - judicial-appointments
+  - basic-structure
 sources:
   - constitution-of-india
 ---

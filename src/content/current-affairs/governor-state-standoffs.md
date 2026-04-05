@@ -3,7 +3,7 @@ title: Governor-State Standoffs
 slug: governor-state-standoffs
 eventDate: 2026-01-15
 publishedAt: 2026-01-20
-updatedAt: 2026-03-28
+updatedAt: 2026-04-05
 status: ongoing
 issueTypes:
   - institutional-conflict
@@ -40,8 +40,10 @@ parts:
 cases:
   - nabam-rebia
   - sr-bommai
+  - tamil-nadu-governor-assent
 topics:
   - federalism
+  - judiciary
   - emergency-powers
 institutions:
   - governors
@@ -49,6 +51,7 @@ institutions:
   - state-legislatures
   - supreme-court-of-india
 sources:
+  - tamil-nadu-governor-assent-judgment-2025
   - supreme-court-of-india
   - constitution-of-india
 ---

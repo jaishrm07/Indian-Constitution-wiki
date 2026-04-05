@@ -14,7 +14,10 @@ relatedArticles:
   - article-121
   - article-123
 schedules: []
-topics: []
+topics:
+  - parliamentary-power
+  - parliamentary-procedure
+  - judiciary
 sources:
   - constitution-of-india
 ---

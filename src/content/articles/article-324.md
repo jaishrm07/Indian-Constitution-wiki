@@ -27,6 +27,7 @@ relatedArticles:
   - article-323b
   - article-325
 topics:
+  - elections-and-democracy
   - elections-and-institutions
 sources:
   - constitution-of-india

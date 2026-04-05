@@ -1,9 +1,9 @@
 ---
 title: One Nation, One Election
 slug: one-nation-one-election
-eventDate: 2026-03-05
+eventDate: 2024-12-17
 publishedAt: 2026-03-08
-updatedAt: 2026-04-02
+updatedAt: 2026-04-05
 status: ongoing
 issueTypes:
   - structural-reform
@@ -11,7 +11,7 @@ issueTypes:
 summary: Proposals to align election cycles across the Union and the states raise major constitutional questions about federalism, democratic accountability, and the amendment power.
 constitutionalQuestion: Can the Constitution be reworked to synchronise election cycles without distorting federal structure, legislative accountability, or the basic design of representative government?
 whyItMatters: The debate goes well beyond logistics. It concerns how often governments remain accountable to voters, how state politics differ from national politics, and whether deep structural redesign is constitutionally permissible.
-statusNote: The debate has moved from a managerial slogan to a structural constitutional question about dissolution, accountability cycles, and the autonomy of state politics.
+statusNote: The Constitution (One Hundred and Twenty-Ninth Amendment) Bill, 2024 was introduced in Lok Sabha on 17 December 2024, and a Joint Committee was constituted on 20 December 2024. The live question is whether the proposed amendment design can preserve federal accountability and democratic renewal.
 actors:
   - Parliament
   - Election Commission of India
@@ -19,11 +19,12 @@ actors:
   - State governments
   - Political parties
 trackingLanes:
-  - Committee or bill proposals for synchronized cycles
+  - Joint Committee and bill scrutiny for the 129th Amendment package
   - Amendment design under Article 368
   - Treatment of no-confidence, premature dissolution, and caretaker arrangements
   - Electoral and federal consequences for states whose cycles do not align
 watchFor:
+  - Whether the 129th Amendment design treats federalism as structural rather than logistical
   - Whether proposed amendments preserve meaningful state-level political accountability
   - Whether early dissolution scenarios are solved without repeated constitutional distortion
   - Whether federalism objections are treated as structural rather than merely political
@@ -61,6 +62,7 @@ sources:
   - constitution-of-india
   - election-commission-of-india
   - sansad
+  - parliament-digital-library
   - prs-india
 ---
 

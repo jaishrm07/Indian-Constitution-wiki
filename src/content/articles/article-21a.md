@@ -11,7 +11,9 @@ relatedArticles:
   - article-21
   - article-22
 schedules: []
-topics: []
+topics:
+  - education-rights
+  - fundamental-rights
 sources:
   - constitution-of-india
 ---

@@ -11,7 +11,8 @@ relatedArticles:
   - article-40
   - article-42
 schedules: []
-topics: []
+topics:
+  - education-rights
 sources:
   - constitution-of-india
 ---

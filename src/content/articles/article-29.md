@@ -14,6 +14,7 @@ relatedArticles:
   - article-28
   - article-30
 topics:
+  - education-rights
   - minority-rights
   - fundamental-rights
 sources:

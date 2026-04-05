@@ -1,35 +1,35 @@
 ---
-title: Association for Democratic Reforms v. Union of India
+title: Association for Democratic Reforms v. Union of India (Electoral Bonds Case)
 slug: association-for-democratic-reforms-electoral-bonds
 citation: 2024 INSC 113
 year: 2024
 court: Supreme Court of India
-summary: The Court invalidated the Electoral Bond Scheme and held that anonymous political donations could not override voters' constitutional right to know who funds political parties.
-issue: Whether the Electoral Bond Scheme and related amendments could constitutionally shield political donations from public disclosure.
-holding: The Scheme was struck down, disclosures were ordered, and transparency in political funding was treated as part of democratic accountability.
-significance: This is the leading modern case on campaign-finance transparency, informational rights, and electoral accountability.
+summary: The Court struck down the electoral-bonds scheme, holding that anonymous political funding impaired the voter's right to information and distorted constitutional democracy.
+issue: Whether the electoral-bonds scheme and related statutory amendments were compatible with the voter's right to information and the constitutional requirements of free and fair elections.
+holding: The Court held that anonymous electoral-bond funding violated Article 19(1)(a) because it denied voters information essential to political choice, and it struck down the impugned scheme and amendments.
+significance: The judgment reconnected campaign-finance regulation to constitutional transparency rather than treating political funding as a purely legislative policy matter.
 articles:
   - article-14
   - article-19
-  - article-32
   - article-324
+  - article-326
 parts:
   - part-iii
   - part-xv
 topics:
+  - free-speech
   - elections-and-democracy
   - elections-and-institutions
-  - free-speech
-  - fundamental-rights
 sources:
   - supreme-court-of-india
-  - escr
+  - electoral-bonds-judgment-2024
 ---
 
-## Why the case remains central
+## Why the case matters now
 
-The judgment turned political funding into a constitutional transparency question. It made clear that electoral secrecy has limits when it conflicts with voters' information rights.
+The decision reset the constitutional baseline for political-finance transparency. It makes clear that party funding cannot be insulated from public scrutiny if that secrecy weakens democratic choice.
 
 ## Long-term impact
 
-Campaign finance, disclosure obligations, and the design of electoral institutions now have to be read through this case whenever anonymity is claimed as a constitutional virtue.
+Future campaign-finance reform will now be judged against this ruling's insistence that voter information is a constitutional value, not a policy afterthought.
+

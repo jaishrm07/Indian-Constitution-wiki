@@ -40,7 +40,9 @@ relatedArticles:
   - article-123
   - article-124a
 schedules: []
-topics: []
+topics:
+  - judiciary
+  - judicial-appointments
 sources:
   - constitution-of-india
 ---

@@ -190,3 +190,15 @@ As the corpus expands, broken slugs stop being edge cases and start becoming sil
 ### 37. Coverage expansion exposes hidden taxonomy gaps
 
 Adding more amendments and current-affairs pages does not only increase volume. It also reveals whether the topic system is actually complete enough to absorb that growth. Missing topic hubs such as representation, parliamentary procedure, or education rights can make a large corpus feel inconsistent even when the underlying pages are individually sound.
+
+### 38. Current-affairs coverage improves fastest when it follows official process trails
+
+The strongest constitutional live desks are the ones that can be anchored to an institutional process the reader can actually monitor: a bill text on Sansad, a court judgment PDF, a collegium resolution, a Department of Justice notification, or an Election Commission publication. That creates update discipline because the desk can be refreshed by checking a known source trail rather than rediscovering the issue from scratch.
+
+### 39. Some doctrine gaps only become obvious after the live layer matures
+
+Once the current-affairs desk becomes richer, missing cases become easier to spot. Election-commission independence demands Anoop Baranwal, campaign-finance transparency demands the electoral-bonds ruling, and judicial-appointments coverage feels thin until the Second Judges Case and the NJAC judgment are both present. The live layer is therefore a reliable map of which doctrinal holes matter most to users.
+
+### 40. Resolved constitutional crises should stay searchable if they define the next reform baseline
+
+Some issues stop being live without stopping being operationally important. Electoral bonds are the clearest example: the scheme is gone, but any future political-finance regime will be designed in the shadow of that judgment, so the desk entry still matters as a baseline record.

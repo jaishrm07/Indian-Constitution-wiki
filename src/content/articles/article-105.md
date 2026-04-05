@@ -16,7 +16,9 @@ relatedArticles:
   - article-104
   - article-106
 schedules: []
-topics: []
+topics:
+  - parliamentary-power
+  - parliamentary-procedure
 sources:
   - constitution-of-india
 ---

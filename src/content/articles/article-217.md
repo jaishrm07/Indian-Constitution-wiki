@@ -32,7 +32,9 @@ relatedArticles:
   - article-216
   - article-218
 schedules: []
-topics: []
+topics:
+  - judiciary
+  - judicial-appointments
 sources:
   - constitution-of-india
 ---

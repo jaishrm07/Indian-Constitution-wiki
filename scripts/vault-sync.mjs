@@ -101,6 +101,7 @@ function relEntity(slug, collection, label) {
 		amendments: '../amendments',
 		cases: '../cases',
 		topics: '../topics',
+		institutions: '../institutions',
 	};
 	return wikiLink('', slug, label, map[collection]);
 }
@@ -498,7 +499,7 @@ function renderIssue(entry, context) {
 	);
 }
 
-function renderSource(entry) {
+function renderSource(entry, context) {
 	return noteTemplate(
 		{
 			type: 'source',

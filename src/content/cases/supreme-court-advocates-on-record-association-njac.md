@@ -1,24 +1,27 @@
 ---
 title: Supreme Court Advocates-on-Record Association v. Union of India
 slug: supreme-court-advocates-on-record-association-njac
-citation: 2016 5 SCC 1
+citation: "[2015] 13 SCR 974"
 year: 2015
 court: Supreme Court of India
-summary: The Court invalidated the 99th Amendment and NJAC Act, holding that judicial primacy in appointments was part of the basic structure.
-issue: Whether the 99th Amendment and the National Judicial Appointments Commission could replace the collegium system without damaging judicial independence.
-holding: The amendment and Act were struck down because they compromised judicial independence and judicial primacy in appointments.
-significance: This case remains the central modern authority on judicial appointments, the collegium, and basic-structure limits on institutional redesign.
+summary: The Court struck down the Ninety-ninth Amendment and the NJAC Act, holding that the new appointments structure damaged judicial independence.
+issue: Whether Parliament could replace the collegium with the National Judicial Appointments Commission without violating the Constitution's basic structure.
+holding: The amendment and the accompanying statute were invalidated because the Court held that judicial primacy and independence in the appointments process were constitutionally protected.
+significance: The judgment remains the defining constitutional decision on judicial appointments, court independence, and the limits of institutional redesign by amendment.
 articles:
-  - article-124
-  - article-217
-  - article-368
   - article-50
+  - article-124
+  - article-124a
+  - article-124b
+  - article-124c
+  - article-217
 parts:
+  - part-iv
   - part-v
   - part-vi
-  - part-xx
 topics:
   - judiciary
+  - judicial-appointments
   - basic-structure
 sources:
   - supreme-court-of-india
@@ -27,8 +30,8 @@ sources:
 
 ## Why the case remains central
 
-NJAC is the modern reference point whenever institutional redesign touches the independence of the higher judiciary. It frames judicial appointments as a structural question, not a simple administrative reform.
+This is the constitutional anchor for every modern dispute about how judges are selected and how much control elected branches may exercise over that process.
 
 ## Long-term impact
 
-Debates about transparency, accountability, and appointments reform remain constrained by this judgment unless the constitutional settlement itself changes.
+Current debates on collegium reform, transparency, and judicial accountability still operate within the doctrinal frame established here.

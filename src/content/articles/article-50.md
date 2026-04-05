@@ -11,7 +11,9 @@ relatedArticles:
   - article-49
   - article-51
 schedules: []
-topics: []
+topics:
+  - judiciary
+  - judicial-appointments
 sources:
   - constitution-of-india
 ---
