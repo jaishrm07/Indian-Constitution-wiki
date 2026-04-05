@@ -9,6 +9,10 @@ constitutionalBasis:
   - Articles 153 to 162 structure the office of the Governor and its relation to the state executive.
   - Article 356 becomes relevant when disputes escalate into claims that constitutional machinery has broken down.
 articles:
+  - article-163
+  - article-174
+  - article-200
+  - article-201
   - article-356
 parts:
   - part-vi
@@ -17,6 +21,7 @@ topics:
   - federalism
   - emergency-powers
 cases:
+  - nabam-rebia
   - sr-bommai
   - nct-delhi
 currentAffairs:

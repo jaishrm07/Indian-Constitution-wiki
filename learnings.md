@@ -158,3 +158,7 @@ For a trust-heavy product, the source registry cannot stay hidden in methodology
 ### 29. Topic pages should act like dossiers, not categories
 
 A strong constitutional topic page does more than group links. It should answer which institutions operationalize the topic, which provisions anchor it, which cases define it, and which live issues currently test it. Once those layers are visible, the topic stops being a taxonomy label and starts behaving like a reusable briefing document.
+
+### 30. Content depth should follow live-pressure clusters
+
+When deciding what to add next, the best guide is not abstract completeness. It is the set of constitutional clusters already under live pressure on the site. Adding Articles 163, 174, 200, and 201 is especially valuable because those provisions immediately strengthen governor-state disputes, anti-defection coverage, state-legislature hubs, and federalism dossiers all at once.

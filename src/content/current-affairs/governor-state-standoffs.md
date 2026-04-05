@@ -28,11 +28,17 @@ watchFor:
   - Whether floor tests are used promptly instead of speculative majority claims
   - Whether Article 356 reasoning is being normalized outside its proper constitutional threshold
 articles:
+  - article-163
+  - article-174
+  - article-200
+  - article-201
   - article-356
 parts:
+  - part-vi
   - part-xviii
   - part-xi
 cases:
+  - nabam-rebia
   - sr-bommai
 topics:
   - federalism

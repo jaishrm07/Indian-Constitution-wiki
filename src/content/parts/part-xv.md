@@ -7,6 +7,8 @@ summary: Part XV governs the constitutional framework for elections and vests su
 intro: This Part matters whenever institutional debate turns to election management, delimitation, and democratic administration.
 articleSlugs:
   - article-324
+  - article-327
+  - article-329
 topics:
   - elections-and-institutions
 sources:

@@ -7,15 +7,21 @@ role: The Commission manages election schedules, notifications, procedural guida
 whyItMatters: Constitutional debates about election timing, electoral administration, and Article 324 become much more concrete when readers can trace what the Election Commission has formally notified or proposed.
 constitutionalBasis:
   - Article 324 vests the superintendence, direction, and control of elections in the Election Commission.
+  - Articles 327 and 329 help structure the legislative and adjudicatory framework around elections.
 articles:
   - article-324
+  - article-327
+  - article-329
 topics:
   - elections-and-institutions
+cases:
+  - mohinder-singh-gill
 currentAffairs:
   - one-nation-one-election
 sources:
   - election-commission-of-india
   - prs-india
+  - constitution-of-india
 ---
 
 ## Why this institution matters

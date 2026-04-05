@@ -7,10 +7,16 @@ role: Parliament legislates, debates constitutional reform, passes amendment bil
 whyItMatters: Many constitutional controversies become legible only when readers can track the parliamentary route of a bill, the committee material behind it, and the debates that frame institutional change.
 constitutionalBasis:
   - Articles 79 to 122 structure Parliament, its Houses, officers, sessions, and legislative procedure.
+  - Article 83 fixes the duration of the Houses of Parliament.
+  - Article 327 matters when Parliament legislates on elections to legislatures.
   - Article 368 matters whenever Parliament exercises the constitutional amendment power.
 articles:
+  - article-83
+  - article-327
   - article-368
 parts:
+  - part-v
+  - part-xv
   - part-xx
 topics:
   - elections-and-institutions

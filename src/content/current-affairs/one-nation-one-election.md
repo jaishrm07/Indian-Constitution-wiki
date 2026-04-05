@@ -28,17 +28,27 @@ watchFor:
   - Whether early dissolution scenarios are solved without repeated constitutional distortion
   - Whether federalism objections are treated as structural rather than merely political
 articles:
+  - article-83
+  - article-172
+  - article-324
+  - article-327
+  - article-329
   - article-246
   - article-356
   - article-368
 parts:
+  - part-v
+  - part-vi
+  - part-xv
   - part-xi
   - part-xviii
   - part-xx
 cases:
   - kesavananda-bharati
+  - mohinder-singh-gill
   - sr-bommai
 topics:
+  - elections-and-institutions
   - federalism
   - basic-structure
 institutions:
@@ -46,6 +56,7 @@ institutions:
   - election-commission-of-india
   - union-government
   - state-governments
+  - state-legislatures
 sources:
   - constitution-of-india
   - election-commission-of-india

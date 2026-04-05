@@ -6,8 +6,13 @@ summary: State governments are central to federal conflict, reservation policy, 
 role: State governments exercise executive power within their constitutional sphere and often become the primary actors in disputes over federal autonomy, public policy, and political legitimacy.
 whyItMatters: A Constitution-focused site cannot explain Indian public law well if it treats all constitutional conflict as Union-level conflict.
 constitutionalBasis:
+  - Article 163 structures the relationship between the Governor and the elected Council of Ministers.
+  - Article 174 matters when sessions, prorogation, or dissolution become constitutionally contested.
   - Part VI structures state executives and their relation to legislatures.
   - Part XI matters where state power overlaps with Union competence.
+articles:
+  - article-163
+  - article-174
 parts:
   - part-vi
   - part-xi

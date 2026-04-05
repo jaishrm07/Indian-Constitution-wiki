@@ -6,6 +6,7 @@ order: 5
 summary: Part V sets out the structure of the Union, including Parliament, the executive, and the Supreme Court.
 intro: This Part contains major institutional provisions that shape central governance and the Supreme Court's constitutional role.
 articleSlugs:
+  - article-83
   - article-131
 topics:
   - judiciary

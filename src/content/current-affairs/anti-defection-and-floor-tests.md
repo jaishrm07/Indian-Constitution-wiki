@@ -28,13 +28,17 @@ watchFor:
   - Whether courts treat timing manipulation as a constitutional injury rather than a minor procedural dispute
 articles:
   - article-14
+  - article-163
+  - article-174
   - article-356
 schedules:
   - schedule-x
 parts:
+  - part-vi
   - part-xviii
 cases:
   - kihoto-hollohan
+  - nabam-rebia
   - sr-bommai
 topics:
   - anti-defection

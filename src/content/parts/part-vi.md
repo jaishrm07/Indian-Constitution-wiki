@@ -6,6 +6,11 @@ order: 6
 summary: Part VI sets out the constitutional structure of States, including their legislatures, executives, and High Courts.
 intro: This Part is central to state-level constitutional governance and to understanding why High Courts are such powerful constitutional forums.
 articleSlugs:
+  - article-163
+  - article-172
+  - article-174
+  - article-200
+  - article-201
   - article-226
 topics:
   - judiciary

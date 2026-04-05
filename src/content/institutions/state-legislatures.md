@@ -7,8 +7,14 @@ role: State legislatures make state law, test legislative majority, and become t
 whyItMatters: Many constitutional current-affairs issues are really disputes about how state legislatures function, who controls them, and whether they are allowed to remain the primary democratic forum.
 constitutionalBasis:
   - Part VI structures state government and legislatures.
+  - Articles 172 and 174 matter for the life, sessions, and dissolution of Assemblies.
+  - Articles 200 and 201 matter when state Bills enter assent and reservation disputes.
   - Article 356 matters when the ordinary functioning of a state legislature is said to have broken down.
 articles:
+  - article-172
+  - article-174
+  - article-200
+  - article-201
   - article-356
 parts:
   - part-vi
