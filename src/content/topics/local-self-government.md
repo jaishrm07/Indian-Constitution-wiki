@@ -28,4 +28,4 @@ Readers should move between the Seventy-Third and Seventy-Fourth Amendments, the
 
 ## Current significance
 
-This topic is now closely tied to election timing, reservation design, and administrative capacity in local institutions. The live discussions on [delimitation and representation](../current-affairs/delimitation-and-representation) and [women reservation and delimitation](../current-affairs/women-reservation-and-delimitation) show why local democracy remains constitutionally active.
+This topic is now closely tied to election timing, reservation design, and administrative capacity in local institutions. The live discussions on [local body election delays and State Election Commission independence](../current-affairs/local-body-election-delays-and-sec-independence), [delimitation and representation](../current-affairs/delimitation-and-representation), and [women reservation and delimitation](../current-affairs/women-reservation-and-delimitation) show why local democracy remains constitutionally active.
