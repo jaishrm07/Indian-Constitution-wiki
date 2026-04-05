@@ -4,7 +4,38 @@ import ContentCard from '../../components/ContentCard.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getEntryHref, sortByTitle } from '../../lib/content';
 
-const topics = sortByTitle(await getCollection('topics'));
+const [topics, currentAffairs, institutions, articles, cases] = await Promise.all([
+	getCollection('topics'),
+	getCollection('current-affairs'),
+	getCollection('institutions'),
+	getCollection('articles'),
+	getCollection('cases'),
+]);
+
+const topicSignals = sortByTitle(topics).map((topic) => {
+	const liveIssueCount = currentAffairs.filter((item) => item.data.topics.includes(topic.data.slug) && item.data.status === 'ongoing').length;
+	const institutionCount = institutions.filter((item) => item.data.topics.includes(topic.data.slug)).length;
+	const articleCount = articles.filter((item) => item.data.topics.includes(topic.data.slug)).length;
+	const caseCount = cases.filter((item) => item.data.topics.includes(topic.data.slug)).length;
+	return {
+		entry: topic,
+		liveIssueCount,
+		institutionCount,
+		articleCount,
+		caseCount,
+	};
+});
+
+const featuredDossiers = [...topicSignals]
+	.sort(
+		(left, right) =>
+			right.liveIssueCount - left.liveIssueCount ||
+			right.articleCount - left.articleCount ||
+			left.entry.data.title.localeCompare(right.entry.data.title),
+	)
+	.slice(0, 6);
+
+const liveTopicCount = topicSignals.filter((item) => item.liveIssueCount > 0).length;
 ---
 
 <Layout title="Topics | Constitution Atlas" description="Browse major themes across the Indian Constitution.">
@@ -12,21 +43,68 @@ const topics = sortByTitle(await getCollection('topics'));
 		<div class="list-header">
 			<div>
 				<p class="eyebrow">Topics</p>
-				<h1>Thematic hubs across the Constitution</h1>
+				<h1>Thematic dossiers across the Constitution</h1>
 			</div>
-			<p class="muted">Use topics to jump across Articles, cases, and current affairs.</p>
+			<p class="muted">Use topics to move across constitutional text, cases, institutions, and live disputes as one connected dossier.</p>
+		</div>
+
+		<div class="feature-grid">
+			<div class="feature-tile">
+				<span>Coverage</span>
+				<strong>{topicSignals.length} constitutional topics</strong>
+				<p>Each topic page is meant to behave like a dossier rather than a bare taxonomy page.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Live Desk</span>
+				<strong>{liveTopicCount} topics with ongoing issues</strong>
+				<p>Topics become most valuable when they connect enduring doctrine to active constitutional pressure points.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Knowledge Graph</span>
+				<strong>{topicSignals.reduce((sum, item) => sum + item.articleCount, 0)} linked Articles</strong>
+				<p>The topic layer aggregates constitutional text, institutions, and case law into navigable thematic clusters.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Priority Dossiers</p>
+				<h2>Topics with the strongest live and reference coverage</h2>
+			</div>
+			<p class="section-note">Sorted to favor topics where doctrine, text, and live issues are already converging.</p>
 		</div>
 		<div class="card-grid">
-			{
-				topics.map((topic) => (
-					<ContentCard
-						eyebrow="Topic"
-						title={topic.data.title}
-						description={topic.data.summary}
-						href={getEntryHref('topics', topic.data.slug)}
-					/>
-				))
-			}
+			{featuredDossiers.map(({ entry, liveIssueCount, articleCount, caseCount }) => (
+				<ContentCard
+					eyebrow="Topic"
+					title={entry.data.title}
+					description={entry.data.summary}
+					href={getEntryHref('topics', entry.data.slug)}
+					meta={`${liveIssueCount} live issue${liveIssueCount === 1 ? '' : 's'} · ${articleCount} Article${articleCount === 1 ? '' : 's'} · ${caseCount} case${caseCount === 1 ? '' : 's'}`}
+				/>
+			))}
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Directory</p>
+				<h2>Browse all topic dossiers</h2>
+			</div>
+		</div>
+		<div class="card-grid">
+			{topicSignals.map(({ entry, liveIssueCount, institutionCount, articleCount }) => (
+				<ContentCard
+					eyebrow="Topic"
+					title={entry.data.title}
+					description={entry.data.summary}
+					href={getEntryHref('topics', entry.data.slug)}
+					meta={`${liveIssueCount} live issue${liveIssueCount === 1 ? '' : 's'} · ${institutionCount} institution${institutionCount === 1 ? '' : 's'} · ${articleCount} Article${articleCount === 1 ? '' : 's'}`}
+				/>
+			))}
 		</div>
 	</section>
 </Layout>

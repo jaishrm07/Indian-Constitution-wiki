@@ -154,3 +154,7 @@ A reader often arrives at an institution page because they want to know where po
 ### 28. Source transparency should be navigable from the top level
 
 For a trust-heavy product, the source registry cannot stay hidden in methodology pages. Readers should be able to move directly from the main navigation into the source layer, inspect the source stack, and see how individual sources are used across Articles, cases, amendments, and current-affairs explainers.
+
+### 29. Topic pages should act like dossiers, not categories
+
+A strong constitutional topic page does more than group links. It should answer which institutions operationalize the topic, which provisions anchor it, which cases define it, and which live issues currently test it. Once those layers are visible, the topic stops being a taxonomy label and starts behaving like a reusable briefing document.

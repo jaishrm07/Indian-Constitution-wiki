@@ -5,7 +5,17 @@ import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
-import { filterByRelationship, formatDate, getEntryHref, resolveBySlugs, sortByDateDesc, titleCaseStatus } from '../../lib/content';
+import {
+	filterByRelationship,
+	formatDate,
+	getEntryHref,
+	resolveBySlugs,
+	sortArticles,
+	sortByDateDesc,
+	sortByTitle,
+	titleCaseStatus,
+	uniqueBySlug,
+} from '../../lib/content';
 
 export async function getStaticPaths() {
 	const topics = await getCollection('topics');
@@ -18,7 +28,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const [articles, parts, schedules, cases, glossary, timeline, amendments, currentAffairs, sources] = await Promise.all([
+const [articles, parts, schedules, cases, glossary, timeline, amendments, currentAffairs, sources, institutions] = await Promise.all([
 	getCollection('articles'),
 	getCollection('parts'),
 	getCollection('schedules'),
@@ -28,19 +38,47 @@ const [articles, parts, schedules, cases, glossary, timeline, amendments, curren
 	getCollection('amendments'),
 	getCollection('current-affairs'),
 	getCollection('sources'),
+	getCollection('institutions'),
 ]);
 
-const relatedArticles = filterByRelationship(articles, 'topics', entry.data.slug);
+const relatedArticles = sortArticles(filterByRelationship(articles, 'topics', entry.data.slug));
 const relatedParts = resolveBySlugs(parts, entry.data.parts);
 const relatedSchedules = resolveBySlugs(schedules, entry.data.schedules);
-const relatedCases = filterByRelationship(cases, 'topics', entry.data.slug);
-const relatedGlossary = filterByRelationship(glossary, 'topics', entry.data.slug);
+const relatedCases = sortByTitle(filterByRelationship(cases, 'topics', entry.data.slug));
+const relatedGlossary = sortByTitle(filterByRelationship(glossary, 'topics', entry.data.slug));
 const relatedTimeline = timeline.filter(
 	(item) => item.data.relatedCollection === 'topics' && item.data.relatedSlug === entry.data.slug,
 );
-const relatedAmendments = filterByRelationship(amendments, 'topics', entry.data.slug);
+const relatedAmendments = [...filterByRelationship(amendments, 'topics', entry.data.slug)].sort((left, right) => right.data.year - left.data.year);
 const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs, 'topics', entry.data.slug), 'updatedAt');
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
+const relatedInstitutions = uniqueBySlug([
+	...filterByRelationship(institutions, 'topics', entry.data.slug),
+	...resolveBySlugs(
+		institutions,
+		relatedCurrentAffairs.flatMap((item) => item.data.institutions),
+	),
+	...resolveBySlugs(
+		institutions,
+		relatedSources.flatMap((source) => source.data.institutions),
+	),
+]);
+const ongoingCurrentAffairs = relatedCurrentAffairs.filter((item) => item.data.status === 'ongoing');
+const historicalCurrentAffairs = relatedCurrentAffairs.filter((item) => item.data.status !== 'ongoing');
+const sourceGroups = [
+	{
+		title: 'Constitution text and official records',
+		items: relatedSources.filter((source) => source.data.sourceType === 'official'),
+	},
+	{
+		title: 'Court records and judgments',
+		items: relatedSources.filter((source) => source.data.sourceType === 'court'),
+	},
+	{
+		title: 'Context and monitoring sources',
+		items: relatedSources.filter((source) => source.data.sourceType !== 'official' && source.data.sourceType !== 'court'),
+	},
+].filter((group) => group.items.length > 0);
 ---
 
 <Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
@@ -64,11 +102,30 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 		filters={{
 			type: 'Topic',
 			topic: entry.data.title,
+			institution: relatedInstitutions.map((institution) => institution.data.title),
 		}}
 	/>
 
 	<section class="page-grid">
 		<article class="page-copy prose" data-pagefind-body>
+			<section>
+				<h2>Topic dossier</h2>
+				<p>{entry.data.intro}</p>
+			</section>
+			{ongoingCurrentAffairs.length > 0 && (
+				<section>
+					<h2>Live constitutional issues</h2>
+					<div class="stack">
+						{ongoingCurrentAffairs.map((item) => (
+							<a class="search-result" href={getEntryHref('current-affairs', item.data.slug)}>
+								<p class="eyebrow">Updated {formatDate(item.data.updatedAt)}</p>
+								<strong>{item.data.title}</strong>
+								<p>{item.data.constitutionalQuestion}</p>
+							</a>
+						))}
+					</div>
+				</section>
+			)}
 			<Content />
 		</article>
 
@@ -80,20 +137,38 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 			/>
 			<div class="info-panel">
 				<h3>Topic at a glance</h3>
-				<p class="muted">{entry.data.intro}</p>
-			</div>
-			<div class="info-panel">
-				<h3>Sources</h3>
-				<ul class="link-list">
-					{
-						relatedSources.map((source) => (
-							<li>
-								<a href={source.data.url} target="_blank" rel="noreferrer">{source.data.title}</a>
-							</li>
-						))
-					}
+				<ul class="detail-list">
+					<li>{relatedArticles.length} linked Article{relatedArticles.length === 1 ? '' : 's'}</li>
+					<li>{relatedCases.length} linked case{relatedCases.length === 1 ? '' : 's'}</li>
+					<li>{ongoingCurrentAffairs.length} ongoing live issue{ongoingCurrentAffairs.length === 1 ? '' : 's'}</li>
 				</ul>
 			</div>
+			{relatedInstitutions.length > 0 && (
+				<div class="info-panel">
+					<h3>Institutions in this topic</h3>
+					<div class="link-list">
+						{relatedInstitutions.map((institution) => <a class="tag-chip" href={getEntryHref('institutions', institution.data.slug)}>{institution.data.title}</a>)}
+					</div>
+				</div>
+			)}
+			{
+				sourceGroups.map((group) => (
+					<div class="info-panel">
+						<h3>{group.title}</h3>
+						<ul class="source-list">
+							{
+								group.items.map((source) => (
+									<li>
+										<a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a>
+										<a class="source-list__external" href={source.data.url} target="_blank" rel="noreferrer">Open source</a>
+										<small>{source.data.publisher}</small>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				))
+			}
 		</aside>
 	</section>
 
@@ -109,29 +184,49 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 		</div>
 	</section>
 
-	<section class="section-split">
-		<div class="section-panel">
-			<div class="section-heading compact">
-				<div>
-					<p class="eyebrow">Cases</p>
-					<h2>Judgments</h2>
+	{(relatedCases.length > 0 || relatedInstitutions.length > 0) && (
+		<section class="section-split">
+			{relatedCases.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Cases</p>
+							<h2>Judgments</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedCases.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
+					</div>
 				</div>
-			</div>
-			<div class="stack">
-				{relatedCases.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
-			</div>
-		</div>
+			)}
 
-		<div class="section-panel">
-			<div class="section-heading compact">
+			{relatedInstitutions.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Institutions</p>
+							<h2>Actors that operationalize the topic</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedInstitutions.map((item) => <ContentCard eyebrow="Institution" title={item.data.title} description={item.data.summary} href={getEntryHref('institutions', item.data.slug)} meta={item.data.role} />)}
+					</div>
+				</div>
+			)}
+		</section>
+	)}
+
+	{ongoingCurrentAffairs.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
 				<div>
 					<p class="eyebrow">Current Affairs</p>
-					<h2>Live explainers</h2>
+					<h2>Live explainers and recent developments</h2>
 				</div>
 			</div>
-			<div class="stack">
+			<div class="card-grid">
 				{
-					relatedCurrentAffairs.map((item) => (
+					ongoingCurrentAffairs.map((item) => (
 						<ContentCard
 							eyebrow={titleCaseStatus(item.data.status)}
 							title={item.data.title}
@@ -142,8 +237,8 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 					))
 				}
 			</div>
-		</div>
-	</section>
+		</section>
+	)}
 
 	{relatedAmendments.length > 0 && (
 		<section class="section-block">
@@ -188,6 +283,20 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 					</div>
 				</div>
 			)}
+		</section>
+	)}
+
+	{historicalCurrentAffairs.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Archive</p>
+					<h2>Resolved or archived issues in this topic</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{historicalCurrentAffairs.map((item) => <ContentCard eyebrow={titleCaseStatus(item.data.status)} title={item.data.title} description={item.data.summary} href={getEntryHref('current-affairs', item.data.slug)} meta={`Updated ${formatDate(item.data.updatedAt)}`} />)}
+			</div>
 		</section>
 	)}
 </Layout>
