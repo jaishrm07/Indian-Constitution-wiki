@@ -3,8 +3,12 @@ title: Article 21
 slug: article-21
 number: 21
 part: Part III - Fundamental Rights
+partSlug: part-iii
 summary: No person shall be deprived of life or personal liberty except according to procedure established by law.
 plainEnglish: Article 21 began as a procedural protection, but the Supreme Court later expanded it into a broad guarantee of dignity, fairness, privacy, and substantive liberty.
+officialText: >-
+  No person shall be deprived of his life or personal liberty except according
+  to procedure established by law.
 relatedArticles:
   - article-14
   - article-19

@@ -7,11 +7,15 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "vault:lint": "node scripts/vault-lint.mjs",
+    "vault:sync": "node scripts/vault-sync.mjs"
   },
   "dependencies": {
-    "astro": "^6.1.3"
+    "astro": "^6.1.3",
+    "cytoscape": "^3.33.1",
+    "pagefind": "^1.4.0"
   }
 }

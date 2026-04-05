@@ -2,20 +2,38 @@
 import { getCollection } from 'astro:content';
 import ContentCard from '../components/ContentCard.astro';
 import Layout from '../layouts/Layout.astro';
-import { getEntryHref, sortArticles, sortByDateDesc, sortByTitle, titleCaseStatus } from '../lib/content';
+import {
+	formatDate,
+	getEntryHref,
+	sortArticles,
+	sortByDateDesc,
+	sortByNumericField,
+	sortByTitle,
+	titleCaseStatus,
+} from '../lib/content';
 
-const [articles, topics, cases, amendments, currentAffairs] = await Promise.all([
+const [articles, parts, schedules, topics, institutions, glossary, cases, amendments, timeline, currentAffairs] = await Promise.all([
 	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
 	getCollection('topics'),
+	getCollection('institutions'),
+	getCollection('glossary'),
 	getCollection('cases'),
 	getCollection('amendments'),
+	getCollection('timeline'),
 	getCollection('current-affairs'),
 ]);
 
 const featuredArticles = sortArticles(articles).slice(0, 4);
+const featuredParts = sortByNumericField(parts, 'order').slice(0, 3);
+const featuredSchedules = sortByNumericField(schedules, 'number').slice(0, 3);
 const featuredTopics = sortByTitle(topics).slice(0, 4);
+const featuredInstitutions = sortByTitle(institutions).slice(0, 4);
+const featuredGlossary = sortByTitle(glossary).slice(0, 3);
 const featuredCases = sortByTitle(cases).slice(0, 3);
 const featuredAmendments = [...amendments].sort((left, right) => right.data.year - left.data.year).slice(0, 3);
+const featuredTimeline = sortByDateDesc(timeline, 'date').slice(0, 4);
 const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0, 3);
 ---
 
@@ -71,10 +89,25 @@ const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0
 				<strong>{articles.length} constitutional provisions</strong>
 				<p>Plain-English summaries, related cases, and linked issue pages.</p>
 			</a>
+			<a class="feature-tile" href="/parts">
+				<span>Parts</span>
+				<strong>{parts.length} structural divisions</strong>
+				<p>Read rights, emergency powers, and amendment logic in constitutional context.</p>
+			</a>
+			<a class="feature-tile" href="/schedules">
+				<span>Schedules</span>
+				<strong>{schedules.length} operational annexes</strong>
+				<p>Surface the lists and frameworks that make the text work in practice.</p>
+			</a>
 			<a class="feature-tile" href="/topics">
 				<span>Topics</span>
 				<strong>{topics.length} thematic hubs</strong>
 				<p>Use broad themes like federalism and fundamental rights to navigate.</p>
+			</a>
+			<a class="feature-tile" href="/institutions">
+				<span>Institutions</span>
+				<strong>{institutions.length} constitutional actors</strong>
+				<p>Follow Parliament, the Court, ECI, governors, and other actors behind live disputes.</p>
 			</a>
 			<a class="feature-tile" href="/cases">
 				<span>Landmark Cases</span>
@@ -86,6 +119,66 @@ const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0
 				<strong>{amendments.length} constitutional changes</strong>
 				<p>Track how the document evolved and which Articles were affected.</p>
 			</a>
+			<a class="feature-tile" href="/glossary">
+				<span>Glossary</span>
+				<strong>{glossary.length} plain-English terms</strong>
+				<p>Decode doctrinal language without leaving the reading flow.</p>
+			</a>
+			<a class="feature-tile" href="/timeline">
+				<span>Timeline</span>
+				<strong>{timeline.length} turning points</strong>
+				<p>See how cases, crises, and amendments changed constitutional meaning.</p>
+			</a>
+			<a class="feature-tile" href="/graph">
+				<span>Graph</span>
+				<strong>Interactive relationship explorer</strong>
+				<p>See Articles, institutions, cases, amendments, and live issues as one connected map.</p>
+			</a>
+			<a class="feature-tile" href="/search">
+				<span>Search</span>
+				<strong>Cross-site lookup</strong>
+				<p>Find Articles, Parts, cases, schedules, current affairs, and glossary terms.</p>
+			</a>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Graph</p>
+				<h2>Explore the site as a constitutional network</h2>
+			</div>
+			<a class="section-link" href="/graph">Open the Relationship Explorer</a>
+		</div>
+		<div class="search-result">
+			<p class="eyebrow">Knowledge Graph</p>
+			<strong>Trace how provisions, institutions, cases, and live disputes connect</strong>
+			<p>
+				The Relationship Explorer converts the site’s structured content into a navigable semantic map. It is the
+				fastest way to discover what a case touches, which institution is in conflict, or which Articles anchor a live issue.
+			</p>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Institutions</p>
+				<h2>Follow the constitutional actors</h2>
+			</div>
+			<a class="section-link" href="/institutions">See all Institutions</a>
+		</div>
+		<div class="card-grid">
+			{
+				featuredInstitutions.map((item) => (
+					<ContentCard
+						eyebrow="Institution"
+						title={item.data.title}
+						description={item.data.summary}
+						href={getEntryHref('institutions', item.data.slug)}
+					/>
+				))
+			}
 		</div>
 	</section>
 
@@ -138,6 +231,51 @@ const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0
 		<div class="section-panel">
 			<div class="section-heading compact">
 				<div>
+					<p class="eyebrow">Parts</p>
+					<h2>Read the constitutional structure</h2>
+				</div>
+				<a class="section-link" href="/parts">See all</a>
+			</div>
+			<div class="stack">
+				{
+					featuredParts.map((part) => (
+						<ContentCard
+							eyebrow={part.data.code}
+							title={part.data.title}
+							description={part.data.summary}
+							href={getEntryHref('parts', part.data.slug)}
+						/>
+					))
+				}
+			</div>
+		</div>
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Schedules</p>
+					<h2>Reference the working detail</h2>
+				</div>
+				<a class="section-link" href="/schedules">See all</a>
+			</div>
+			<div class="stack">
+				{
+					featuredSchedules.map((schedule) => (
+						<ContentCard
+							eyebrow={`Schedule ${schedule.data.number}`}
+							title={schedule.data.title}
+							description={schedule.data.summary}
+							href={getEntryHref('schedules', schedule.data.slug)}
+						/>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-split">
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
 					<p class="eyebrow">Cases</p>
 					<h2>Landmark judgments</h2>
 				</div>
@@ -168,13 +306,57 @@ const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0
 			<div class="stack">
 				{
 					latestCurrentAffairs.map((item) => (
-					<ContentCard
-						eyebrow={titleCaseStatus(item.data.status)}
-						title={item.data.title}
-						description={item.data.summary}
-						href={getEntryHref('current-affairs', item.data.slug)}
-							meta={`Updated ${item.data.updatedAt.toISOString().slice(0, 10)}`}
+						<ContentCard
+							eyebrow={titleCaseStatus(item.data.status)}
+							title={item.data.title}
+							description={item.data.summary}
+							href={getEntryHref('current-affairs', item.data.slug)}
+							meta={`Updated ${formatDate(item.data.updatedAt)} · Official-source anchored`}
 						/>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-split">
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Glossary</p>
+					<h2>Decode constitutional language</h2>
+				</div>
+				<a class="section-link" href="/glossary">Browse all</a>
+			</div>
+			<div class="stack">
+				{
+					featuredGlossary.map((term) => (
+						<ContentCard
+							eyebrow="Glossary"
+							title={term.data.title}
+							description={term.data.summary}
+							href={getEntryHref('glossary', term.data.slug)}
+						/>
+					))
+				}
+			</div>
+		</div>
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Timeline</p>
+					<h2>Major turning points</h2>
+				</div>
+				<a class="section-link" href="/timeline">Open timeline</a>
+			</div>
+			<div class="stack">
+				{
+					featuredTimeline.map((item) => (
+						<a class="search-result" href={`/timeline#${item.data.slug}`}>
+							<p class="eyebrow">{formatDate(item.data.date)}</p>
+							<strong>{item.data.title}</strong>
+							<p>{item.data.summary}</p>
+						</a>
 					))
 				}
 			</div>

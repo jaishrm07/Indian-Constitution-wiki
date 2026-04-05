@@ -1,10 +1,13 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
+import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
 import {
 	filterByAnyRelationship,
+	formatDate,
 	getEntryHref,
 	resolveBySlugs,
 	titleCaseStatus,
@@ -22,32 +25,78 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const [articles, topics, currentAffairs, sources] = await Promise.all([
+const [allAmendments, articles, parts, schedules, topics, glossary, timeline, currentAffairs, sources] = await Promise.all([
+	getCollection('amendments'),
 	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
 	getCollection('topics'),
+	getCollection('glossary'),
+	getCollection('timeline'),
 	getCollection('current-affairs'),
 	getCollection('sources'),
 ]);
 
 const relatedArticles = resolveBySlugs(articles, entry.data.affectedArticles);
+const relatedParts = resolveBySlugs(parts, entry.data.affectedParts);
+const relatedSchedules = resolveBySlugs(schedules, entry.data.affectedSchedules);
 const relatedTopics = resolveBySlugs(topics, entry.data.topics);
+const relatedGlossary = filterByAnyRelationship(glossary, 'topics', entry.data.topics);
+const relatedTimeline = timeline.filter(
+	(item) => item.data.relatedCollection === 'amendments' && item.data.relatedSlug === entry.data.slug,
+);
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
 const relatedCurrentAffairs = uniqueBySlug([
 	...filterByAnyRelationship(currentAffairs, 'topics', entry.data.topics),
 	...filterByAnyRelationship(currentAffairs, 'articles', entry.data.affectedArticles),
 ]);
+const compareCandidates = allAmendments
+	.filter((item) => item.data.slug !== entry.data.slug)
+	.map((item) => {
+		const sharedTopics = item.data.topics.filter((topic) => entry.data.topics.includes(topic)).length;
+		const sharedArticles = item.data.affectedArticles.filter((article) => entry.data.affectedArticles.includes(article)).length;
+		const sharedParts = item.data.affectedParts.filter((part) => entry.data.affectedParts.includes(part)).length;
+		const sharedSchedules = item.data.affectedSchedules.filter((schedule) => entry.data.affectedSchedules.includes(schedule)).length;
+		return {
+			item,
+			score: sharedTopics * 3 + sharedArticles * 2 + sharedParts * 2 + sharedSchedules * 2,
+		};
+	})
+	.filter((entry) => entry.score > 0)
+	.sort((left, right) => right.score - left.score || left.item.data.year - right.item.data.year)
+	.slice(0, 3)
+	.map((entry) => entry.item);
 ---
 
-<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
 	<PageIntro
 		eyebrow={`${entry.data.year}`}
 		title={entry.data.title}
 		summary={entry.data.summary}
 		meta={[entry.data.whatChanged]}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Amendments', href: '/amendments' },
+			{ label: entry.data.title },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Amendment',
+			summary: entry.data.summary,
+			subtitle: `${entry.data.year}`,
+		}}
+		filters={{
+			type: 'Amendment',
+			topic: relatedTopics.map((topic) => topic.data.title),
+		}}
+		sort={{
+			chronology: `${entry.data.year}-01-01`,
+		}}
 	/>
 
 	<section class="page-grid">
-		<article class="page-copy prose">
+		<article class="page-copy prose" data-pagefind-body>
 			<section>
 				<h2>What changed</h2>
 				<p>{entry.data.whatChanged}</p>
@@ -56,23 +105,20 @@ const relatedCurrentAffairs = uniqueBySlug([
 		</article>
 
 		<aside class="page-sidebar">
-			<div class="info-panel">
-				<h3>Affected Articles</h3>
-				<div class="link-list">
-					{
-						relatedArticles.map((article) => (
-							<a class="tag-chip" href={getEntryHref('articles', article.data.slug)}>
-								Article {article.data.number}
-							</a>
-						))
-					}
-				</div>
-			</div>
+			<ConstitutionRefs
+				parts={relatedParts.map((part) => ({ title: part.data.code, href: getEntryHref('parts', part.data.slug) }))}
+				schedules={relatedSchedules.map((schedule) => ({ title: `Schedule ${schedule.data.number}`, href: getEntryHref('schedules', schedule.data.slug) }))}
+				articles={relatedArticles.map((article) => ({ title: `Article ${article.data.number}`, href: getEntryHref('articles', article.data.slug) }))}
+			/>
 			<div class="info-panel">
 				<h3>Topics</h3>
 				<div class="link-list">
 					{relatedTopics.map((topic) => <a class="tag-chip" href={getEntryHref('topics', topic.data.slug)}>{topic.data.title}</a>)}
 				</div>
+			</div>
+			<div class="info-panel">
+				<h3>Compare</h3>
+				<a class="button-secondary" href={`/amendments/compare/${entry.data.slug}/${entry.data.slug === 'forty-second-amendment' ? 'forty-fourth-amendment' : 'forty-second-amendment'}`}>Open in compare studio</a>
 			</div>
 			<div class="info-panel">
 				<h3>Sources</h3>
@@ -108,6 +154,75 @@ const relatedCurrentAffairs = uniqueBySlug([
 						/>
 					))
 				}
+			</div>
+		</section>
+	)}
+
+	{compareCandidates.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Compare</p>
+					<h2>Other amendments to read against this one</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{
+					compareCandidates.map((item) => (
+						<ContentCard
+							eyebrow="Compare"
+							title={item.data.title}
+							description={item.data.summary}
+							href={`/amendments/compare/${entry.data.slug}/${item.data.slug}`}
+							meta={item.data.year.toString()}
+						/>
+					))
+				}
+			</div>
+		</section>
+	)}
+
+	{(relatedGlossary.length > 0 || relatedTimeline.length > 0) && (
+		<section class="section-split">
+			{relatedGlossary.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Glossary</p>
+							<h2>Concepts behind the amendment</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedGlossary.map((term) => <ContentCard eyebrow="Glossary" title={term.data.title} description={term.data.summary} href={getEntryHref('glossary', term.data.slug)} />)}
+					</div>
+				</div>
+			)}
+			{relatedTimeline.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Timeline</p>
+							<h2>Historical moment</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+					</div>
+				</div>
+			)}
+		</section>
+	)}
+
+	{relatedSchedules.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Schedules</p>
+					<h2>Constitutional schedules touched by this amendment</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{relatedSchedules.map((schedule) => <ContentCard eyebrow={`Schedule ${schedule.data.number}`} title={schedule.data.title} description={schedule.data.summary} href={getEntryHref('schedules', schedule.data.slug)} />)}
 			</div>
 		</section>
 	)}

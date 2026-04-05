@@ -1,9 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { sortByTitle } from '../../lib/content';
+import { getEntryHref, sortByTitle } from '../../lib/content';
 
-const sources = sortByTitle(await getCollection('sources'));
+const tierOrder = { primary: 0, secondary: 1, supporting: 2 } as const;
+
+const sources = [...sortByTitle(await getCollection('sources'))].sort((left, right) => {
+	const tierDelta = tierOrder[left.data.tier] - tierOrder[right.data.tier];
+	return tierDelta !== 0 ? tierDelta : left.data.title.localeCompare(right.data.title);
+});
 ---
 
 <Layout title="Sources | Constitution Atlas" description="Source registry for the constitutional content on this site.">
@@ -20,12 +25,32 @@ const sources = sortByTitle(await getCollection('sources'));
 			{
 				sources.map((source) => (
 					<div class="search-result">
-						<p class="eyebrow">{source.data.sourceType}</p>
-						<strong>{source.data.title}</strong>
+						<p class="eyebrow">{source.data.tier} · {source.data.sourceType}</p>
+						<strong><a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a></strong>
 						<p>{source.data.description}</p>
-						<a class="section-link" href={source.data.url} target="_blank" rel="noreferrer">
-							{source.data.publisher}
-						</a>
+						{source.data.recommendedFor.length > 0 && (
+							<p>
+								<strong>Use for:</strong> {source.data.recommendedFor.join(', ')}.
+							</p>
+						)}
+						{source.data.formats.length > 0 && (
+							<p>
+								<strong>Formats:</strong> {source.data.formats.join(', ')}.
+							</p>
+						)}
+						{source.data.accessNotes && (
+							<p>
+								<strong>Access notes:</strong> {source.data.accessNotes}
+							</p>
+						)}
+						<p>
+							<a class="section-link" href={getEntryHref('sources', source.data.slug)}>Open source profile</a>
+						</p>
+						<p>
+							<a class="section-link" href={source.data.url} target="_blank" rel="noreferrer">
+								{source.data.publisher}
+							</a>
+						</p>
 					</div>
 				))
 			}

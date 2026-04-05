@@ -1,9 +1,22 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
+import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
-import { formatDate, getEntryHref, resolveBySlugs, titleCaseStatus } from '../../lib/content';
+import {
+	filterByAnyRelationship,
+	formatDate,
+	getEntryHref,
+	humanizeToken,
+	ordinal,
+	resolveBySlugs,
+	sortArticles,
+	sortByDateAsc,
+	titleCaseStatus,
+	uniqueBySlug,
+} from '../../lib/content';
 
 export async function getStaticPaths() {
 	const currentAffairs = await getCollection('current-affairs');
@@ -16,33 +29,134 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const [articles, cases, topics, sources] = await Promise.all([
+const [articles, parts, schedules, cases, topics, institutions, amendments, glossary, timeline, sources] = await Promise.all([
 	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
 	getCollection('cases'),
 	getCollection('topics'),
+	getCollection('institutions'),
+	getCollection('amendments'),
+	getCollection('glossary'),
+	getCollection('timeline'),
 	getCollection('sources'),
 ]);
 
 const relatedArticles = resolveBySlugs(articles, entry.data.articles);
+const relatedParts = resolveBySlugs(parts, entry.data.parts);
+const relatedSchedules = resolveBySlugs(schedules, entry.data.schedules);
 const relatedCases = resolveBySlugs(cases, entry.data.cases);
 const relatedTopics = resolveBySlugs(topics, entry.data.topics);
+const relatedInstitutions = resolveBySlugs(institutions, entry.data.institutions);
+const relatedAmendments = uniqueBySlug([
+	...filterByAnyRelationship(amendments, 'affectedArticles', entry.data.articles),
+	...filterByAnyRelationship(amendments, 'affectedParts', entry.data.parts),
+	...filterByAnyRelationship(amendments, 'affectedSchedules', entry.data.schedules),
+	...filterByAnyRelationship(amendments, 'topics', entry.data.topics),
+]);
+const relatedGlossary = uniqueBySlug([
+	...filterByAnyRelationship(glossary, 'relatedArticles', entry.data.articles),
+	...filterByAnyRelationship(glossary, 'topics', entry.data.topics),
+	...filterByAnyRelationship(glossary, 'cases', entry.data.cases),
+]);
+const directTimeline = timeline.filter(
+	(item) => item.data.relatedCollection === 'current-affairs' && item.data.relatedSlug === entry.data.slug,
+);
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
+const orderedRelatedArticles = sortArticles(relatedArticles);
+const orderedRelatedParts = [...relatedParts].sort((left, right) => left.data.order - right.data.order);
+const orderedRelatedSchedules = [...relatedSchedules].sort((left, right) => left.data.number - right.data.number);
+const relatedTimeline = sortByDateAsc(
+	uniqueBySlug([
+		...directTimeline,
+		...timeline.filter((item) => item.data.articleRefs.some((slug) => entry.data.articles.includes(slug))),
+		...timeline.filter((item) => item.data.partRefs.some((slug) => entry.data.parts.includes(slug))),
+		...timeline.filter((item) => item.data.scheduleRefs.some((slug) => entry.data.schedules.includes(slug))),
+		...timeline.filter(
+			(item) =>
+				(item.data.relatedCollection === 'cases' &&
+					typeof item.data.relatedSlug === 'string' &&
+					entry.data.cases.includes(item.data.relatedSlug)) ||
+				(item.data.relatedCollection === 'amendments' &&
+					typeof item.data.relatedSlug === 'string' &&
+					relatedAmendments.some((amendment) => amendment.data.slug === item.data.relatedSlug)) ||
+				(item.data.relatedCollection === 'topics' &&
+					typeof item.data.relatedSlug === 'string' &&
+					entry.data.topics.includes(item.data.relatedSlug)),
+		),
+	]),
+	'date',
+);
+const deskMilestones = [
+	{
+		date: entry.data.eventDate,
+		title: 'Event date',
+		note: 'This is the date currently used to place the issue on the constitutional current-affairs desk.',
+	},
+	{
+		date: entry.data.publishedAt,
+		title: 'Atlas coverage opened',
+		note: 'This issue first entered the site as a tracked constitutional explainer on this date.',
+	},
+	{
+		date: entry.data.updatedAt,
+		title: 'Last reviewed',
+		note: entry.data.statusNote,
+	},
+];
+const sourceGroups = [
+	{
+		title: 'Constitution text and official records',
+		items: relatedSources.filter((source) => source.data.sourceType === 'official'),
+	},
+	{
+		title: 'Court records and judgments',
+		items: relatedSources.filter((source) => source.data.sourceType === 'court'),
+	},
+	{
+		title: 'Context and structured monitoring',
+		items: relatedSources.filter((source) => source.data.sourceType !== 'official' && source.data.sourceType !== 'court'),
+	},
+].filter((group) => group.items.length > 0);
 ---
 
-<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
 	<PageIntro
 		eyebrow="Current Affairs"
 		title={entry.data.title}
 		summary={entry.data.summary}
 		meta={[
 			`Status: ${titleCaseStatus(entry.data.status)}`,
+			`Issue Type: ${entry.data.issueTypes.map(humanizeToken).join(', ')}`,
 			`Event: ${formatDate(entry.data.eventDate)}`,
 			`Updated: ${formatDate(entry.data.updatedAt)}`,
 		]}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Current Affairs', href: '/current-affairs' },
+			{ label: entry.data.title },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Current Affair',
+			summary: entry.data.summary,
+			subtitle: `${titleCaseStatus(entry.data.status)} • Updated ${formatDate(entry.data.updatedAt)}`,
+		}}
+		filters={{
+			type: 'Current Affair',
+			status: titleCaseStatus(entry.data.status),
+			topic: relatedTopics.map((topic) => topic.data.title),
+			institution: relatedInstitutions.map((institution) => institution.data.title),
+			category: entry.data.issueTypes.map(humanizeToken),
+		}}
+		sort={{
+			chronology: entry.data.updatedAt,
+		}}
 	/>
 
 	<section class="page-grid">
-		<article class="page-copy prose">
+		<article class="page-copy prose" data-pagefind-body>
 			<section>
 				<h2>Constitutional question</h2>
 				<p>{entry.data.constitutionalQuestion}</p>
@@ -51,6 +165,59 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 				<h2>Why it matters</h2>
 				<p>{entry.data.whyItMatters}</p>
 			</section>
+			<section>
+				<h2>Current status</h2>
+				<p>{entry.data.statusNote}</p>
+			</section>
+			{(orderedRelatedArticles.length > 0 || orderedRelatedParts.length > 0 || orderedRelatedSchedules.length > 0) && (
+				<section>
+					<h2>Constitutional anchors in the text</h2>
+					<p>
+						These are the Parts, Schedules, and Articles that keep this issue grounded in the constitutional document itself.
+					</p>
+					<div class="card-grid card-grid--compact">
+						{orderedRelatedParts.map((item) => <ContentCard eyebrow={item.data.code} title={item.data.title} description={item.data.summary} href={getEntryHref('parts', item.data.slug)} />)}
+						{orderedRelatedSchedules.map((item) => <ContentCard eyebrow={`Schedule ${item.data.number}`} title={item.data.title} description={item.data.summary} href={getEntryHref('schedules', item.data.slug)} />)}
+						{orderedRelatedArticles.map((item) => <ContentCard eyebrow={`Article ${item.data.number}`} title={item.data.title} description={item.data.summary} href={getEntryHref('articles', item.data.slug)} />)}
+					</div>
+				</section>
+			)}
+			<section>
+				<h2>Desk chronology</h2>
+				<div class="stack">
+					{deskMilestones.map((item) => (
+						<article class="search-result">
+							<p class="eyebrow">{formatDate(item.date)}</p>
+							<strong>{item.title}</strong>
+							<p>{item.note}</p>
+						</article>
+					))}
+				</div>
+				{relatedTimeline.length > 0 && (
+					<>
+						<h3>Longer constitutional arc</h3>
+						<div class="stack">
+							{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+						</div>
+					</>
+				)}
+			</section>
+			{entry.data.trackingLanes.length > 0 && (
+				<section>
+					<h2>Tracking lanes</h2>
+					<ul>
+						{entry.data.trackingLanes.map((lane) => <li>{lane}</li>)}
+					</ul>
+				</section>
+			)}
+			{entry.data.watchFor.length > 0 && (
+				<section>
+					<h2>What to watch next</h2>
+					<ul>
+						{entry.data.watchFor.map((item) => <li>{item}</li>)}
+					</ul>
+				</section>
+			)}
 			<Content />
 		</article>
 
@@ -60,48 +227,110 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 				<span class="status-pill" data-status={entry.data.status}>{titleCaseStatus(entry.data.status)}</span>
 			</div>
 			<div class="info-panel">
-				<h3>Relevant Articles</h3>
+				<h3>Issue Type</h3>
 				<div class="link-list">
-					{
-						relatedArticles.map((article) => (
-							<a class="tag-chip" href={getEntryHref('articles', article.data.slug)}>
-								Article {article.data.number}
-							</a>
-						))
-					}
+					{entry.data.issueTypes.map((type) => <span class="tag-chip">{humanizeToken(type)}</span>)}
 				</div>
 			</div>
+			{entry.data.actors.length > 0 && (
+				<div class="info-panel">
+					<h3>Institutional actors</h3>
+					<ul class="detail-list">
+						{entry.data.actors.map((actor) => <li>{actor}</li>)}
+					</ul>
+				</div>
+			)}
+			{relatedInstitutions.length > 0 && (
+				<div class="info-panel">
+					<h3>Institution Pages</h3>
+					<div class="link-list">
+						{relatedInstitutions.map((item) => <a class="tag-chip" href={getEntryHref('institutions', item.data.slug)}>{item.data.title}</a>)}
+					</div>
+				</div>
+			)}
+			<ConstitutionRefs
+				parts={relatedParts.map((part) => ({ title: part.data.code, href: getEntryHref('parts', part.data.slug) }))}
+				schedules={relatedSchedules.map((schedule) => ({ title: `Schedule ${schedule.data.number}`, href: getEntryHref('schedules', schedule.data.slug) }))}
+				articles={relatedArticles.map((article) => ({ title: `Article ${article.data.number}`, href: getEntryHref('articles', article.data.slug) }))}
+			/>
 			<div class="info-panel">
 				<h3>Relevant Topics</h3>
 				<div class="link-list">
 					{relatedTopics.map((topic) => <a class="tag-chip" href={getEntryHref('topics', topic.data.slug)}>{topic.data.title}</a>)}
 				</div>
 			</div>
-			<div class="info-panel">
-				<h3>Sources</h3>
-				<ul class="link-list">
-					{
-						relatedSources.map((source) => (
-							<li>
-								<a href={source.data.url} target="_blank" rel="noreferrer">{source.data.title}</a>
-							</li>
-						))
-					}
-				</ul>
-			</div>
+			{
+				sourceGroups.map((group) => (
+					<div class="info-panel">
+						<h3>{group.title}</h3>
+						<ul class="source-list">
+							{
+								group.items.map((source) => (
+									<li>
+										<a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a>
+										<a class="source-list__external" href={source.data.url} target="_blank" rel="noreferrer">Open external source</a>
+										<small>{humanizeToken(source.data.tier)} · {humanizeToken(source.data.sourceType)}</small>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				))
+			}
 		</aside>
 	</section>
 
-	{relatedCases.length > 0 && (
+	{(relatedCases.length > 0 || relatedAmendments.length > 0) && (
 		<section class="section-block">
 			<div class="section-heading">
 				<div>
-					<p class="eyebrow">Case Law</p>
-					<h2>Judgments that structure this debate</h2>
+					<p class="eyebrow">Constitutional Context</p>
+					<h2>Cases and amendments shaping the issue</h2>
 				</div>
 			</div>
-			<div class="card-grid">
-				{relatedCases.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
+			<div class="section-split">
+				{relatedCases.length > 0 && (
+					<div class="section-panel">
+						<div class="section-heading compact">
+							<div>
+								<p class="eyebrow">Case Law</p>
+								<h2>Judgments that structure this debate</h2>
+							</div>
+						</div>
+						<div class="stack">
+							{relatedCases.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
+						</div>
+					</div>
+				)}
+				{relatedAmendments.length > 0 && (
+					<div class="section-panel">
+						<div class="section-heading compact">
+							<div>
+								<p class="eyebrow">Amendments</p>
+								<h2>Textual changes in the background</h2>
+							</div>
+						</div>
+						<div class="stack">
+							{relatedAmendments.map((item) => <ContentCard eyebrow={`${ordinal(item.data.number)} Amendment`} title={item.data.title} description={item.data.summary} href={getEntryHref('amendments', item.data.slug)} meta={item.data.year.toString()} />)}
+						</div>
+					</div>
+				)}
+			</div>
+		</section>
+	)}
+
+	{relatedGlossary.length > 0 && (
+		<section class="section-split">
+			<div class="section-panel">
+				<div class="section-heading compact">
+					<div>
+						<p class="eyebrow">Glossary</p>
+						<h2>Terms that clarify the debate</h2>
+					</div>
+				</div>
+				<div class="stack">
+					{relatedGlossary.map((term) => <ContentCard eyebrow="Glossary" title={term.data.title} description={term.data.summary} href={getEntryHref('glossary', term.data.slug)} />)}
+				</div>
 			</div>
 		</section>
 	)}

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortByTitle } from '../../lib/content';
+
+const glossary = sortByTitle(await getCollection('glossary'));
+---
+
+<Layout title="Glossary | Constitution Atlas" description="Plain-English glossary of constitutional terms and doctrines.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Glossary</p>
+				<h1>Plain-English constitutional terms</h1>
+			</div>
+			<p class="muted">Use the glossary to decode recurring doctrinal language quickly.</p>
+		</div>
+		<div class="card-grid">
+			{
+				glossary.map((term) => (
+					<ContentCard
+						eyebrow="Glossary"
+						title={term.data.title}
+						description={term.data.summary}
+						href={getEntryHref('glossary', term.data.slug)}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

@@ -3,6 +3,8 @@ title: Fundamental Rights
 slug: fundamental-rights
 summary: The constitutional rights framework that protects equality, liberty, speech, movement, and remedies against state action.
 intro: Fundamental Rights pages should translate doctrinal language into practical constitutional questions.
+parts:
+  - part-iii
 sources:
   - constitution-of-india
   - supreme-court-of-india

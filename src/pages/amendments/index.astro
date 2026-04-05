@@ -16,6 +16,32 @@ const amendments = [...(await getCollection('amendments'))].sort((left, right) =
 			</div>
 			<p class="muted">Each amendment page maps changes back to affected Articles and doctrines.</p>
 		</div>
+		<div class="search-result">
+			<p class="eyebrow">Compare</p>
+			<strong>Use the amendment compare studio</strong>
+			<p>
+				Open side-by-side comparisons that stay anchored to Articles, Parts, Schedules, and official constitutional
+				citations instead of treating amendments as isolated summaries.
+			</p>
+			<p><a class="button-secondary" href="/amendments/compare">Open compare studio</a></p>
+		</div>
+		<div class="feature-grid compare-grid">
+			<a class="feature-tile" href="/amendments/compare/forty-second-amendment/forty-fourth-amendment">
+				<span>Compare</span>
+				<strong>Emergency power and correction</strong>
+				<p>Compare the Forty-Second and Forty-Fourth Amendments as a sequence of concentration and constitutional repair.</p>
+			</a>
+			<a class="feature-tile" href="/amendments/compare/seventy-third-amendment/seventy-fourth-amendment">
+				<span>Compare</span>
+				<strong>Rural vs urban local self-government</strong>
+				<p>Compare the Seventy-Third and Seventy-Fourth Amendments as parallel decentralisation projects.</p>
+			</a>
+			<a class="feature-tile" href="/amendments/compare/first-amendment/forty-fourth-amendment">
+				<span>Compare</span>
+				<strong>Two moments of rights recalibration</strong>
+				<p>Compare the First and Forty-Fourth Amendments to see very different responses to rights stress and constitutional adjustment.</p>
+			</a>
+		</div>
 		<div class="card-grid">
 			{
 				amendments.map((item) => (

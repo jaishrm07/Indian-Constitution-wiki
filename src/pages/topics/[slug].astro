@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
+import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
 import { filterByRelationship, formatDate, getEntryHref, resolveBySlugs, sortByDateDesc, titleCaseStatus } from '../../lib/content';
 
@@ -16,35 +18,66 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const [articles, cases, amendments, currentAffairs, sources] = await Promise.all([
+const [articles, parts, schedules, cases, glossary, timeline, amendments, currentAffairs, sources] = await Promise.all([
 	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
 	getCollection('cases'),
+	getCollection('glossary'),
+	getCollection('timeline'),
 	getCollection('amendments'),
 	getCollection('current-affairs'),
 	getCollection('sources'),
 ]);
 
 const relatedArticles = filterByRelationship(articles, 'topics', entry.data.slug);
+const relatedParts = resolveBySlugs(parts, entry.data.parts);
+const relatedSchedules = resolveBySlugs(schedules, entry.data.schedules);
 const relatedCases = filterByRelationship(cases, 'topics', entry.data.slug);
+const relatedGlossary = filterByRelationship(glossary, 'topics', entry.data.slug);
+const relatedTimeline = timeline.filter(
+	(item) => item.data.relatedCollection === 'topics' && item.data.relatedSlug === entry.data.slug,
+);
 const relatedAmendments = filterByRelationship(amendments, 'topics', entry.data.slug);
 const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs, 'topics', entry.data.slug), 'updatedAt');
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
 ---
 
-<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
 	<PageIntro
 		eyebrow="Topic"
 		title={entry.data.title}
 		summary={entry.data.summary}
 		meta={[entry.data.intro]}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Topics', href: '/topics' },
+			{ label: entry.data.title },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Topic',
+			summary: entry.data.summary,
+			subtitle: entry.data.intro,
+		}}
+		filters={{
+			type: 'Topic',
+			topic: entry.data.title,
+		}}
 	/>
 
 	<section class="page-grid">
-		<article class="page-copy prose">
+		<article class="page-copy prose" data-pagefind-body>
 			<Content />
 		</article>
 
 		<aside class="page-sidebar">
+			<ConstitutionRefs
+				parts={relatedParts.map((part) => ({ title: part.data.code, href: getEntryHref('parts', part.data.slug) }))}
+				schedules={relatedSchedules.map((schedule) => ({ title: `Schedule ${schedule.data.number}`, href: getEntryHref('schedules', schedule.data.slug) }))}
+				articles={relatedArticles.slice(0, 8).map((article) => ({ title: `Article ${article.data.number}`, href: getEntryHref('articles', article.data.slug) }))}
+			/>
 			<div class="info-panel">
 				<h3>Topic at a glance</h3>
 				<p class="muted">{entry.data.intro}</p>
@@ -123,6 +156,38 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 			<div class="card-grid">
 				{relatedAmendments.map((item) => <ContentCard eyebrow={item.data.year.toString()} title={item.data.title} description={item.data.summary} href={getEntryHref('amendments', item.data.slug)} />)}
 			</div>
+		</section>
+	)}
+
+	{(relatedGlossary.length > 0 || relatedTimeline.length > 0) && (
+		<section class="section-split">
+			{relatedGlossary.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Glossary</p>
+							<h2>Terms to know</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedGlossary.map((term) => <ContentCard eyebrow="Glossary" title={term.data.title} description={term.data.summary} href={getEntryHref('glossary', term.data.slug)} />)}
+					</div>
+				</div>
+			)}
+
+			{relatedTimeline.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Timeline</p>
+							<h2>Related turning points</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+					</div>
+				</div>
+			)}
 		</section>
 	)}
 </Layout>

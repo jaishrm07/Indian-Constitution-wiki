@@ -2,32 +2,341 @@
 import { getCollection } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
 import Layout from '../../layouts/Layout.astro';
-import { formatDate, getEntryHref, sortByDateDesc, titleCaseStatus } from '../../lib/content';
+import {
+	compareArticleNumbers,
+	formatDate,
+	getEntryHref,
+	humanizeToken,
+	resolveBySlugs,
+	sortByDateDesc,
+	titleCaseStatus,
+} from '../../lib/content';
 
-const currentAffairs = sortByDateDesc(await getCollection('current-affairs'), 'updatedAt');
+const [currentAffairs, articles, parts, schedules, institutions, sources] = await Promise.all([
+	getCollection('current-affairs'),
+	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
+	getCollection('institutions'),
+	getCollection('sources'),
+]);
+
+const orderedIssues = sortByDateDesc(currentAffairs, 'updatedAt');
+const ongoingIssues = orderedIssues.filter((item) => item.data.status === 'ongoing');
+const resolvedIssues = orderedIssues.filter((item) => item.data.status === 'resolved');
+const archivedIssues = orderedIssues.filter((item) => item.data.status === 'archived');
+
+const statusCounts = orderedIssues.reduce(
+	(counts, item) => {
+		counts[item.data.status] += 1;
+		return counts;
+	},
+	{ ongoing: 0, resolved: 0, archived: 0 },
+);
+
+const issueTypeCounts = orderedIssues.reduce((counts, item) => {
+	for (const type of item.data.issueTypes) {
+		counts[type] = (counts[type] ?? 0) + 1;
+	}
+	return counts;
+}, {} as Record<string, number>);
+
+const topIssueTypes = Object.entries(issueTypeCounts)
+	.sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+	.slice(0, 4);
+
+function countSlugs(matrix: string[][]) {
+	return matrix.reduce((counts, row) => {
+		for (const slug of row) {
+			counts[slug] = (counts[slug] ?? 0) + 1;
+		}
+		return counts;
+	}, {} as Record<string, number>);
+}
+
+function rankEntries<T extends { data: { slug: string; title: string } }>(
+	entries: T[],
+	counts: Record<string, number>,
+	comparator: (left: { entry: T; count: number }, right: { entry: T; count: number }) => number,
+) {
+	return Object.entries(counts)
+		.map(([slug, count]) => {
+			const entry = entries.find((item) => item.data.slug === slug);
+			return entry ? { entry, count } : null;
+		})
+		.filter(Boolean)
+		.sort(comparator) as { entry: T; count: number }[];
+}
+
+const institutionHotspots = rankEntries(
+	institutions,
+	countSlugs(orderedIssues.map((item) => item.data.institutions)),
+	(left, right) => right.count - left.count || left.entry.data.title.localeCompare(right.entry.data.title),
+).slice(0, 6);
+
+const articleAnchors = rankEntries(
+	articles,
+	countSlugs(orderedIssues.map((item) => item.data.articles)),
+	(left, right) =>
+		right.count - left.count || compareArticleNumbers(left.entry.data.number, right.entry.data.number),
+).slice(0, 4);
+
+const partAnchors = rankEntries(
+	parts,
+	countSlugs(orderedIssues.map((item) => item.data.parts)),
+	(left, right) => right.count - left.count || left.entry.data.order - right.entry.data.order,
+).slice(0, 3);
+
+const scheduleAnchors = rankEntries(
+	schedules,
+	countSlugs(orderedIssues.map((item) => item.data.schedules)),
+	(left, right) => right.count - left.count || left.entry.data.number - right.entry.data.number,
+).slice(0, 3);
+
+const trackedSources = rankEntries(
+	sources,
+	countSlugs(orderedIssues.map((item) => item.data.sources)),
+	(left, right) => right.count - left.count || left.entry.data.title.localeCompare(right.entry.data.title),
+);
+
+const officialSources = trackedSources
+	.filter(({ entry }) => entry.data.sourceType === 'official' || entry.data.sourceType === 'court')
+	.slice(0, 6);
+const contextSources = trackedSources
+	.filter(({ entry }) => entry.data.sourceType !== 'official' && entry.data.sourceType !== 'court')
+	.slice(0, 4);
+
+const primarySourceCoverage = orderedIssues.filter((item) =>
+	resolveBySlugs(sources, item.data.sources).some(
+		(source) => source.data.tier === 'primary' || source.data.sourceType === 'official' || source.data.sourceType === 'court',
+	),
+).length;
+
+const latestIssue = ongoingIssues[0] ?? orderedIssues[0];
+const hottestInstitution = institutionHotspots[0];
+const hottestArticle = articleAnchors[0];
 ---
 
-<Layout title="Current Affairs | Constitution Atlas" description="Track constitutionally relevant current affairs and issue explainers.">
+<Layout title="Current Affairs | Constitution Atlas" description="Track constitutionally relevant current affairs through official-source anchored explainers, institutions, and constitutional text.">
 	<section class="list-shell">
 		<div class="list-header">
 			<div>
-				<p class="eyebrow">Current Affairs</p>
+				<p class="eyebrow">Current Affairs Desk</p>
 				<h1>Live constitutional explainers</h1>
 			</div>
-			<p class="muted">Only issues with a constitutional dimension belong here.</p>
+			<p class="muted">This desk tracks only issues that can be stated as a constitutional question and anchored back to the text.</p>
 		</div>
-		<div class="card-grid">
-			{
-				currentAffairs.map((item) => (
-					<ContentCard
-						eyebrow={titleCaseStatus(item.data.status)}
-						title={item.data.title}
-						description={item.data.summary}
-						href={getEntryHref('current-affairs', item.data.slug)}
-						meta={`Updated ${formatDate(item.data.updatedAt)}`}
-					/>
-				))
-			}
+
+		<div class="feature-grid">
+			<div class="feature-tile">
+				<span>Coverage</span>
+				<strong>{orderedIssues.length} tracked issues</strong>
+				<p>The live layer stays intentionally narrow so every page can be updated, sourced, and linked back to the Constitution.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Primary Sources</span>
+				<strong>{primarySourceCoverage}/{orderedIssues.length} issue pages</strong>
+				<p>Each live explainer should open with constitutional text and official institutional records before secondary context.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Status Board</span>
+				<strong>{statusCounts.ongoing} ongoing</strong>
+				<p>{statusCounts.resolved} resolved and {statusCounts.archived} archived entries remain available as constitutional reference pages.</p>
+			</div>
+			{latestIssue && (
+				<div class="feature-tile">
+					<span>Latest Review</span>
+					<strong>{latestIssue.data.title}</strong>
+					<p>Updated {formatDate(latestIssue.data.updatedAt)} and currently marked {titleCaseStatus(latestIssue.data.status).toLowerCase()}.</p>
+				</div>
+			)}
+			{hottestInstitution && (
+				<div class="feature-tile">
+					<span>Institution Hotspot</span>
+					<strong>{hottestInstitution.entry.data.title}</strong>
+					<p>Appears across {hottestInstitution.count} tracked issue{hottestInstitution.count === 1 ? '' : 's'} in the current-affairs desk.</p>
+				</div>
+			)}
+			{hottestArticle && (
+				<div class="feature-tile">
+					<span>Anchor Provision</span>
+					<strong>Article {hottestArticle.entry.data.number}</strong>
+					<p>One of the most frequently invoked textual anchors across the live constitutional desk.</p>
+				</div>
+			)}
+			{topIssueTypes.map(([type, count]) => (
+				<div class="feature-tile">
+					<span>Issue Type</span>
+					<strong>{humanizeToken(type)}</strong>
+					<p>{count} tracked issue{count === 1 ? '' : 's'} currently sit in this constitutional category.</p>
+				</div>
+			))}
 		</div>
 	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Institutions</p>
+				<h2>Where the pressure is building</h2>
+			</div>
+			<p class="section-note">These are the constitutional actors appearing most often across the current issue set.</p>
+		</div>
+		<div class="card-grid">
+			{institutionHotspots.map(({ entry, count }) => (
+				<ContentCard
+					eyebrow={`${count} tracked issue${count === 1 ? '' : 's'}`}
+					title={entry.data.title}
+					description={entry.data.summary}
+					href={getEntryHref('institutions', entry.data.slug)}
+					meta={entry.data.role}
+				/>
+			))}
+		</div>
+	</section>
+
+	<section class="section-split">
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Constitutional Anchors</p>
+					<h2>Text provisions most often in play</h2>
+				</div>
+			</div>
+			<div class="stack">
+				{articleAnchors.map(({ entry, count }) => (
+					<ContentCard
+						eyebrow={`Article ${entry.data.number}`}
+						title={entry.data.title}
+						description={entry.data.summary}
+						href={getEntryHref('articles', entry.data.slug)}
+						meta={`${count} live issue${count === 1 ? '' : 's'}`}
+					/>
+				))}
+				{partAnchors.map(({ entry, count }) => (
+					<ContentCard
+						eyebrow={entry.data.code}
+						title={entry.data.title}
+						description={entry.data.summary}
+						href={getEntryHref('parts', entry.data.slug)}
+						meta={`${count} live issue${count === 1 ? '' : 's'}`}
+					/>
+				))}
+				{scheduleAnchors.map(({ entry, count }) => (
+					<ContentCard
+						eyebrow={`Schedule ${entry.data.number}`}
+						title={entry.data.title}
+						description={entry.data.summary}
+						href={getEntryHref('schedules', entry.data.slug)}
+						meta={`${count} live issue${count === 1 ? '' : 's'}`}
+					/>
+				))}
+			</div>
+		</div>
+
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Source Ladder</p>
+					<h2>What to monitor first</h2>
+				</div>
+			</div>
+			<div class="stack">
+				<div class="info-panel">
+					<h3>Official and court records</h3>
+					<ul class="source-list">
+						{officialSources.map(({ entry, count }) => (
+							<li>
+								<a href={getEntryHref('sources', entry.data.slug)}>{entry.data.title}</a>
+								<a class="source-list__external" href={entry.data.url} target="_blank" rel="noreferrer">Open source</a>
+								<small>{count} tracked issue{count === 1 ? '' : 's'} · {humanizeToken(entry.data.sourceType)} · {humanizeToken(entry.data.tier)}</small>
+							</li>
+						))}
+					</ul>
+				</div>
+				{contextSources.length > 0 && (
+					<div class="info-panel">
+						<h3>Context and structured monitoring</h3>
+						<ul class="source-list">
+							{contextSources.map(({ entry, count }) => (
+								<li>
+									<a href={getEntryHref('sources', entry.data.slug)}>{entry.data.title}</a>
+									<a class="source-list__external" href={entry.data.url} target="_blank" rel="noreferrer">Open source</a>
+									<small>{count} tracked issue{count === 1 ? '' : 's'} · {humanizeToken(entry.data.sourceType)} · {humanizeToken(entry.data.tier)}</small>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Watchlist</p>
+				<h2>Ongoing constitutional issues</h2>
+			</div>
+			<p class="section-note">The desk sorts by last review date, not by publicity value.</p>
+		</div>
+		<div class="card-grid">
+			{ongoingIssues.map((item) => (
+				<ContentCard
+					eyebrow={titleCaseStatus(item.data.status)}
+					title={item.data.title}
+					description={item.data.summary}
+					href={getEntryHref('current-affairs', item.data.slug)}
+					meta={`Updated ${formatDate(item.data.updatedAt)} · ${item.data.issueTypes.map(humanizeToken).join(', ')}`}
+				/>
+			))}
+		</div>
+	</section>
+
+	{(resolvedIssues.length > 0 || archivedIssues.length > 0) && (
+		<section class="section-split">
+			{resolvedIssues.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Resolved</p>
+							<h2>Issues that reached a constitutional endpoint</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{resolvedIssues.map((item) => (
+							<ContentCard
+								eyebrow="Resolved"
+								title={item.data.title}
+								description={item.data.summary}
+								href={getEntryHref('current-affairs', item.data.slug)}
+								meta={`Updated ${formatDate(item.data.updatedAt)}`}
+							/>
+						))}
+					</div>
+				</div>
+			)}
+			{archivedIssues.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Archived</p>
+							<h2>Background issues worth keeping for reference</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{archivedIssues.map((item) => (
+							<ContentCard
+								eyebrow="Archived"
+								title={item.data.title}
+								description={item.data.summary}
+								href={getEntryHref('current-affairs', item.data.slug)}
+								meta={`Updated ${formatDate(item.data.updatedAt)}`}
+							/>
+						))}
+					</div>
+				</div>
+			)}
+		</section>
+	)}
 </Layout>

@@ -1,55 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { getEntryHref, sortArticles } from '../../lib/content';
-
-const [articles, topics, cases, amendments, currentAffairs] = await Promise.all([
-	getCollection('articles'),
-	getCollection('topics'),
-	getCollection('cases'),
-	getCollection('amendments'),
-	getCollection('current-affairs'),
-]);
-
-const searchItems = [
-	...sortArticles(articles).map((item) => ({
-		type: 'Article',
-		title: item.data.title,
-		summary: item.data.summary,
-		href: getEntryHref('articles', item.data.slug),
-		searchText: `${item.data.title} ${item.data.summary} ${item.data.plainEnglish} ${item.data.part}`,
-	})),
-	...topics.map((item) => ({
-		type: 'Topic',
-		title: item.data.title,
-		summary: item.data.summary,
-		href: getEntryHref('topics', item.data.slug),
-		searchText: `${item.data.title} ${item.data.summary} ${item.data.intro}`,
-	})),
-	...cases.map((item) => ({
-		type: 'Case',
-		title: item.data.title,
-		summary: item.data.summary,
-		href: getEntryHref('cases', item.data.slug),
-		searchText: `${item.data.title} ${item.data.summary} ${item.data.issue} ${item.data.holding}`,
-	})),
-	...amendments.map((item) => ({
-		type: 'Amendment',
-		title: item.data.title,
-		summary: item.data.summary,
-		href: getEntryHref('amendments', item.data.slug),
-		searchText: `${item.data.title} ${item.data.summary} ${item.data.whatChanged}`,
-	})),
-	...currentAffairs.map((item) => ({
-		type: 'Current Affairs',
-		title: item.data.title,
-		summary: item.data.summary,
-		href: getEntryHref('current-affairs', item.data.slug),
-		searchText: `${item.data.title} ${item.data.summary} ${item.data.constitutionalQuestion} ${item.data.whyItMatters}`,
-	})),
-];
-
 const initialQuery = Astro.url.searchParams.get('q') ?? '';
+const initialFilters: Record<string, string[]> = {};
+
+for (const [key, value] of Astro.url.searchParams.entries()) {
+	if (!key.startsWith('f-')) {
+		continue;
+	}
+
+	const filterKey = key.slice(2);
+	initialFilters[filterKey] ??= [];
+	initialFilters[filterKey].push(value);
+}
 ---
 
 <Layout title="Search | Constitution Atlas" description="Search Articles, cases, topics, amendments, and current affairs.">
@@ -57,60 +19,380 @@ const initialQuery = Astro.url.searchParams.get('q') ?? '';
 		<div class="list-header">
 			<div>
 				<p class="eyebrow">Search</p>
-				<h1>Find a constitutional provision, case, or issue</h1>
+				<h1>Find a constitutional provision, case, institution, or live issue</h1>
 			</div>
 		</div>
-		<input id="search-input" type="search" placeholder="Search Article 19, Bommai, emergency..." value={initialQuery} />
-		<div id="search-results" class="search-results"></div>
+		<div class="search-layout">
+			<aside class="search-sidebar">
+				<div class="search-panel">
+					<label class="search-panel__field" for="search-input">
+						<span class="sr-only">Search the constitutional index</span>
+						<input id="search-input" type="search" placeholder="Search Article 19, Bommai, emergency..." value={initialQuery} />
+					</label>
+					<p class="muted">Powered by a static index built from typed constitutional content and linked source metadata.</p>
+					<button id="search-reset" class="button-secondary" type="button">Clear Search</button>
+				</div>
+				<div id="search-filter-groups" class="search-filter-groups"></div>
+			</aside>
+
+			<div class="search-main">
+				<div id="search-active-filters" class="active-filter-row"></div>
+				<p id="search-summary" class="muted"></p>
+				<div id="search-state" class="search-empty">
+					<strong>Loading search index…</strong>
+					<p>The search index is generated at build time, so it stays fast and free to host.</p>
+				</div>
+				<div id="search-results" class="search-results"></div>
+			</div>
+		</div>
 	</section>
 
-	<script type="application/json" id="search-data" set:html={JSON.stringify(searchItems)} />
-	<script define:vars={{ initialQuery }}>
-		const items = JSON.parse(document.getElementById('search-data')?.textContent ?? '[]');
+	<script define:vars={{ initialQuery, initialFilters }}>
 		const input = document.getElementById('search-input');
 		const results = document.getElementById('search-results');
+		const state = document.getElementById('search-state');
+		const filterGroups = document.getElementById('search-filter-groups');
+		const activeFilterRow = document.getElementById('search-active-filters');
+		const summary = document.getElementById('search-summary');
+		const resetButton = document.getElementById('search-reset');
+		const FILTER_GROUPS = [
+			{ key: 'type', label: 'Type' },
+			{ key: 'status', label: 'Status' },
+			{ key: 'topic', label: 'Topic' },
+			{ key: 'institution', label: 'Institution' },
+			{ key: 'category', label: 'Category' },
+		];
+		const clone = (value) => JSON.parse(JSON.stringify(value ?? {}));
+		const pageState = {
+			query: initialQuery,
+			filters: clone(initialFilters),
+		};
+		let pagefind = null;
+		let baseFilters = {};
+		let availableFilters = {};
+		let searchToken = 0;
 
-		function renderResults(query) {
-			const normalized = query.trim().toLowerCase();
-			const filtered = normalized
-				? items.filter((item) => item.searchText.toLowerCase().includes(normalized))
-				: items.slice(0, 10);
-
-			if (!results) {
-				return;
-			}
-
-			if (filtered.length === 0) {
-				results.innerHTML = '<div class="search-result"><strong>No matches</strong><p>Try a broader constitutional term or Article number.</p></div>';
-				return;
-			}
-
-			results.innerHTML = filtered
-				.slice(0, 18)
-				.map(
-					(item) => `
-						<a class="search-result" href="${item.href}">
-							<p class="eyebrow">${item.type}</p>
-							<strong>${item.title}</strong>
-							<p>${item.summary}</p>
-						</a>
-					`,
-				)
-				.join('');
+		function escapeHtml(value) {
+			return value
+				.replaceAll('&', '&amp;')
+				.replaceAll('<', '&lt;')
+				.replaceAll('>', '&gt;')
+				.replaceAll('"', '&quot;')
+				.replaceAll("'", '&#39;');
 		}
 
-		renderResults(initialQuery);
+		function normalizeFilters(filters) {
+			return Object.fromEntries(
+				Object.entries(filters)
+					.map(([key, values]) => [key, [...new Set(values)].filter(Boolean)])
+					.filter(([, values]) => values.length > 0),
+			);
+		}
 
-		input?.addEventListener('input', (event) => {
-			const nextQuery = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value : '';
+		function hasActiveFilters() {
+			return Object.values(pageState.filters).some((values) => values.length > 0);
+		}
+
+		function syncUrl() {
 			const url = new URL(window.location.href);
-			if (nextQuery.trim()) {
-				url.searchParams.set('q', nextQuery);
+			if (pageState.query.trim()) {
+				url.searchParams.set('q', pageState.query.trim());
 			} else {
 				url.searchParams.delete('q');
 			}
+
+			[...url.searchParams.keys()]
+				.filter((key) => key.startsWith('f-'))
+				.forEach((key) => url.searchParams.delete(key));
+
+			for (const [key, values] of Object.entries(normalizeFilters(pageState.filters))) {
+				for (const value of values) {
+					url.searchParams.append(`f-${key}`, value);
+				}
+			}
+
 			window.history.replaceState({}, '', url);
-			renderResults(nextQuery);
+		}
+
+		function renderActiveFilters() {
+			if (!(activeFilterRow instanceof HTMLDivElement)) {
+				return;
+			}
+
+			const pills = Object.entries(normalizeFilters(pageState.filters)).flatMap(([key, values]) =>
+				values.map(
+					(value) => `
+						<button type="button" class="tag-chip tag-chip--removable" data-remove-filter="${key}" data-remove-value="${escapeHtml(value)}">
+							<span>${escapeHtml(value)}</span>
+							<strong>×</strong>
+						</button>
+					`,
+				),
+			);
+
+			activeFilterRow.innerHTML = pills.join('');
+			activeFilterRow.style.display = pills.length > 0 ? 'flex' : 'none';
+		}
+
+		function renderFilterGroups() {
+			if (!(filterGroups instanceof HTMLDivElement)) {
+				return;
+			}
+
+			const sections = FILTER_GROUPS.flatMap(({ key, label }) => {
+				const merged = { ...(baseFilters[key] ?? {}), ...(availableFilters[key] ?? {}) };
+				for (const activeValue of pageState.filters[key] ?? []) {
+					merged[activeValue] ??= 0;
+				}
+
+				const options = Object.entries(merged).sort(([left], [right]) => left.localeCompare(right));
+				if (options.length === 0) {
+					return [];
+				}
+
+				return `
+					<section class="filter-group">
+						<div class="filter-group__header">
+							<h2>${label}</h2>
+						</div>
+						<div class="filter-stack">
+							${options
+								.map(([value, count]) => {
+									const active = (pageState.filters[key] ?? []).includes(value);
+									const disabled = count === 0 && !active;
+									return `
+										<button
+											type="button"
+											class="filter-option ${active ? 'is-active' : ''} ${disabled ? 'is-disabled' : ''}"
+											data-filter-key="${key}"
+											data-filter-value="${escapeHtml(value)}"
+											aria-pressed="${active ? 'true' : 'false'}"
+											${disabled ? 'disabled' : ''}
+										>
+											<span>${escapeHtml(value)}</span>
+											<small>${count}</small>
+										</button>
+									`;
+								})
+								.join('')}
+						</div>
+					</section>
+				`;
+			});
+
+			filterGroups.innerHTML = sections.length
+				? sections.join('')
+				: '<div class="search-empty"><strong>No filters available yet.</strong><p>Run a search to see available filter groups.</p></div>';
+		}
+
+		function setStateMessage(title, description) {
+			if (!(state instanceof HTMLDivElement)) {
+				return;
+			}
+
+			state.innerHTML = `<strong>${escapeHtml(title)}</strong><p>${escapeHtml(description)}</p>`;
+			state.style.display = 'grid';
+		}
+
+		function clearResults() {
+			if (results instanceof HTMLDivElement) {
+				results.innerHTML = '';
+			}
+		}
+
+		function renderResults(items, response) {
+			if (!(results instanceof HTMLDivElement)) {
+				return;
+			}
+
+			if (items.length === 0) {
+				clearResults();
+				setStateMessage('No matches found', 'Try a broader constitutional term, a different doctrine, or clear one of the filters.');
+				if (summary) {
+					summary.textContent = '0 results';
+				}
+				return;
+			}
+
+			if (state instanceof HTMLDivElement) {
+				state.style.display = 'none';
+			}
+
+			const filteredLabel =
+				hasActiveFilters() && response.unfilteredResultCount !== response.results.length
+					? ` • ${response.results.length} after filters`
+					: '';
+			const limitedLabel = response.results.length > items.length ? ` • showing first ${items.length}` : '';
+			if (summary) {
+				summary.textContent = `${response.unfilteredResultCount} matching result${response.unfilteredResultCount === 1 ? '' : 's'}${filteredLabel}${limitedLabel}`;
+			}
+
+			results.innerHTML = items
+				.map(({ data }) => {
+					const title = data.meta?.title ?? data.title ?? 'Untitled';
+					const type = data.meta?.type ?? 'Page';
+					const summaryText = data.meta?.summary;
+					const subtitle = data.meta?.subtitle;
+					const excerpt = data.excerpt ? `<p class="search-result__excerpt">${data.excerpt}</p>` : '';
+					const subResults = Array.isArray(data.sub_results) ? data.sub_results.slice(0, 3) : [];
+					return `
+						<article class="search-result">
+							<a class="search-result__main" href="${data.url}">
+								<p class="eyebrow">${escapeHtml(type)}</p>
+								<strong>${escapeHtml(title)}</strong>
+								${subtitle ? `<p class="search-result__meta">${escapeHtml(subtitle)}</p>` : ''}
+								${summaryText ? `<p>${escapeHtml(summaryText)}</p>` : ''}
+								${excerpt}
+							</a>
+							${
+								subResults.length > 0
+									? `
+										<div class="search-result__subresults">
+											<p class="eyebrow">Matching Sections</p>
+											<div class="stack">
+												${subResults
+													.map(
+														(item) => `
+															<a class="search-subresult" href="${item.url}">
+																<strong>${escapeHtml(item.title)}</strong>
+																${item.excerpt ? `<p>${item.excerpt}</p>` : ''}
+															</a>
+														`,
+													)
+													.join('')}
+											</div>
+										</div>
+									`
+									: ''
+							}
+						</article>
+					`;
+				})
+				.join('');
+		}
+
+		async function executeSearch({ debounced = false } = {}) {
+			if (!(input instanceof HTMLInputElement)) {
+				return;
+			}
+
+			pageState.query = input.value;
+			syncUrl();
+			renderActiveFilters();
+
+			if (!pagefind) {
+				return;
+			}
+
+			const query = pageState.query.trim();
+			const filters = normalizeFilters(pageState.filters);
+			const token = ++searchToken;
+
+			if (!query && Object.keys(filters).length === 0) {
+				availableFilters = clone(baseFilters);
+				renderFilterGroups();
+				clearResults();
+				if (summary) {
+					summary.textContent = 'Search Articles, cases, institutions, topics, or filter directly into amendments and live issues.';
+				}
+				setStateMessage('Start with an Article, case, doctrine, or institution', 'You can also filter directly by type, topic, status, or institution without entering a search term.');
+				return;
+			}
+
+			setStateMessage('Searching the constitutional index…', 'Fetching ranked matches from the static Pagefind index.');
+			clearResults();
+			if (summary) {
+				summary.textContent = 'Searching…';
+			}
+
+			const response = debounced
+				? await pagefind.debouncedSearch(query || null, { filters }, 180)
+				: await pagefind.search(query || null, { filters });
+
+			if (!response || token !== searchToken) {
+				return;
+			}
+
+			availableFilters = clone(response.filters);
+			renderFilterGroups();
+			const items = await Promise.all(response.results.slice(0, 24).map(async (result) => ({ result, data: await result.data() })));
+			if (token !== searchToken) {
+				return;
+			}
+
+			renderResults(items, response);
+		}
+
+		function toggleFilter(key, value) {
+			const next = new Set(pageState.filters[key] ?? []);
+			if (next.has(value)) {
+				next.delete(value);
+			} else {
+				next.add(value);
+			}
+
+			if (next.size === 0) {
+				delete pageState.filters[key];
+			} else {
+				pageState.filters[key] = [...next].sort((left, right) => left.localeCompare(right));
+			}
+		}
+
+		filterGroups?.addEventListener('click', (event) => {
+			const button = event.target instanceof HTMLElement ? event.target.closest('[data-filter-key][data-filter-value]') : null;
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			toggleFilter(button.dataset.filterKey ?? '', button.dataset.filterValue ?? '');
+			executeSearch();
 		});
+
+		activeFilterRow?.addEventListener('click', (event) => {
+			const button = event.target instanceof HTMLElement ? event.target.closest('[data-remove-filter][data-remove-value]') : null;
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			toggleFilter(button.dataset.removeFilter ?? '', button.dataset.removeValue ?? '');
+			executeSearch();
+		});
+
+		input?.addEventListener('input', () => {
+			executeSearch({ debounced: true });
+		});
+
+		resetButton?.addEventListener('click', () => {
+			if (input instanceof HTMLInputElement) {
+				input.value = '';
+			}
+
+			pageState.query = '';
+			pageState.filters = {};
+			executeSearch();
+		});
+
+		async function initSearch() {
+			try {
+				pagefind = await import('/pagefind/pagefind.js');
+				await pagefind.options({
+					excerptLength: 18,
+					highlightParam: 'pagefind-highlight',
+				});
+				await pagefind.init();
+				baseFilters = clone(await pagefind.filters());
+				availableFilters = clone(baseFilters);
+				renderFilterGroups();
+				renderActiveFilters();
+				await executeSearch();
+			} catch (error) {
+				if (summary) {
+					summary.textContent = 'Search index unavailable';
+				}
+				setStateMessage('Search index unavailable in this environment', 'Run a production build or preview the deployed site to use the Pagefind-powered search experience.');
+			}
+		}
+
+		initSearch();
 	</script>
 </Layout>

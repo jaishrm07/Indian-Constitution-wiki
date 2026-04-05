@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, humanizeToken, sortByTitle } from '../../lib/content';
+
+const institutions = sortByTitle(await getCollection('institutions'));
+---
+
+<Layout title="Institutions | Constitution Atlas" description="Browse the constitutional institutions and offices that shape constitutional practice in India.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Institutions</p>
+				<h1>Constitutional actors and public institutions</h1>
+			</div>
+			<p class="muted">Use institutions to trace who acts, who decides, and where the constitutional friction actually sits.</p>
+		</div>
+		<div class="card-grid">
+			{
+				institutions.map((item) => (
+					<ContentCard
+						eyebrow={humanizeToken(item.data.institutionType)}
+						title={item.data.title}
+						description={item.data.summary}
+						href={getEntryHref('institutions', item.data.slug)}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

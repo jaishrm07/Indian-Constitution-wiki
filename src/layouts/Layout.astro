@@ -6,11 +6,13 @@ import '../styles/global.css';
 interface Props {
 	title?: string;
 	description?: string;
+	pagefindIndexed?: boolean;
 }
 
 const {
 	title = 'Constitution Atlas',
 	description = 'A constitutional reference platform for the Indian Constitution, landmark cases, amendments, and current affairs.',
+	pagefindIndexed = false,
 } = Astro.props;
 ---
 
@@ -25,7 +27,7 @@ const {
 		<meta name="description" content={description} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body data-pagefind-ignore={pagefindIndexed ? undefined : 'all'}>
 		<div class="site-shell">
 			<SiteHeader />
 			<main class="page-frame">
@@ -33,5 +35,22 @@ const {
 			</main>
 			<SiteFooter />
 		</div>
+		<script is:inline>
+			if (window.location.search.includes('pagefind-highlight=')) {
+				import('/pagefind/pagefind-highlight.js')
+					.then((module) => {
+						const PagefindHighlight = module.default;
+						new PagefindHighlight({
+							highlightParam: 'pagefind-highlight',
+							addStyles: false,
+							markOptions: {
+								className: 'pagefind-highlight',
+								exclude: ['[data-pagefind-ignore]', '[data-pagefind-ignore] *'],
+							},
+						});
+					})
+					.catch(() => {});
+			}
+		</script>
 	</body>
 </html>

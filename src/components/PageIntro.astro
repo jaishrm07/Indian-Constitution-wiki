@@ -1,23 +1,26 @@
 ---
+import Breadcrumbs from './Breadcrumbs.astro';
+
+interface BreadcrumbItem {
+	label: string;
+	href?: string;
+}
+
 interface Props {
 	eyebrow: string;
 	title: string;
 	summary: string;
 	meta?: string[];
+	breadcrumbs?: BreadcrumbItem[];
 }
 
-const { eyebrow, title, summary, meta = [] } = Astro.props;
+const { eyebrow, title, summary, meta = [], breadcrumbs = [] } = Astro.props;
 ---
 
-<section class="page-intro">
+<section class="page-intro" data-pagefind-body>
+	<Breadcrumbs items={breadcrumbs} />
 	<p class="eyebrow">{eyebrow}</p>
 	<h1>{title}</h1>
 	<p class="page-intro__summary">{summary}</p>
-	{
-		meta.length > 0 && (
-			<ul class="meta-list">
-				{meta.map((item) => <li>{item}</li>)}
-			</ul>
-		)
-	}
+	{meta.length > 0 ? <ul class="meta-list">{meta.map((item) => <li>{item}</li>)}</ul> : null}
 </section>

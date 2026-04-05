@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
 import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
 import {
 	filterByRelationship,
@@ -23,8 +24,10 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 
-const [articles, topics, cases, amendments, currentAffairs, sources] = await Promise.all([
+const [articles, parts, schedules, topics, cases, amendments, currentAffairs, sources] = await Promise.all([
 	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
 	getCollection('topics'),
 	getCollection('cases'),
 	getCollection('amendments'),
@@ -33,6 +36,8 @@ const [articles, topics, cases, amendments, currentAffairs, sources] = await Pro
 ]);
 
 const relatedArticles = resolveBySlugs(articles, entry.data.relatedArticles);
+const relatedPart = entry.data.partSlug ? parts.find((item) => item.data.slug === entry.data.partSlug) : undefined;
+const relatedSchedules = resolveBySlugs(schedules, entry.data.schedules);
 const relatedTopics = resolveBySlugs(topics, entry.data.topics);
 const relatedCases = filterByRelationship(cases, 'articles', entry.data.slug);
 const relatedAmendments = filterByRelationship(amendments, 'affectedArticles', entry.data.slug);
@@ -40,16 +45,43 @@ const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
 ---
 
-<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
 	<PageIntro
 		eyebrow={`Article ${entry.data.number}`}
 		title={entry.data.title}
 		summary={entry.data.summary}
 		meta={[entry.data.part, entry.data.plainEnglish]}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Articles', href: '/articles' },
+			{ label: entry.data.title },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Article',
+			summary: entry.data.summary,
+			subtitle: entry.data.part,
+		}}
+		filters={{
+			type: 'Article',
+			topic: relatedTopics.map((topic) => topic.data.title),
+		}}
 	/>
 
 	<section class="page-grid">
-		<article class="page-copy prose">
+		<article class="page-copy prose" data-pagefind-body>
+			{
+				entry.data.officialText && (
+					<section>
+						<h2>Official text excerpt</h2>
+						<p class="official-copy">{entry.data.officialText}</p>
+						<p class="source-caption">
+							Primary source: <a href="https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf" target="_blank" rel="noreferrer">Constitution of India, India Code official PDF</a>.
+						</p>
+					</section>
+				)
+			}
 			<section>
 				<h2>Plain-English reading</h2>
 				<p>{entry.data.plainEnglish}</p>
@@ -63,6 +95,14 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 				<ul class="link-list">
 					{headings.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
 				</ul>
+			</div>
+
+			<div class="info-panel">
+				<h3>Position in the Constitution</h3>
+				<div class="link-list">
+					{relatedPart && <a class="tag-chip" href={getEntryHref('parts', relatedPart.data.slug)}>{relatedPart.data.code}</a>}
+					{relatedSchedules.map((schedule) => <a class="tag-chip" href={getEntryHref('schedules', schedule.data.slug)}>Schedule {schedule.data.number}</a>)}
+				</div>
 			</div>
 
 			<div class="info-panel">

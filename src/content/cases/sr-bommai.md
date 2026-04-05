@@ -10,6 +10,11 @@ holding: Article 356 proclamations are reviewable, and legislative majority shou
 significance: Bommai curbed partisan misuse of President's Rule and strengthened constitutional federalism.
 articles:
   - article-356
+parts:
+  - part-xviii
+  - part-xi
+schedules:
+  - schedule-vii
 topics:
   - federalism
   - emergency-powers

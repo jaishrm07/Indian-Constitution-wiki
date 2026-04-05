@@ -3,6 +3,8 @@ title: Emergency Powers
 slug: emergency-powers
 summary: Emergency provisions allow extraordinary state action, but their history makes constitutional safeguards especially important.
 intro: Emergency powers need to be read with caution because the legal text creates exceptional tools with high stakes for federalism and rights.
+parts:
+  - part-xviii
 sources:
   - constitution-of-india
   - supreme-court-of-india

@@ -1,0 +1,54 @@
+---
+interface LinkItem {
+	title: string;
+	href: string;
+}
+
+interface Props {
+	articles?: LinkItem[];
+	parts?: LinkItem[];
+	schedules?: LinkItem[];
+	title?: string;
+}
+
+const {
+	articles = [],
+	parts = [],
+	schedules = [],
+	title = 'Constitution Text References',
+} = Astro.props;
+
+const hasContent = articles.length > 0 || parts.length > 0 || schedules.length > 0;
+---
+
+{
+	hasContent && (
+		<div class="info-panel">
+			<h3>{title}</h3>
+			{parts.length > 0 && (
+				<div class="link-group">
+					<strong>Parts</strong>
+					<div class="link-list">
+						{parts.map((item) => <a class="tag-chip" href={item.href}>{item.title}</a>)}
+					</div>
+				</div>
+			)}
+			{schedules.length > 0 && (
+				<div class="link-group">
+					<strong>Schedules</strong>
+					<div class="link-list">
+						{schedules.map((item) => <a class="tag-chip" href={item.href}>{item.title}</a>)}
+					</div>
+				</div>
+			)}
+			{articles.length > 0 && (
+				<div class="link-group">
+					<strong>Articles</strong>
+					<div class="link-list">
+						{articles.map((item) => <a class="tag-chip" href={item.href}>{item.title}</a>)}
+					</div>
+				</div>
+			)}
+		</div>
+	)
+}

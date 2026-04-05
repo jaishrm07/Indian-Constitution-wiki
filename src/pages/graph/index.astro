@@ -1,0 +1,305 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import GraphExplorer from '../../components/GraphExplorer.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortArticles, sortByDateDesc, sortByNumericField, sortByTitle } from '../../lib/content';
+
+type GraphNode = {
+	id: string;
+	label: string;
+	subtitle: string;
+	summary: string;
+	type: string;
+	href: string;
+};
+
+type GraphCollection =
+	| 'articles'
+	| 'parts'
+	| 'schedules'
+	| 'topics'
+	| 'institutions'
+	| 'cases'
+	| 'amendments'
+	| 'current-affairs';
+
+type GraphEdgeRecord = {
+	source: string;
+	target: string;
+	labels: Set<string>;
+};
+
+const [articles, parts, schedules, topics, institutions, cases, amendments, currentAffairs] = await Promise.all([
+	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
+	getCollection('topics'),
+	getCollection('institutions'),
+	getCollection('cases'),
+	getCollection('amendments'),
+	getCollection('current-affairs'),
+]);
+
+function nodeId(collection: GraphCollection, slug: string) {
+	return `${collection}:${slug}`;
+}
+
+function createNode(
+	collection: GraphCollection,
+	entry: CollectionEntry<GraphCollection>,
+	label: string,
+	subtitle: string,
+	summary: string,
+): GraphNode {
+	return {
+		id: nodeId(collection, entry.data.slug),
+		label,
+		subtitle,
+		summary,
+		type:
+			collection === 'current-affairs'
+				? 'Current Affair'
+				: collection === 'institutions'
+					? 'Institution'
+					: collection === 'articles'
+						? 'Article'
+						: collection === 'parts'
+							? 'Part'
+							: collection === 'schedules'
+								? 'Schedule'
+								: collection === 'cases'
+									? 'Case'
+									: collection === 'amendments'
+										? 'Amendment'
+										: 'Topic',
+		href: getEntryHref(collection, entry.data.slug),
+		summary,
+	};
+}
+
+const nodes = [
+	...sortArticles(articles).map((entry) =>
+		createNode('articles', entry, `Article ${entry.data.number}`, entry.data.title, entry.data.summary),
+	),
+	...sortByNumericField(parts, 'order').map((entry) =>
+		createNode('parts', entry, entry.data.code, entry.data.title, entry.data.summary),
+	),
+	...sortByNumericField(schedules, 'number').map((entry) =>
+		createNode('schedules', entry, `Schedule ${entry.data.number}`, entry.data.title, entry.data.summary),
+	),
+	...sortByTitle(topics).map((entry) => createNode('topics', entry, entry.data.title, 'Topic', entry.data.summary)),
+	...sortByTitle(institutions).map((entry) =>
+		createNode('institutions', entry, entry.data.title, 'Institution', entry.data.summary),
+	),
+	...sortByTitle(cases).map((entry) =>
+		createNode('cases', entry, entry.data.title, `${entry.data.court} • ${entry.data.year}`, entry.data.summary),
+	),
+	...[...sortByNumericField(amendments, 'year')].reverse().map((entry) =>
+		createNode('amendments', entry, entry.data.title, `${entry.data.year}`, entry.data.summary),
+	),
+	...sortByDateDesc(currentAffairs, 'updatedAt').map((entry) =>
+		createNode(
+			'current-affairs',
+			entry,
+			entry.data.title,
+			`${entry.data.status.charAt(0).toUpperCase()}${entry.data.status.slice(1)} • Updated ${entry.data.updatedAt.toLocaleDateString('en-IN')}`,
+			entry.data.summary,
+		),
+	),
+];
+
+const nodeIds = new Set(nodes.map((node) => node.id));
+const edgeMap = new Map<string, GraphEdgeRecord>();
+
+function addEdge(source: string, target: string, label: string) {
+	if (!nodeIds.has(source) || !nodeIds.has(target) || source === target) {
+		return;
+	}
+
+	const [left, right] = [source, target].sort();
+	const key = `${left}__${right}`;
+	const existing = edgeMap.get(key);
+
+	if (existing) {
+		existing.labels.add(label);
+		return;
+	}
+
+	edgeMap.set(key, {
+		source: left,
+		target: right,
+		labels: new Set([label]),
+	});
+}
+
+for (const entry of articles) {
+	const source = nodeId('articles', entry.data.slug);
+	if (entry.data.partSlug) {
+		addEdge(source, nodeId('parts', entry.data.partSlug), 'Belongs to Part');
+	}
+	for (const schedule of entry.data.schedules) {
+		addEdge(source, nodeId('schedules', schedule), 'References Schedule');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Explained in Topic');
+	}
+}
+
+for (const entry of parts) {
+	const source = nodeId('parts', entry.data.slug);
+	for (const article of entry.data.articleSlugs) {
+		addEdge(source, nodeId('articles', article), 'Contains Article');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Explained in Topic');
+	}
+}
+
+for (const entry of schedules) {
+	const source = nodeId('schedules', entry.data.slug);
+	for (const article of entry.data.relatedArticles) {
+		addEdge(source, nodeId('articles', article), 'Operational Detail');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Explained in Topic');
+	}
+}
+
+for (const entry of topics) {
+	const source = nodeId('topics', entry.data.slug);
+	for (const part of entry.data.parts) {
+		addEdge(source, nodeId('parts', part), 'Covers Part');
+	}
+	for (const schedule of entry.data.schedules) {
+		addEdge(source, nodeId('schedules', schedule), 'Covers Schedule');
+	}
+}
+
+for (const entry of institutions) {
+	const source = nodeId('institutions', entry.data.slug);
+	for (const article of entry.data.articles) {
+		addEdge(source, nodeId('articles', article), 'Constitutional Basis');
+	}
+	for (const part of entry.data.parts) {
+		addEdge(source, nodeId('parts', part), 'Constitutional Basis');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Central to Topic');
+	}
+	for (const caseSlug of entry.data.cases) {
+		addEdge(source, nodeId('cases', caseSlug), 'Institution in Litigation');
+	}
+	for (const affair of entry.data.currentAffairs) {
+		addEdge(source, nodeId('current-affairs', affair), 'Institution in Current Affair');
+	}
+}
+
+for (const entry of cases) {
+	const source = nodeId('cases', entry.data.slug);
+	for (const article of entry.data.articles) {
+		addEdge(source, nodeId('articles', article), 'Interprets Article');
+	}
+	for (const part of entry.data.parts) {
+		addEdge(source, nodeId('parts', part), 'Interprets Part');
+	}
+	for (const schedule of entry.data.schedules) {
+		addEdge(source, nodeId('schedules', schedule), 'Interprets Schedule');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Shapes Doctrine');
+	}
+}
+
+for (const entry of amendments) {
+	const source = nodeId('amendments', entry.data.slug);
+	for (const article of entry.data.affectedArticles) {
+		addEdge(source, nodeId('articles', article), 'Amends Article');
+	}
+	for (const part of entry.data.affectedParts) {
+		addEdge(source, nodeId('parts', part), 'Amends Part');
+	}
+	for (const schedule of entry.data.affectedSchedules) {
+		addEdge(source, nodeId('schedules', schedule), 'Amends Schedule');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Changes Topic');
+	}
+}
+
+for (const entry of currentAffairs) {
+	const source = nodeId('current-affairs', entry.data.slug);
+	for (const article of entry.data.articles) {
+		addEdge(source, nodeId('articles', article), 'Live Issue');
+	}
+	for (const part of entry.data.parts) {
+		addEdge(source, nodeId('parts', part), 'Live Issue');
+	}
+	for (const schedule of entry.data.schedules) {
+		addEdge(source, nodeId('schedules', schedule), 'Live Issue');
+	}
+	for (const topic of entry.data.topics) {
+		addEdge(source, nodeId('topics', topic), 'Current Debate');
+	}
+	for (const caseSlug of entry.data.cases) {
+		addEdge(source, nodeId('cases', caseSlug), 'Invokes Case');
+	}
+	for (const institution of entry.data.institutions) {
+		addEdge(source, nodeId('institutions', institution), 'Institution Involved');
+	}
+}
+
+const edges = Array.from(edgeMap.values()).map((edge, index) => ({
+	id: `edge-${index + 1}`,
+	source: edge.source,
+	target: edge.target,
+	label: [...edge.labels].sort().join(' • '),
+}));
+
+const stats = [
+	{ label: 'Nodes', value: nodes.length },
+	{ label: 'Relationships', value: edges.length },
+	{ label: 'Articles', value: articles.length, href: '/articles' },
+	{ label: 'Cases', value: cases.length, href: '/cases' },
+	{ label: 'Current Affairs', value: currentAffairs.length, href: '/current-affairs' },
+	{ label: 'Institutions', value: institutions.length, href: '/institutions' },
+];
+---
+
+<Layout
+	title="Relationship Explorer | Constitution Atlas"
+	description="Explore the constitutional knowledge graph linking Articles, institutions, cases, amendments, topics, and current affairs."
+	pagefindIndexed={true}
+>
+	<PageIntro
+		eyebrow="Graph"
+		title="Explore the constitutional relationship map"
+		summary="This view turns the site into a visible knowledge graph so readers can move through constitutional text, doctrine, institutions, and live disputes as one connected system."
+		meta={['Interactive semantic graph', 'Built from canonical site content', 'Anchored in constitutional text']}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Relationship Explorer' },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Page',
+			summary: 'Interactive graph showing how constitutional provisions, cases, institutions, amendments, topics, and current affairs connect.',
+			subtitle: 'Relationship Explorer',
+		}}
+		filters={{
+			type: 'Page',
+		}}
+	/>
+
+	<section class="list-shell graph-page-copy" data-pagefind-body>
+		<p>
+			Use this explorer to move beyond list pages. Start with an Article, landmark case, or institution, then follow
+			the connected topics, amendments, and current-affairs issues that shape its meaning in practice.
+		</p>
+	</section>
+
+	<GraphExplorer nodes={nodes} edges={edges} stats={stats} />
+</Layout>

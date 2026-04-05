@@ -10,6 +10,8 @@ holding: Parliament may amend the Constitution, but it cannot destroy or damage 
 significance: This judgment anchors modern constitutional identity in India and ensures that formal amendment procedures cannot be used to dismantle core constitutional principles.
 articles:
   - article-368
+parts:
+  - part-xx
 topics:
   - basic-structure
   - judiciary

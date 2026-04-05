@@ -1,0 +1,324 @@
+---
+interface GraphNode {
+	id: string;
+	label: string;
+	subtitle: string;
+	summary: string;
+	type: string;
+	href: string;
+}
+
+interface GraphEdge {
+	id: string;
+	source: string;
+	target: string;
+	label: string;
+}
+
+interface GraphStat {
+	label: string;
+	value: number;
+	href?: string;
+}
+
+interface Props {
+	nodes: GraphNode[];
+	edges: GraphEdge[];
+	stats: GraphStat[];
+}
+
+const { nodes, edges, stats } = Astro.props;
+const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
+---
+
+<section class="graph-shell" data-graph-shell>
+	<div class="graph-main">
+		<div class="graph-toolbar">
+			<label class="graph-search" for="graph-search">
+				<span class="sr-only">Search the relationship graph</span>
+				<input id="graph-search" type="search" placeholder="Search Article 21, Bommai, federalism..." data-graph-search />
+			</label>
+			<div class="graph-filters" data-graph-filters>
+				{
+					filterTypes.map((type) => (
+						<button type="button" class:list={['filter-pill', { 'is-active': type === 'All' }]} data-graph-filter={type}>
+							{type}
+						</button>
+					))
+				}
+			</div>
+		</div>
+		<div class="graph-canvas-frame">
+			<div class="graph-canvas" data-graph-canvas></div>
+		</div>
+	</div>
+
+	<aside class="graph-aside">
+		<div class="graph-stats">
+			{
+				stats.map((stat) =>
+					stat.href ? (
+						<a class="stat-card" href={stat.href}>
+							<strong>{stat.value}</strong>
+							<span>{stat.label}</span>
+						</a>
+					) : (
+						<div class="stat-card">
+							<strong>{stat.value}</strong>
+							<span>{stat.label}</span>
+						</div>
+					),
+				)
+			}
+		</div>
+
+		<div class="graph-detail" data-graph-detail>
+			<p class="eyebrow">Node Detail</p>
+			<h2 data-detail-title>Select a node</h2>
+			<p class="graph-detail__summary" data-detail-summary>
+				Use the search box or click a node to inspect how Articles, cases, institutions, amendments, and current-affairs issues connect.
+			</p>
+			<p class="graph-detail__meta" data-detail-meta>Showing the full constitutional network.</p>
+			<div class="graph-detail__links" data-detail-links></div>
+			<a class="button-secondary graph-detail__cta is-disabled" href="#" data-detail-link aria-disabled="true">Open page</a>
+		</div>
+	</aside>
+
+	<script type="application/json" data-graph-payload set:html={JSON.stringify({ nodes, edges })} />
+</section>
+
+<script>
+	import cytoscape from 'cytoscape';
+
+	const COLOR_BY_TYPE = {
+		Article: '#b55e24',
+		Part: '#19415a',
+		Schedule: '#497255',
+		Topic: '#7d3812',
+		Institution: '#365f75',
+		Case: '#713f12',
+		Amendment: '#8d6e19',
+		'Current Affair': '#91453a',
+	};
+
+	const BASE_LAYOUT = {
+		name: 'cose',
+		animate: false,
+		fit: true,
+		padding: 32,
+		idealEdgeLength: 120,
+		nodeRepulsion: 300000,
+		gravity: 0.45,
+	};
+
+	function escapeHtml(value) {
+		return value
+			.replaceAll('&', '&amp;')
+			.replaceAll('<', '&lt;')
+			.replaceAll('>', '&gt;')
+			.replaceAll('"', '&quot;')
+			.replaceAll("'", '&#39;');
+	}
+
+	document.querySelectorAll('[data-graph-shell]').forEach((root) => {
+		const payloadScript = root.querySelector('[data-graph-payload]');
+		const canvas = root.querySelector('[data-graph-canvas]');
+		const searchInput = root.querySelector('[data-graph-search]');
+		const filterBar = root.querySelector('[data-graph-filters]');
+		const detailTitle = root.querySelector('[data-detail-title]');
+		const detailSummary = root.querySelector('[data-detail-summary]');
+		const detailMeta = root.querySelector('[data-detail-meta]');
+		const detailLinks = root.querySelector('[data-detail-links]');
+		const detailLink = root.querySelector('[data-detail-link]');
+
+		if (
+			!(payloadScript instanceof HTMLScriptElement) ||
+			!(canvas instanceof HTMLDivElement) ||
+			!(searchInput instanceof HTMLInputElement) ||
+			!(filterBar instanceof HTMLDivElement) ||
+			!(detailTitle instanceof HTMLElement) ||
+			!(detailSummary instanceof HTMLElement) ||
+			!(detailMeta instanceof HTMLElement) ||
+			!(detailLinks instanceof HTMLDivElement) ||
+			!(detailLink instanceof HTMLAnchorElement)
+		) {
+			return;
+		}
+
+		const payload = JSON.parse(payloadScript.textContent ?? '{"nodes":[],"edges":[]}');
+		let activeType = 'All';
+		let activeQuery = '';
+
+		const cy = cytoscape({
+			container: canvas,
+			elements: [
+				...payload.nodes.map((node) => ({
+					data: { ...node, weight: 1 },
+				})),
+				...payload.edges.map((edge) => ({
+					data: edge,
+				})),
+			],
+			style: [
+				{
+					selector: 'node',
+					style: {
+						'label': 'data(label)',
+						'background-color': (element) => COLOR_BY_TYPE[element.data('type')] ?? '#5b5347',
+						'color': '#1f1b17',
+						'font-size': 11,
+						'font-family': 'Avenir Next, Segoe UI, Helvetica Neue, Helvetica, sans-serif',
+						'text-wrap': 'wrap',
+						'text-max-width': 96,
+						'text-valign': 'center',
+						'text-halign': 'center',
+						'border-width': 2,
+						'border-color': '#fff8f1',
+						'width': 'mapData(weight, 1, 12, 34, 64)',
+						'height': 'mapData(weight, 1, 12, 34, 64)',
+					},
+				},
+				{
+					selector: 'edge',
+					style: {
+						'line-color': 'rgba(31, 27, 23, 0.18)',
+						'curve-style': 'bezier',
+						'width': 2,
+						'opacity': 0.65,
+					},
+				},
+				{
+					selector: '.faded',
+					style: {
+						'opacity': 0.14,
+					},
+				},
+				{
+					selector: 'node.highlighted',
+					style: {
+						'border-color': '#7d3812',
+						'border-width': 4,
+						'opacity': 1,
+					},
+				},
+				{
+					selector: 'edge.highlighted',
+					style: {
+						'line-color': '#b55e24',
+						'width': 3,
+						'opacity': 1,
+					},
+				},
+			],
+			layout: BASE_LAYOUT,
+		});
+
+		cy.nodes().forEach((node) => {
+			node.data('weight', Math.min(12, Math.max(1, node.connectedEdges().length)));
+		});
+
+		function resetDetail() {
+			detailTitle.textContent = 'Select a node';
+			detailSummary.textContent =
+				'Use the search box or click a node to inspect how Articles, cases, institutions, amendments, and current-affairs issues connect.';
+			detailMeta.textContent = 'Showing the full constitutional network.';
+			detailLinks.innerHTML = '';
+			detailLink.classList.add('is-disabled');
+			detailLink.setAttribute('aria-disabled', 'true');
+			detailLink.setAttribute('tabindex', '-1');
+			detailLink.href = '#';
+		}
+
+		function renderDetail(node) {
+			const neighbors = node
+				.connectedEdges()
+				.connectedNodes()
+				.filter((item) => item.id() !== node.id())
+				.sort((left, right) => left.data('label').localeCompare(right.data('label')))
+				.slice(0, 8);
+
+			detailTitle.textContent = node.data('label');
+			detailSummary.textContent = node.data('summary');
+			detailMeta.textContent = `${node.data('type')} • ${node.connectedEdges().length} linked relationship${
+				node.connectedEdges().length === 1 ? '' : 's'
+			}${node.data('subtitle') ? ` • ${node.data('subtitle')}` : ''}`;
+			detailLinks.innerHTML = neighbors.length
+				? neighbors
+						.map(
+							(neighbor) =>
+								`<a class="tag-chip" href="${neighbor.data('href')}">${escapeHtml(neighbor.data('label'))}</a>`,
+						)
+						.join('')
+				: '<p class="muted">No immediate neighbors are currently indexed for this node.</p>';
+			detailLink.classList.remove('is-disabled');
+			detailLink.removeAttribute('aria-disabled');
+			detailLink.removeAttribute('tabindex');
+			detailLink.href = node.data('href');
+		}
+
+		function clearHighlight() {
+			cy.elements().removeClass('faded highlighted');
+		}
+
+		function highlightNeighborhood(node) {
+			clearHighlight();
+			cy.elements().addClass('faded');
+			node.closedNeighborhood().removeClass('faded').addClass('highlighted');
+		}
+
+		function applyFilters() {
+			const normalizedQuery = activeQuery.trim().toLowerCase();
+
+			cy.nodes().forEach((node) => {
+				const typeMatches = activeType === 'All' || node.data('type') === activeType;
+				const queryMatches = normalizedQuery
+					? `${node.data('label')} ${node.data('subtitle')} ${node.data('summary')}`.toLowerCase().includes(normalizedQuery)
+					: true;
+				node.style('display', typeMatches && queryMatches ? 'element' : 'none');
+			});
+
+			cy.edges().forEach((edge) => {
+				const sourceVisible = edge.source().style('display') !== 'none';
+				const targetVisible = edge.target().style('display') !== 'none';
+				edge.style('display', sourceVisible && targetVisible ? 'element' : 'none');
+			});
+
+			clearHighlight();
+			resetDetail();
+			cy.layout(BASE_LAYOUT).run();
+		}
+
+		filterBar.addEventListener('click', (event) => {
+			const button = event.target instanceof HTMLElement ? event.target.closest('[data-graph-filter]') : null;
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			activeType = button.dataset.graphFilter ?? 'All';
+			filterBar.querySelectorAll('[data-graph-filter]').forEach((element) => {
+				element.classList.toggle('is-active', element === button);
+			});
+			applyFilters();
+		});
+
+		searchInput.addEventListener('input', (event) => {
+			activeQuery = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value : '';
+			applyFilters();
+		});
+
+		cy.on('tap', 'node', (event) => {
+			const node = event.target;
+			highlightNeighborhood(node);
+			renderDetail(node);
+		});
+
+		cy.on('tap', (event) => {
+			if (event.target === cy) {
+				clearHighlight();
+				resetDetail();
+			}
+		});
+
+		resetDetail();
+	});
+</script>

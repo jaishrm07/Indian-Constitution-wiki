@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
+import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
 import { filterByRelationship, formatDate, getEntryHref, resolveBySlugs, sortByDateDesc, titleCaseStatus } from '../../lib/content';
 
@@ -16,29 +18,81 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const [articles, topics, currentAffairs, sources] = await Promise.all([
+const [articles, parts, schedules, topics, glossary, timeline, currentAffairs, sources] = await Promise.all([
 	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
 	getCollection('topics'),
+	getCollection('glossary'),
+	getCollection('timeline'),
 	getCollection('current-affairs'),
 	getCollection('sources'),
 ]);
 
 const relatedArticles = resolveBySlugs(articles, entry.data.articles);
+const relatedParts = resolveBySlugs(parts, entry.data.parts);
+const relatedSchedules = resolveBySlugs(schedules, entry.data.schedules);
 const relatedTopics = resolveBySlugs(topics, entry.data.topics);
+const relatedGlossary = filterByRelationship(glossary, 'cases', entry.data.slug);
+const relatedTimeline = timeline.filter(
+	(item) => item.data.relatedCollection === 'cases' && item.data.relatedSlug === entry.data.slug,
+);
 const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs, 'cases', entry.data.slug), 'updatedAt');
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
 ---
 
-<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary}>
+<Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
 	<PageIntro
 		eyebrow={`${entry.data.court} • ${entry.data.year}`}
 		title={entry.data.title}
 		summary={entry.data.summary}
 		meta={[entry.data.citation, entry.data.issue]}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Cases', href: '/cases' },
+			{ label: entry.data.title },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Case',
+			summary: entry.data.summary,
+			subtitle: `${entry.data.court} • ${entry.data.year}`,
+		}}
+		filters={{
+			type: 'Case',
+			topic: relatedTopics.map((topic) => topic.data.title),
+			institution: entry.data.court,
+		}}
+		sort={{
+			chronology: `${entry.data.year}-01-01`,
+		}}
 	/>
 
 	<section class="page-grid">
-		<article class="page-copy prose">
+		<article class="page-copy prose" data-pagefind-body>
+			<section class="brief-grid">
+				<div class="brief-card">
+					<p class="eyebrow">Case Brief</p>
+					<h2>Quick take</h2>
+					<p>{entry.data.summary}</p>
+				</div>
+				<div class="brief-card">
+					<p class="eyebrow">Question</p>
+					<h2>What was at stake</h2>
+					<p>{entry.data.issue}</p>
+				</div>
+				<div class="brief-card">
+					<p class="eyebrow">Rule</p>
+					<h2>What the Court held</h2>
+					<p>{entry.data.holding}</p>
+				</div>
+				<div class="brief-card">
+					<p class="eyebrow">Impact</p>
+					<h2>Why it still matters</h2>
+					<p>{entry.data.significance}</p>
+				</div>
+			</section>
 			<section>
 				<h2>Issue</h2>
 				<p>{entry.data.issue}</p>
@@ -55,18 +109,11 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 		</article>
 
 		<aside class="page-sidebar">
-			<div class="info-panel">
-				<h3>Linked Articles</h3>
-				<div class="link-list">
-					{
-						relatedArticles.map((article) => (
-							<a class="tag-chip" href={getEntryHref('articles', article.data.slug)}>
-								Article {article.data.number}
-							</a>
-						))
-					}
-				</div>
-			</div>
+			<ConstitutionRefs
+				parts={relatedParts.map((part) => ({ title: part.data.code, href: getEntryHref('parts', part.data.slug) }))}
+				schedules={relatedSchedules.map((schedule) => ({ title: `Schedule ${schedule.data.number}`, href: getEntryHref('schedules', schedule.data.slug) }))}
+				articles={relatedArticles.map((article) => ({ title: `Article ${article.data.number}`, href: getEntryHref('articles', article.data.slug) }))}
+			/>
 			<div class="info-panel">
 				<h3>Linked Topics</h3>
 				<div class="link-list">
@@ -74,12 +121,14 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 				</div>
 			</div>
 			<div class="info-panel">
-				<h3>Sources</h3>
-				<ul class="link-list">
+				<h3>Authoritative sources</h3>
+				<ul class="source-list">
 					{
 						relatedSources.map((source) => (
 							<li>
-								<a href={source.data.url} target="_blank" rel="noreferrer">{source.data.title}</a>
+								<a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a>
+								<p>{source.data.description}</p>
+								<a class="source-list__external" href={source.data.url} target="_blank" rel="noreferrer">Open original source</a>
 							</li>
 						))
 					}
@@ -109,6 +158,37 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 					))
 				}
 			</div>
+		</section>
+	)}
+
+	{(relatedGlossary.length > 0 || relatedTimeline.length > 0) && (
+		<section class="section-split">
+			{relatedGlossary.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Glossary</p>
+							<h2>Doctrinal terms</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedGlossary.map((term) => <ContentCard eyebrow="Glossary" title={term.data.title} description={term.data.summary} href={getEntryHref('glossary', term.data.slug)} />)}
+					</div>
+				</div>
+			)}
+			{relatedTimeline.length > 0 && (
+				<div class="section-panel">
+					<div class="section-heading compact">
+						<div>
+							<p class="eyebrow">Timeline</p>
+							<h2>Historical placement</h2>
+						</div>
+					</div>
+					<div class="stack">
+						{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+					</div>
+				</div>
+			)}
 		</section>
 	)}
 </Layout>

@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from 'astro:content';
+import SearchSignals from '../../components/SearchSignals.astro';
+import Layout from '../../layouts/Layout.astro';
+import { formatDate, getEntryHref, resolveBySlugs, sortByDateAsc } from '../../lib/content';
+
+const [timelineEntries, articles, parts, schedules] = await Promise.all([
+	getCollection('timeline'),
+	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
+]);
+
+const entries = await Promise.all(
+	sortByDateAsc(timelineEntries, 'date').map(async (entry) => {
+		const { Content } = await render(entry);
+		const articleRefs = resolveBySlugs(articles, entry.data.articleRefs);
+		const partRefs = resolveBySlugs(parts, entry.data.partRefs);
+		const scheduleRefs = resolveBySlugs(schedules, entry.data.scheduleRefs);
+		return {
+			entry,
+			Content,
+			articleRefs,
+			partRefs,
+			scheduleRefs,
+			relatedHref:
+				entry.data.relatedCollection && entry.data.relatedSlug
+					? getEntryHref(entry.data.relatedCollection, entry.data.relatedSlug)
+					: undefined,
+		};
+	}),
+);
+---
+
+<Layout title="Timeline | Constitution Atlas" description="A timeline of major constitutional turning points in India." pagefindIndexed={true}>
+	<SearchSignals
+		meta={{
+			type: 'Timeline',
+			summary: 'Historical sequence linking founding, amendment, crisis, and case law.',
+			subtitle: 'Constitutional timeline',
+		}}
+		filters={{
+			type: 'Timeline',
+			category: [...new Set(entries.map(({ entry }) => entry.data.category))],
+		}}
+	/>
+	<section class="page-intro" data-pagefind-body>
+		<p class="eyebrow">Timeline</p>
+		<h1>The constitutional story across text, amendment, crisis, and case law.</h1>
+		<p class="page-intro__summary">
+			This timeline turns isolated pages into a historical sequence, so readers can see how constitutional
+			meaning changed across founding, amendment, litigation, and political stress.
+		</p>
+	</section>
+
+	<section class="timeline-list">
+		{
+			entries.map(({ entry, Content, articleRefs, partRefs, scheduleRefs, relatedHref }) => (
+				<article id={entry.data.slug} class="timeline-event">
+					<div class="timeline-event__date">
+						<span>{formatDate(entry.data.date)}</span>
+						<small>{entry.data.category}</small>
+					</div>
+					<div class="timeline-event__body" data-pagefind-body>
+						<p class="eyebrow">Timeline Event</p>
+						<h2>{entry.data.title}</h2>
+						<p class="timeline-event__summary">{entry.data.summary}</p>
+						<div class="prose">
+							<Content />
+						</div>
+						{(partRefs.length > 0 || scheduleRefs.length > 0 || articleRefs.length > 0) && (
+							<div class="timeline-event__refs">
+								<strong>Constitution text references</strong>
+								<div class="link-list">
+									{partRefs.map((part) => <a class="tag-chip" href={getEntryHref('parts', part.data.slug)}>{part.data.code}</a>)}
+									{scheduleRefs.map((schedule) => <a class="tag-chip" href={getEntryHref('schedules', schedule.data.slug)}>Schedule {schedule.data.number}</a>)}
+									{articleRefs.map((article) => <a class="tag-chip" href={getEntryHref('articles', article.data.slug)}>Article {article.data.number}</a>)}
+								</div>
+							</div>
+						)}
+						{relatedHref && <a class="button-secondary timeline-event__link" href={relatedHref}>Open linked reference</a>}
+					</div>
+				</article>
+			))
+		}
+	</section>
+</Layout>

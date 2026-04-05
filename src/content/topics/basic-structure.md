@@ -3,6 +3,8 @@ title: Basic Structure Doctrine
 slug: basic-structure
 summary: The doctrine holds that Parliament cannot amend the Constitution in a way that destroys its fundamental identity.
 intro: Basic structure is the constitutional theory that preserves core principles even against formally valid amendments.
+parts:
+  - part-xx
 sources:
   - supreme-court-of-india
 ---

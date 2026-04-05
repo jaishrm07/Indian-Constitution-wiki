@@ -3,8 +3,21 @@ title: Article 19
 slug: article-19
 number: 19
 part: Part III - Fundamental Rights
+partSlug: part-iii
 summary: Article 19 protects core freedoms such as speech, assembly, association, movement, residence, and occupation, subject to constitutionally defined restrictions.
 plainEnglish: Citizens enjoy a cluster of basic freedoms, but the state may regulate them only for reasons the Constitution specifically permits. Most public debates on speech and protest eventually return to Article 19.
+officialText: >-
+  All citizens shall have the right to freedom of speech and expression; to
+  assemble peaceably and without arms; to form associations or unions; to move
+  freely throughout the territory of India; to reside and settle in any part of
+  the territory of India; and to practise any profession, or to carry on any
+  occupation, trade or business. Nothing in sub-clause (a) of clause (1) shall
+  affect the operation of any existing law, or prevent the State from making any
+  law, in so far as such law imposes reasonable restrictions on the exercise of
+  the right conferred by the said sub-clause in the interests of the
+  sovereignty and integrity of India, the security of the State, friendly
+  relations with foreign States, public order, decency or morality, or in
+  relation to contempt of court, defamation or incitement to an offence.
 relatedArticles:
   - article-14
   - article-21

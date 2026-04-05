@@ -1,0 +1,148 @@
+# Learnings
+
+This file is a running log of what the project is teaching us about building a knowledge-intensive constitutional website. It is written so it can later be published as product, editorial, or engineering notes.
+
+## 2026-04-04
+
+### 1. A constitutional website is not a normal content website
+
+The site needs the reliability of a reference product, not the publishing habits of a blog. The moment a page explains rights, powers, institutions, or disputes, it enters a higher-trust category. That means sourcing, versioning, and cross-linking are product requirements, not editorial polish.
+
+### 2. The Constitution text must be the spine of the product
+
+Every interpretive page becomes stronger when it points back to the relevant Article, Part, or Schedule. This is not just a citation habit. It is an information architecture rule. Without that spine, the site turns into a loose essay collection and loses its authority.
+
+### 3. A knowledge graph beats a flat archive
+
+The useful unit is not just the page. It is the relationship between pages:
+
+- Article to Topic
+- Article to Case
+- Article to Current Affair
+- Amendment to affected provisions
+- Case to doctrine
+
+This structure makes the site more reusable, more searchable, and more defensible.
+
+### 4. Official sources are strong, but rarely clean
+
+The official sources are good enough to trust, but not always good enough to plug in directly. Government and court material is often PDF-first, portal-based, or inconsistent in metadata quality. That means extraction and normalization are not a temporary inconvenience. They are a permanent part of the system.
+
+### 5. “Current affairs” needs a narrower definition than most people think
+
+For this site, current affairs should mean constitutionally relevant developments, not general news. That constraint is a strength. It keeps the site coherent and prevents the live layer from drowning the reference layer.
+
+### 6. Source hierarchy needs to be enforced in the content model
+
+It is not enough to say “use good sources.” The system should make that concrete:
+
+- primary legal text
+- primary institutional record
+- secondary explanatory source
+
+Once that hierarchy is visible in the content model, editorial discipline becomes easier to maintain.
+
+### 7. A source registry is part of the product
+
+The source list is not just internal documentation. It helps the team write better pages, makes the publishing process more repeatable, and can become public-facing trust infrastructure.
+
+### 8. Search quality depends on normalized labels
+
+Legal and civic users search in inconsistent ways: Article number, doctrine name, case title, common shorthand, or current event phrase. Good search depends less on one full-text index and more on consistently normalized labels, summaries, aliases, and cross-links.
+
+### 9. Editorial neutrality benefits from structure
+
+Neutrality is easier when every page must answer the same questions:
+
+- what happened
+- what constitutional issue is raised
+- which provisions are implicated
+- which cases matter
+- what the current status is
+
+That structure reduces drift into rhetoric or opinionated framing.
+
+### 10. The build process itself is publishable knowledge
+
+This project produces two outputs at once:
+
+- the website
+- the process knowledge for building trustworthy legal-reference products
+
+That means learnings should be captured as they happen, not reconstructed later.
+
+### 11. Research workflow and publishing workflow should be separate
+
+The tool that helps an editor think is not always the right tool to publish from. Obsidian is strong for note-linking, source exploration, and relationship discovery, but the website still needs a canonical, typed, reviewable content graph in the repo.
+
+### 12. “Semantic graph” can mean two different things
+
+For editors, a semantic graph often means linked notes, backlinks, and visual exploration. For the product, it means typed entities and explicit relationships that code can trust. The site needs both, but they should not be conflated.
+
+### 13. A maintained intermediate wiki is more valuable than raw-file RAG alone
+
+One of the strongest ideas in Karpathy's `LLM Wiki` note is that raw documents should not be rediscovered and re-synthesized from scratch on every question. A maintained intermediate knowledge layer compounds value over time: better summaries, better cross-links, better contradictions tracking, and less repetitive work.
+
+### 14. Knowledge systems need explicit operations
+
+It helps to think in terms of a few repeatable operations:
+
+- ingest
+- query
+- lint
+
+That framing is useful for this project because it turns “research” into a maintainable workflow instead of an unstructured pile of pages and chats.
+
+### 15. Indexes and logs are underrated infrastructure
+
+An index helps humans and agents navigate the knowledge base. A log preserves chronology: what changed, what was ingested, and what was reviewed. These are simple files, but they become disproportionately useful as the knowledge system grows.
+
+### 16. Coverage checks reduce invisible drift
+
+Once the project has both a research graph and a canonical publishing graph, drift becomes easy: pages get published without matching research notes, or research notes accumulate without being normalized. A small lint pass that checks coverage is a cheap way to keep both layers aligned.
+
+### 17. Backfilling research notes should be automated from the canonical layer
+
+Once the site already contains structured, reviewed content, manually recreating that structure in a research vault is wasted effort. A sync script that seeds missing notes from canonical records is faster, more consistent, and less error-prone than hand-copying summaries.
+
+### 18. The live layer needs a source stack, not a single source
+
+For constitutional current affairs, no single website is enough. Official institutional sources are best for authority, PRS and Supreme Court Observer are best for structured tracking, and legal-news sites are best for early monitoring. Treating those as different jobs makes the live layer both faster and more trustworthy.
+
+### 19. Product research from adjacent communities is unusually useful here
+
+GitHub, Reddit, and X are not constitutional authorities, but they are useful product signals. GitHub reveals mature building blocks like static search, diff rendering, and graph visualization. Reddit surfaces what readers actually struggle with, especially around case comprehension and note-linking. X clarifies where lightweight live embeds can fit without displacing official sources.
+
+### 20. Relationship visibility is part of trust
+
+When a site claims to be a knowledge system, users should be able to see the relationships, not just trust that they exist under the hood. A public graph explorer turns the internal content model into a reader-facing navigation tool and makes the product feel closer to a reference system than a content archive.
+
+### 21. Legal readers benefit from “quick brief” layers
+
+Dense legal pages become more usable when the top of the page answers a few immediate questions before asking the reader to parse full prose. In practice that means issue, holding, and significance should be visible at a glance, especially on case pages.
+
+### 22. Static search becomes much more valuable when it knows the schema
+
+Full-text search alone is not enough for a constitutional site. Once the search index knows which pages are Articles, cases, amendments, institutions, or current-affairs explainers, users can narrow quickly instead of sifting through mixed results. The improvement comes less from raw search power than from explicit metadata and filters.
+
+### 23. Indexing fewer pages can improve search quality
+
+Not every page should be searchable. Homepages, list pages, and utility pages can pollute a reference search experience if they compete with the actual canonical entries. Restricting the search index to real content pages makes the results cleaner and easier to trust.
+
+### 24. Shareable filter URLs are part of discoverability
+
+Once filters are reflected in the URL, search stops being only a lookup box and becomes a navigable interface. That matters for editorial products because you can link directly to “all amendment pages touching federalism” or “all ongoing issues involving Parliament” without creating separate custom landing pages for every slice.
+
+### 25. A live constitutional desk should track institutions and text, not only headlines
+
+Current-affairs pages become much more useful when the reader can immediately see three things:
+
+- which constitutional provisions anchor the issue
+- which institutions are in the conflict
+- which official sources should be watched first
+
+That turns the live layer into a maintained desk rather than a stream of essays.
+
+### 26. Issue chronology and constitutional chronology are different jobs
+
+For live issues, it helps to separate short-term desk chronology from the longer constitutional timeline. Readers need both, but they answer different questions. One explains what is happening now and when the page was reviewed; the other shows the deeper constitutional arc that makes the issue intelligible.

@@ -3,8 +3,16 @@ title: Article 32
 slug: article-32
 number: 32
 part: Part III - Fundamental Rights
+partSlug: part-iii
 summary: Article 32 guarantees the right to move the Supreme Court for enforcement of fundamental rights.
 plainEnglish: This Article turns rights into enforceable claims. It gives the Supreme Court power to issue constitutional remedies such as writs when fundamental rights are violated.
+officialText: >-
+  The right to move the Supreme Court by appropriate proceedings for the
+  enforcement of the rights conferred by this Part is guaranteed. The Supreme
+  Court shall have power to issue directions or orders or writs, including
+  writs in the nature of habeas corpus, mandamus, prohibition, quo warranto and
+  certiorari, whichever may be appropriate, for the enforcement of any of the
+  rights conferred by this Part.
 relatedArticles:
   - article-21
 topics:

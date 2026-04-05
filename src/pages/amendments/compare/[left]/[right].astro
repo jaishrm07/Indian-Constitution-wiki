@@ -1,0 +1,342 @@
+---
+import { getCollection } from 'astro:content';
+import PageIntro from '../../../../components/PageIntro.astro';
+import Layout from '../../../../layouts/Layout.astro';
+import { getEntryHref, ordinal, resolveBySlugs } from '../../../../lib/content';
+
+export async function getStaticPaths() {
+	const amendments = await getCollection('amendments');
+	return amendments.flatMap((left) =>
+		amendments
+			.filter((right) => right.data.slug !== left.data.slug)
+			.map((right) => ({
+				params: {
+					left: left.data.slug,
+					right: right.data.slug,
+				},
+			})),
+	);
+}
+
+const { left: leftSlug, right: rightSlug } = Astro.params;
+
+const [amendments, articles, parts, schedules, topics, sources] = await Promise.all([
+	getCollection('amendments'),
+	getCollection('articles'),
+	getCollection('parts'),
+	getCollection('schedules'),
+	getCollection('topics'),
+	getCollection('sources'),
+]);
+
+const leftEntry = amendments.find((item) => item.data.slug === leftSlug);
+const rightEntry = amendments.find((item) => item.data.slug === rightSlug);
+
+if (!leftEntry || !rightEntry) {
+	throw new Error('Unknown amendment comparison pair.');
+}
+
+const amendmentOptions = [...amendments].sort((left, right) => left.data.year - right.data.year);
+
+function buildRefItem(collection, entry, excerpt) {
+	return {
+		key: `${collection}:${entry.data.slug}`,
+		label:
+			collection === 'articles'
+				? `Article ${entry.data.number}`
+				: collection === 'parts'
+					? entry.data.code
+					: `Schedule ${entry.data.number}`,
+		title: entry.data.title,
+		href: getEntryHref(collection, entry.data.slug),
+		excerpt,
+	};
+}
+
+function buildAmendmentDetail(entry) {
+	const topicItems = resolveBySlugs(topics, entry.data.topics).map((item) => ({
+		title: item.data.title,
+		href: getEntryHref('topics', item.data.slug),
+	}));
+	const articleItems = resolveBySlugs(articles, entry.data.affectedArticles).map((item) =>
+		buildRefItem('articles', item, item.data.officialText ?? item.data.plainEnglish),
+	);
+	const partItems = resolveBySlugs(parts, entry.data.affectedParts).map((item) =>
+		buildRefItem('parts', item, item.data.intro),
+	);
+	const scheduleItems = resolveBySlugs(schedules, entry.data.affectedSchedules).map((item) =>
+		buildRefItem('schedules', item, item.data.intro),
+	);
+	const refIndex = new Map([...articleItems, ...partItems, ...scheduleItems].map((item) => [item.key, item]));
+	const highlights = entry.data.compareHighlights.map((item) => ({
+		title: item.title,
+		note: item.note,
+		refs: [
+			...resolveBySlugs(articles, item.articleRefs).map((ref) => refIndex.get(`articles:${ref.data.slug}`)),
+			...resolveBySlugs(parts, item.partRefs).map((ref) => refIndex.get(`parts:${ref.data.slug}`)),
+			...resolveBySlugs(schedules, item.scheduleRefs).map((ref) => refIndex.get(`schedules:${ref.data.slug}`)),
+		].filter(Boolean),
+	}));
+	const uniqueAnchors = Array.from(refIndex.values());
+	const primarySource =
+		resolveBySlugs(sources, entry.data.sources).find((item) => item.data.slug === 'constitution-of-india') ??
+		resolveBySlugs(sources, entry.data.sources)[0];
+
+	return {
+		entry,
+		title: entry.data.title,
+		href: getEntryHref('amendments', entry.data.slug),
+		numberLabel: `${ordinal(entry.data.number)} Amendment`,
+		year: entry.data.year,
+		summary: entry.data.summary,
+		whatChanged: entry.data.whatChanged,
+		officialCitation: entry.data.officialCitation ?? entry.data.title,
+		topics: topicItems,
+		profile: entry.data.compareProfile,
+		highlights,
+		anchors: uniqueAnchors,
+		primarySource,
+	};
+}
+
+const left = buildAmendmentDetail(leftEntry);
+const right = buildAmendmentDetail(rightEntry);
+
+const sharedTopics = left.topics.filter((topic) => right.topics.some((item) => item.title === topic.title));
+const sharedAnchors = left.anchors.filter((anchor) => right.anchors.some((item) => item.key === anchor.key));
+const yearsApart = Math.abs(left.year - right.year);
+const profileRows = [
+	{ label: 'Constitutional Strategy', left: left.profile?.constitutionalStrategy, right: right.profile?.constitutionalStrategy },
+	{ label: 'Institutional Reach', left: left.profile?.institutionalReach, right: right.profile?.institutionalReach },
+	{ label: 'Rights Impact', left: left.profile?.rightsImpact, right: right.profile?.rightsImpact },
+	{ label: 'Federal Impact', left: left.profile?.federalImpact, right: right.profile?.federalImpact },
+	{ label: 'Long-term Legacy', left: left.profile?.longTermLegacy, right: right.profile?.longTermLegacy },
+];
+---
+
+<Layout
+	title={`${left.title} vs ${right.title} | Amendment Compare | Constitution Atlas`}
+	description={`Compare ${left.title} and ${right.title} through constitutional text anchors, official citations, and structured constitutional effects.`}
+>
+	<PageIntro
+		eyebrow="Amendment Compare"
+		title={`${left.title} vs ${right.title}`}
+		summary="Compare amendments as constitutional design choices rather than isolated events. This view keeps the comparison anchored to Articles, Parts, Schedules, and the official constitutional text."
+		meta={[`${left.year} vs ${right.year}`, `${yearsApart} year${yearsApart === 1 ? '' : 's'} apart`, 'Official-source anchored comparison']}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Amendments', href: '/amendments' },
+			{ label: 'Compare', href: '/amendments/compare' },
+			{ label: `${left.title} vs ${right.title}` },
+		]}
+	/>
+
+	<section class="list-shell compare-intro">
+		<form class="compare-picker" data-compare-picker>
+			<label>
+				<span>Left amendment</span>
+				<select name="left">
+					{
+						amendmentOptions.map((item) => (
+							<option value={item.data.slug} selected={item.data.slug === left.entry.data.slug}>
+								{ordinal(item.data.number)} Amendment · {item.data.title}
+							</option>
+						))
+					}
+				</select>
+			</label>
+			<label>
+				<span>Right amendment</span>
+				<select name="right">
+					{
+						amendmentOptions.map((item) => (
+							<option value={item.data.slug} selected={item.data.slug === right.entry.data.slug}>
+								{ordinal(item.data.number)} Amendment · {item.data.title}
+							</option>
+						))
+					}
+				</select>
+			</label>
+			<button type="submit" class="button-primary">Load pair</button>
+			<a class="button-secondary" href={`/amendments/compare/${right.entry.data.slug}/${left.entry.data.slug}`}>Swap order</a>
+		</form>
+	</section>
+
+	<section class="compare-grid">
+		<article class="compare-card">
+			<p class="eyebrow">{left.numberLabel}</p>
+			<h2>{left.title}</h2>
+			<p class="compare-card__meta">{left.year}</p>
+			<p>{left.summary}</p>
+			<p class="muted"><strong>Official citation:</strong> {left.officialCitation}</p>
+			<p class="muted">{left.whatChanged}</p>
+			<div class="link-list">
+				{left.topics.map((topic) => <a class="tag-chip" href={topic.href}>{topic.title}</a>)}
+			</div>
+			<div class="compare-card__actions">
+				<a class="button-secondary" href={left.href}>Open amendment page</a>
+				{left.primarySource && <a class="button-secondary" href={left.primarySource.data.url} target="_blank" rel="noreferrer">Open official source</a>}
+			</div>
+		</article>
+
+		<article class="compare-card">
+			<p class="eyebrow">{right.numberLabel}</p>
+			<h2>{right.title}</h2>
+			<p class="compare-card__meta">{right.year}</p>
+			<p>{right.summary}</p>
+			<p class="muted"><strong>Official citation:</strong> {right.officialCitation}</p>
+			<p class="muted">{right.whatChanged}</p>
+			<div class="link-list">
+				{right.topics.map((topic) => <a class="tag-chip" href={topic.href}>{topic.title}</a>)}
+			</div>
+			<div class="compare-card__actions">
+				<a class="button-secondary" href={right.href}>Open amendment page</a>
+				{right.primarySource && <a class="button-secondary" href={right.primarySource.data.url} target="_blank" rel="noreferrer">Open official source</a>}
+			</div>
+		</article>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Shared Ground</p>
+				<h2>Where the two amendments intersect</h2>
+			</div>
+		</div>
+		<div class="section-split">
+			<div class="section-panel">
+				<div class="section-heading compact">
+					<div>
+						<p class="eyebrow">Topics</p>
+						<h2>Overlapping constitutional themes</h2>
+					</div>
+				</div>
+				<div class="link-list">
+					{sharedTopics.length > 0 ? sharedTopics.map((topic) => <a class="tag-chip" href={topic.href}>{topic.title}</a>) : <p class="muted">No direct topical overlap is currently modeled between these amendments.</p>}
+				</div>
+			</div>
+			<div class="section-panel">
+				<div class="section-heading compact">
+					<div>
+						<p class="eyebrow">Anchors</p>
+						<h2>Shared text references</h2>
+					</div>
+				</div>
+				<div class="link-list">
+					{sharedAnchors.length > 0 ? sharedAnchors.map((anchor) => <a class="tag-chip" href={anchor.href}>{anchor.label}</a>) : <p class="muted">These amendments operate through different constitutional anchors in the current corpus.</p>}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Comparison Matrix</p>
+				<h2>What kind of constitutional work each amendment does</h2>
+			</div>
+		</div>
+		<div class="compare-matrix">
+			{profileRows.map((row) => (
+				<div class="compare-row">
+					<div class="compare-row__label">
+						<strong>{row.label}</strong>
+					</div>
+					<div class="compare-row__cell">
+						<p>{row.left}</p>
+					</div>
+					<div class="compare-row__cell">
+						<p>{row.right}</p>
+					</div>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="section-split">
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Left Amendment</p>
+					<h2>Text-anchored highlights</h2>
+				</div>
+			</div>
+			<div class="stack">
+				{
+					left.highlights.map((item) => (
+						<article class="compare-highlight">
+							<h3>{item.title}</h3>
+							<p>{item.note}</p>
+							<div class="link-list">
+								{item.refs.map((ref) => <a class="tag-chip" href={ref.href}>{ref.label}</a>)}
+							</div>
+						</article>
+					))
+				}
+			</div>
+			<div class="stack">
+				{
+					left.anchors.map((anchor) => (
+						<article class="compare-anchor">
+							<p class="eyebrow">{anchor.label}</p>
+							<h3><a href={anchor.href}>{anchor.title}</a></h3>
+							<p>{anchor.excerpt}</p>
+						</article>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Right Amendment</p>
+					<h2>Text-anchored highlights</h2>
+				</div>
+			</div>
+			<div class="stack">
+				{
+					right.highlights.map((item) => (
+						<article class="compare-highlight">
+							<h3>{item.title}</h3>
+							<p>{item.note}</p>
+							<div class="link-list">
+								{item.refs.map((ref) => <a class="tag-chip" href={ref.href}>{ref.label}</a>)}
+							</div>
+						</article>
+					))
+				}
+			</div>
+			<div class="stack">
+				{
+					right.anchors.map((anchor) => (
+						<article class="compare-anchor">
+							<p class="eyebrow">{anchor.label}</p>
+							<h3><a href={anchor.href}>{anchor.title}</a></h3>
+							<p>{anchor.excerpt}</p>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<script>
+		const form = document.querySelector('[data-compare-picker]');
+		form?.addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!(form instanceof HTMLFormElement)) {
+				return;
+			}
+
+			const data = new FormData(form);
+			const left = String(data.get('left') ?? '');
+			const right = String(data.get('right') ?? '');
+			if (!left || !right || left === right) {
+				return;
+			}
+
+			window.location.href = `/amendments/compare/${left}/${right}`;
+		});
+	</script>
+</Layout>

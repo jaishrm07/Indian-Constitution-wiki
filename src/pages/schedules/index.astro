@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortByNumericField } from '../../lib/content';
+
+const schedules = sortByNumericField(await getCollection('schedules'), 'number');
+---
+
+<Layout title="Schedules | Constitution Atlas" description="Browse key Schedules of the Indian Constitution.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Schedules</p>
+				<h1>Operational annexes of the Constitution</h1>
+			</div>
+			<p class="muted">Schedules often explain the working detail behind broader constitutional structure.</p>
+		</div>
+		<div class="card-grid">
+			{
+				schedules.map((schedule) => (
+					<ContentCard
+						eyebrow={`Schedule ${schedule.data.number}`}
+						title={schedule.data.title}
+						description={schedule.data.summary}
+						href={getEntryHref('schedules', schedule.data.slug)}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

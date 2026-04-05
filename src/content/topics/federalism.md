@@ -3,6 +3,15 @@ title: Federalism
 slug: federalism
 summary: Federalism in India concerns the constitutional distribution of power between the Union and the states, and the institutional safeguards that prevent central overreach.
 intro: Federalism should be explained through both text and practice, especially where political conflict tests constitutional design.
+parts:
+  - part-ix
+  - part-ixa
+  - part-xi
+  - part-xii
+  - part-xviii
+  - part-xx
+schedules:
+  - schedule-vii
 sources:
   - constitution-of-india
   - supreme-court-of-india

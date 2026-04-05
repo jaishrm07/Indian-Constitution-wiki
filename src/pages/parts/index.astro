@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getEntryHref, sortByNumericField } from '../../lib/content';
+
+const parts = sortByNumericField(await getCollection('parts'), 'order');
+---
+
+<Layout title="Parts | Constitution Atlas" description="Browse major Parts of the Indian Constitution.">
+	<section class="list-shell">
+		<div class="list-header">
+			<div>
+				<p class="eyebrow">Parts</p>
+				<h1>The Constitution's structural divisions</h1>
+			</div>
+			<p class="muted">Parts help readers move from isolated Articles to institutional structure.</p>
+		</div>
+		<div class="card-grid">
+			{
+				parts.map((part) => (
+					<ContentCard
+						eyebrow={part.data.code}
+						title={part.data.title}
+						description={part.data.summary}
+						href={getEntryHref('parts', part.data.slug)}
+					/>
+				))
+			}
+		</div>
+	</section>
+</Layout>

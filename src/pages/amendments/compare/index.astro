@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../../components/ContentCard.astro';
+import PageIntro from '../../../components/PageIntro.astro';
+import SearchSignals from '../../../components/SearchSignals.astro';
+import Layout from '../../../layouts/Layout.astro';
+import { ordinal } from '../../../lib/content';
+
+const amendments = [...(await getCollection('amendments'))].sort((left, right) => left.data.year - right.data.year);
+const defaultLeft = amendments.find((item) => item.data.slug === 'forty-second-amendment') ?? amendments[0];
+const defaultRight = amendments.find((item) => item.data.slug === 'forty-fourth-amendment') ?? amendments[1];
+
+const featuredPairs = [
+	{
+		title: 'Emergency power and constitutional correction',
+		description: 'Compare the Forty-Second and Forty-Fourth Amendments to see how concentration of power triggered later constitutional repair.',
+		left: 'forty-second-amendment',
+		right: 'forty-fourth-amendment',
+	},
+	{
+		title: 'Rural and urban local self-government',
+		description: 'Compare the Seventy-Third and Seventy-Fourth Amendments as parallel constitutional projects for decentralised democracy.',
+		left: 'seventy-third-amendment',
+		right: 'seventy-fourth-amendment',
+	},
+	{
+		title: 'Early rights recalibration and later corrective design',
+		description: 'Compare the First and Forty-Fourth Amendments to trace how rights architecture was adjusted at different constitutional moments.',
+		left: 'first-amendment',
+		right: 'forty-fourth-amendment',
+	},
+];
+---
+
+<Layout title="Amendment Compare | Constitution Atlas" description="Compare constitutional amendments through text anchors, official citations, and structured constitutional effects." pagefindIndexed={true}>
+	<PageIntro
+		eyebrow="Amendment Compare"
+		title="Compare constitutional amendments as design choices"
+		summary="This section treats amendments as comparable constitutional interventions rather than isolated pages. Compare strategy, institutional reach, rights impact, federal effect, and text anchors side by side."
+		meta={['Official-source anchored', 'Static compare pages', 'Built for constitutional reading rather than news browsing']}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Amendments', href: '/amendments' },
+			{ label: 'Compare' },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Page',
+			summary: 'Compare constitutional amendments side by side through official citations and constitutional text anchors.',
+			subtitle: 'Amendment compare studio',
+		}}
+		filters={{
+			type: 'Page',
+		}}
+	/>
+
+	<section class="list-shell compare-intro" data-pagefind-body>
+		<p>
+			Most amendment pages explain one constitutional moment. The compare studio makes them legible against each other so you can see what kind of constitutional problem each amendment tried to solve, how far it reached, and which provisions anchor that change in the constitutional text.
+		</p>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Open Compare</p>
+				<h2>Pick any two amendments</h2>
+			</div>
+		</div>
+		<form class="compare-picker" data-compare-picker>
+			<label>
+				<span>Left amendment</span>
+				<select name="left">
+					{
+						amendments.map((item) => (
+							<option value={item.data.slug} selected={item.data.slug === defaultLeft.data.slug}>
+								{ordinal(item.data.number)} Amendment · {item.data.title}
+							</option>
+						))
+					}
+				</select>
+			</label>
+			<label>
+				<span>Right amendment</span>
+				<select name="right">
+					{
+						amendments.map((item) => (
+							<option value={item.data.slug} selected={item.data.slug === defaultRight.data.slug}>
+								{ordinal(item.data.number)} Amendment · {item.data.title}
+							</option>
+						))
+					}
+				</select>
+			</label>
+			<button type="submit" class="button-primary">Open comparison</button>
+		</form>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Featured Pairs</p>
+				<h2>High-value amendment comparisons</h2>
+			</div>
+		</div>
+		<div class="card-grid">
+			{
+				featuredPairs.map((pair) => (
+					<ContentCard
+						eyebrow="Compare"
+						title={pair.title}
+						description={pair.description}
+						href={`/amendments/compare/${pair.left}/${pair.right}`}
+					/>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Catalog</p>
+				<h2>Amendments available for comparison</h2>
+			</div>
+		</div>
+		<div class="card-grid">
+			{
+				amendments.map((item) => (
+					<ContentCard
+						eyebrow={`${ordinal(item.data.number)} Amendment`}
+						title={item.data.title}
+						description={item.data.summary}
+						href={`/amendments/compare/${item.data.slug}/${defaultRight.data.slug === item.data.slug ? defaultLeft.data.slug : defaultRight.data.slug}`}
+						meta={item.data.year.toString()}
+					/>
+				))
+			}
+		</div>
+	</section>
+
+	<script>
+		const form = document.querySelector('[data-compare-picker]');
+		form?.addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!(form instanceof HTMLFormElement)) {
+				return;
+			}
+
+			const data = new FormData(form);
+			const left = String(data.get('left') ?? '');
+			const right = String(data.get('right') ?? '');
+			if (!left || !right || left === right) {
+				return;
+			}
+
+			window.location.href = `/amendments/compare/${left}/${right}`;
+		});
+	</script>
+</Layout>

@@ -1,0 +1,48 @@
+---
+type Primitive = string | number | Date;
+
+interface Props {
+	meta?: Record<string, Primitive | undefined>;
+	filters?: Record<string, Primitive | Primitive[] | undefined>;
+	sort?: Record<string, Primitive | undefined>;
+}
+
+const { meta = {}, filters = {}, sort = {} } = Astro.props;
+
+function normalizeValue(value: Primitive) {
+	if (value instanceof Date) {
+		return value.toISOString().slice(0, 10);
+	}
+
+	return String(value).trim();
+}
+
+const metaEntries = Object.entries(meta)
+	.map(([key, value]) => [key, value ? normalizeValue(value) : ''] as const)
+	.filter(([, value]) => value.length > 0);
+
+const filterEntries = Object.entries(filters).flatMap(([key, value]) => {
+	if (!value) {
+		return [];
+	}
+
+	const values = Array.isArray(value) ? value : [value];
+
+	return values
+		.map((item) => normalizeValue(item))
+		.filter((item) => item.length > 0)
+		.map((item) => ({ key, value: item }));
+});
+
+const sortEntries = Object.entries(sort)
+	.map(([key, value]) => [key, value ? normalizeValue(value) : ''] as const)
+	.filter(([, value]) => value.length > 0);
+---
+
+{(metaEntries.length > 0 || filterEntries.length > 0 || sortEntries.length > 0) && (
+	<div class="sr-only" data-pagefind-ignore aria-hidden="true">
+		{metaEntries.map(([key, value]) => <span data-pagefind-meta={key}>{value}</span>)}
+		{filterEntries.map((item) => <span data-pagefind-filter={item.key}>{item.value}</span>)}
+		{sortEntries.map(([key, value]) => <span data-pagefind-sort={key}>{value}</span>)}
+	</div>
+)}

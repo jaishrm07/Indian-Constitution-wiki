@@ -3,6 +3,8 @@ title: Judiciary
 slug: judiciary
 summary: The judiciary interprets constitutional text, enforces rights, and polices the limits of public power.
 intro: Judicial power becomes most visible when courts decide liberty cases, review state action, and supervise institutional boundaries.
+parts:
+  - part-iii
 sources:
   - constitution-of-india
   - supreme-court-of-india
