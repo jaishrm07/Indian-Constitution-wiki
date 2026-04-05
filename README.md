@@ -53,3 +53,14 @@ Each entry uses frontmatter for metadata and Markdown for body sections. Relatio
 - move search from a lightweight inline index to a dedicated static search solution
 - strengthen source normalization for official PDFs, judgments, and parliamentary records
 - prepare Cloudflare Pages deployment
+
+## GitHub Pages Deployment
+
+This repository is configured to deploy as a GitHub Pages project site from `main`.
+
+1. In the repository settings, set `Pages` to use `GitHub Actions` as the source.
+2. Push to `main`; the workflow in `.github/workflows/deploy.yml` builds the static site and publishes `dist`.
+3. The Astro config automatically switches to the repository subpath when `GITHUB_PAGES=true`, so links and assets work under `/<repo-name>/`.
+
+The deployed URL will follow the standard GitHub Pages project format:
+`https://<owner>.github.io/<repo-name>/`
