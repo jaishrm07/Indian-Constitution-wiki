@@ -17,6 +17,9 @@ officialText: >-
 relatedArticles:
   - article-14
   - article-19
+  - article-26
+  - article-27
+  - article-28
 topics:
   - fundamental-rights
   - secularism

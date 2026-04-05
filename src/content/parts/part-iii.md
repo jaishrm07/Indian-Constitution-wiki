@@ -9,6 +9,12 @@ articleSlugs:
   - article-14
   - article-19
   - article-21
+  - article-25
+  - article-26
+  - article-27
+  - article-28
+  - article-29
+  - article-30
   - article-32
 topics:
   - fundamental-rights

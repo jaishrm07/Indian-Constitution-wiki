@@ -13,6 +13,7 @@ officialText: >-
   educational institution maintained by the State or receiving aid out of State
   funds on grounds only of religion, race, caste, language or any of them.
 relatedArticles:
+  - article-28
   - article-30
 topics:
   - minority-rights

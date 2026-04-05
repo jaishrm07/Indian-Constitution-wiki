@@ -13,6 +13,7 @@ officialText: >-
   against any educational institution on the ground that it is under the
   management of a minority, whether based on religion or language.
 relatedArticles:
+  - article-28
   - article-29
   - article-25
 topics:

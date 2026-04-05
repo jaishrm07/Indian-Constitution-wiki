@@ -162,3 +162,7 @@ A strong constitutional topic page does more than group links. It should answer 
 ### 30. Content depth should follow live-pressure clusters
 
 When deciding what to add next, the best guide is not abstract completeness. It is the set of constitutional clusters already under live pressure on the site. Adding Articles 163, 174, 200, and 201 is especially valuable because those provisions immediately strengthen governor-state disputes, anti-defection coverage, state-legislature hubs, and federalism dossiers all at once.
+
+### 31. Thin topic pages usually hide missing article series, not missing prose
+
+When a topic feels weak, the first fix is often to add the missing constitutional series around it rather than rewriting the topic summary. Secularism became materially stronger once Articles 26, 27, and 28 were added alongside the cases that readers actually need to understand them. The same pattern will likely repeat across other weak dossiers.

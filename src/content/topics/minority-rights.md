@@ -1,8 +1,8 @@
 ---
 title: Minority Rights
 slug: minority-rights
-summary: Minority rights in the Constitution protect cultural distinctiveness, educational autonomy, and equal treatment within the broader framework of citizenship.
-intro: Minority rights should be read through constitutional text, not only through political rhetoric. Articles 29 and 30 are core entry points.
+summary: Minority rights in the Constitution protect cultural distinctiveness, educational autonomy, non-discrimination, and equal treatment within the broader framework of citizenship.
+intro: Minority rights should be read through constitutional text, not only through political rhetoric. Articles 28 to 30 are key entry points.
 parts:
   - part-iii
 sources:
@@ -16,4 +16,4 @@ The Constitution addresses pluralism through specific guarantees, especially in 
 
 ## How to read the topic
 
-Readers should connect Articles 29 and 30 with equality, religious freedom, and disputes over the permissible scope of state regulation.
+Readers should connect Articles 28, 29, and 30 with equality, religious freedom, and disputes over the permissible scope of state regulation.
