@@ -8,10 +8,10 @@ status: ongoing
 issueTypes:
   - structural-reform
   - elections-and-democracy
-summary: Proposals to align election cycles across the Union and the states raise major constitutional questions about federalism, democratic accountability, and the amendment power.
+summary: The 129th Amendment package under Joint Committee scrutiny would align election cycles across the Union and the states, raising major constitutional questions about federalism, democratic accountability, and the amendment power.
 constitutionalQuestion: Can the Constitution be reworked to synchronise election cycles without distorting federal structure, legislative accountability, or the basic design of representative government?
 whyItMatters: The debate goes well beyond logistics. It concerns how often governments remain accountable to voters, how state politics differ from national politics, and whether deep structural redesign is constitutionally permissible.
-statusNote: The Constitution (One Hundred and Twenty-Ninth Amendment) Bill, 2024 was introduced in Lok Sabha on 17 December 2024, and a Joint Committee was constituted on 20 December 2024. Parliamentary records show that, on 12 March 2025, the time for the Committee to report was extended until the first day of the last week of the Monsoon Session, 2025. The live question is whether the proposed amendment design can preserve federal accountability and democratic renewal.
+statusNote: The Constitution (One Hundred and Twenty-Ninth Amendment) Bill, 2024 and the companion Union Territories Laws (Amendment) Bill, 2024 were introduced in Lok Sabha on 17 December 2024. On 20 December 2024, the Bills were referred to a Joint Committee through separate motions adopted by both Houses. Parliamentary records show that, on 12 August 2025, the Lok Sabha extended the Committee's reporting deadline up to the first day of the last week of the Winter Session, 2025. The live question is whether the proposed amendment design can preserve federal accountability and democratic renewal.
 actors:
   - Parliament
   - Election Commission of India

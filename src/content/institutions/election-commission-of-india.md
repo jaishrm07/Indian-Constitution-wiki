@@ -17,9 +17,14 @@ topics:
 cases:
   - mohinder-singh-gill
 currentAffairs:
+  - candidate-disclosure-and-criminalisation-of-politics
+  - election-commission-appointments-and-independence
+  - electoral-finance-and-disclosure
   - one-nation-one-election
 sources:
   - election-commission-of-india
+  - eci-phase-one-press-note-2024
+  - eci-candidate-affidavit-portal
   - prs-india
   - constitution-of-india
 ---

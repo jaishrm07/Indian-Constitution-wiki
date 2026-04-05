@@ -11,7 +11,7 @@ issueTypes:
 summary: The appointments framework reshaped after Anoop Baranwal is now governed by the 2023 law brought into force on 2 January 2024, keeping Article 324 independence questions alive.
 constitutionalQuestion: Does the post-2023 appointment framework for Election Commissioners preserve the independence that Article 324 requires for free and fair elections.
 whyItMatters: Election credibility depends not only on polling-day administration but also on whether the institution supervising elections is insulated from partisan control at the point of appointment.
-statusNote: Anoop Baranwal was decided on 2 March 2023. The appointments bill was introduced in Rajya Sabha on 10 August 2023, passed Rajya Sabha on 12 December 2023, and passed Lok Sabha on 21 December 2023. Official legislative material records that the Act was brought into force with effect from 2 January 2024, and the appointments of Gyanesh Kumar and Sukhbir Singh Sandhu were made with effect from 15 March 2024. The live constitutional issue is whether the enacted model preserves the independence baseline the Court had temporarily created.
+statusNote: Anoop Baranwal was decided on 2 March 2023. The appointments bill was introduced in Rajya Sabha on 10 August 2023, passed Rajya Sabha on 12 December 2023, and passed Lok Sabha on 21 December 2023. The Act received Presidential assent on 28 December 2023 and was brought into force with effect from 2 January 2024. Gyanesh Kumar and Sukhbir Singh Sandhu were appointed as Election Commissioners with effect from 15 March 2024. Gazette notifications dated 17 February 2025 named Gyanesh Kumar as Chief Election Commissioner and Dr. Vivek Joshi as Election Commissioner, and Election Commission press notes dated 19 February 2025 recorded both assuming charge under the new law. The live constitutional issue is whether the enacted model preserves the interim selection arrangement the Court put in place until Parliament legislated.
 actors:
   - Election Commission of India
   - Parliament
@@ -51,6 +51,8 @@ sources:
   - constitution-of-india
   - chief-election-commissioners-bill-2023
   - cec-appointments-act-2023-implementation
+  - eci-chief-election-commissioner-press-note-2025
+  - eci-election-commissioner-press-note-2025
   - legislative-department
   - election-commission-of-india
   - supreme-court-of-india

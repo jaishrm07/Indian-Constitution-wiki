@@ -210,3 +210,11 @@ Constitutional current-affairs pages become much more trustworthy when the statu
 ### 42. Research sync and research lint are separate phases, not parallel tasks
 
 Once the site and the Obsidian-style vault both become canonical working layers, coverage automation has to reflect the workflow order. Sync must run before lint; otherwise the tooling reports false gaps even when the notes were generated correctly. For knowledge-intensive publishing systems, the pipeline order is part of data quality.
+
+### 43. Live desks age first in their chronology, not in their constitutional framing
+
+A well-framed current-affairs page can still become stale if its milestone chain stops one order or one committee extension too early. The constitutional question may remain sound, but reader trust depends on whether the status line reflects the latest official procedural step, especially for bills under committee scrutiny and litigation that keeps generating follow-on orders.
+
+### 44. Election accountability is a product of public infrastructure, not just doctrine
+
+Candidate-disclosure and criminalisation-of-politics coverage becomes much stronger when the site models the actual public infrastructure voters use, such as affidavit portals, KYC apps, disclosure press notes, and qualification timelines. That turns abstract election law into an operational accountability system readers can inspect and revisit.

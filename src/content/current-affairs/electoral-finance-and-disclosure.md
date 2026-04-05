@@ -9,10 +9,10 @@ issueTypes:
   - elections-and-democracy
   - rights-and-liberties
   - structural-reform
-summary: The Supreme Court struck down the Electoral Bond Scheme on 15 February 2024, but the live issue is what replaces it and whether political funding becomes genuinely transparent.
+summary: The Supreme Court struck down the Electoral Bond Scheme on 15 February 2024, but the live issue is what replaces it and whether a durable disclosure regime follows.
 constitutionalQuestion: Can political donations remain hidden from voters, or do Article 19(1)(a) and the constitutional scheme of elections require disclosure and traceability?
 whyItMatters: Party funding affects voter knowledge, institutional integrity, corruption risk, and the fairness of the electoral process.
-statusNote: The 15 February 2024 judgment struck down the scheme. On 11 March 2024, the Supreme Court extended SBI's time to disclose data until 12 March 2024, and the Election Commission recorded public disclosure of the data on 21 March 2024. The live policy question is whether Parliament or regulators build a durable replacement disclosure regime.
+statusNote: The 15 February 2024 judgment struck down the scheme. On 11 March 2024, the Supreme Court refused SBI's request to wait until June and directed disclosure by the close of business on 12 March 2024, with the Election Commission to publish by 5 p.m. on 15 March 2024. On 15 March 2024, the Court further directed SBI to disclose the alphanumeric bond details and ordered the Election Commission to upload that data by 5 p.m. on 17 March 2024. The Election Commission's own press note records public disclosure of the data on 21 March 2024. The live policy question is whether Parliament or regulators build a durable replacement disclosure regime.
 actors:
   - Supreme Court of India
   - Election Commission of India
@@ -54,6 +54,7 @@ sources:
   - constitution-of-india
   - electoral-bonds-judgment-2024
   - electoral-bonds-order-2024
+  - electoral-bonds-order-15-march-2024
   - eci-electoral-bonds-disclosure-2024
   - election-commission-of-india
   - supreme-court-of-india

@@ -11,7 +11,7 @@ issueTypes:
 summary: The Supreme Court's 5 May 2025 transparency release made more of the appointments pipeline publicly visible, but the debate over independence, criteria, delays, and accountability remains active.
 constitutionalQuestion: How far can judicial appointments remain collegium-driven under Articles 124 and 217, and what transparency or process duties follow from judicial independence?
 whyItMatters: Judicial appointments determine court capacity, legitimacy, diversity, and the balance between executive involvement and institutional autonomy.
-statusNote: On 5 May 2025 the Supreme Court said it had placed the appointments process for the High Courts and Supreme Court on its website and uploaded High Court appointment data for the period from 9 November 2022 to 5 May 2025. The live question is whether this greater visibility improves speed and predictability without weakening independence.
+statusNote: On 1 April 2025, the Full Court decided that Supreme Court judges' asset statements would be placed in the public domain. On 5 May 2025, the Supreme Court said it had posted process-stage information for appointments to the High Courts and Supreme Court and uploaded High Court appointment data for the period from 9 November 2022 to 5 May 2025. The official collegium portal continued updating later in 2025, so the live question is whether this growing disclosure layer improves speed and predictability without overstating completeness or weakening independence.
 actors:
   - Supreme Court of India
   - Department of Justice
