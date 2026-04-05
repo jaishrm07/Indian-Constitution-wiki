@@ -202,3 +202,11 @@ Once the current-affairs desk becomes richer, missing cases become easier to spo
 ### 40. Resolved constitutional crises should stay searchable if they define the next reform baseline
 
 Some issues stop being live without stopping being operationally important. Electoral bonds are the clearest example: the scheme is gone, but any future political-finance regime will be designed in the shadow of that judgment, so the desk entry still matters as a baseline record.
+
+### 41. Official-source precision matters more than early summary speed on live desks
+
+Constitutional current-affairs pages become much more trustworthy when the status line is rebuilt from exact institutional dates rather than from memory or a secondary summary. Replacing rough descriptions with precise milestones such as a commencement date, a publication date, or a parliamentary extension order immediately improves both reader trust and future update discipline.
+
+### 42. Research sync and research lint are separate phases, not parallel tasks
+
+Once the site and the Obsidian-style vault both become canonical working layers, coverage automation has to reflect the workflow order. Sync must run before lint; otherwise the tooling reports false gaps even when the notes were generated correctly. For knowledge-intensive publishing systems, the pipeline order is part of data quality.

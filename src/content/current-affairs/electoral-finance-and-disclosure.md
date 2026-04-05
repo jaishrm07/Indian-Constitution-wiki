@@ -12,7 +12,7 @@ issueTypes:
 summary: The Supreme Court struck down the Electoral Bond Scheme on 15 February 2024, but the live issue is what replaces it and whether political funding becomes genuinely transparent.
 constitutionalQuestion: Can political donations remain hidden from voters, or do Article 19(1)(a) and the constitutional scheme of elections require disclosure and traceability?
 whyItMatters: Party funding affects voter knowledge, institutional integrity, corruption risk, and the fairness of the electoral process.
-statusNote: The Court ordered SBI to stop issuing bonds, to send donor and encashment data to the Election Commission by 6 March 2024, and for the ECI to publish the data by 13 March 2024. The live policy question is whether Parliament or regulators build a durable replacement disclosure regime.
+statusNote: The 15 February 2024 judgment struck down the scheme. On 11 March 2024, the Supreme Court extended SBI's time to disclose data until 12 March 2024, and the Election Commission recorded public disclosure of the data on 21 March 2024. The live policy question is whether Parliament or regulators build a durable replacement disclosure regime.
 actors:
   - Supreme Court of India
   - Election Commission of India
@@ -53,6 +53,7 @@ institutions:
 sources:
   - constitution-of-india
   - electoral-bonds-judgment-2024
+  - electoral-bonds-order-2024
   - eci-electoral-bonds-disclosure-2024
   - election-commission-of-india
   - supreme-court-of-india

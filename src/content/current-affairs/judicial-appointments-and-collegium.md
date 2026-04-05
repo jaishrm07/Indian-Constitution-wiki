@@ -8,10 +8,10 @@ status: ongoing
 issueTypes:
   - institutional-conflict
   - structural-reform
-summary: The Supreme Court's 5 May 2025 transparency release made the appointments pipeline visible, but the debate over independence, criteria, delays, and accountability is still active.
+summary: The Supreme Court's 5 May 2025 transparency release made more of the appointments pipeline publicly visible, but the debate over independence, criteria, delays, and accountability remains active.
 constitutionalQuestion: How far can judicial appointments remain collegium-driven under Articles 124 and 217, and what transparency or process duties follow from judicial independence?
 whyItMatters: Judicial appointments determine court capacity, legitimacy, diversity, and the balance between executive involvement and institutional autonomy.
-statusNote: On 5 May 2025 the Supreme Court said it had placed the complete process of appointments to the High Courts and Supreme Court on its website, and uploaded High Court appointment data for the period from 9 November 2022 to 5 May 2025. The live question is whether transparency improves speed and predictability without weakening independence.
+statusNote: On 5 May 2025 the Supreme Court said it had placed the appointments process for the High Courts and Supreme Court on its website and uploaded High Court appointment data for the period from 9 November 2022 to 5 May 2025. The live question is whether this greater visibility improves speed and predictability without weakening independence.
 actors:
   - Supreme Court of India
   - Department of Justice
