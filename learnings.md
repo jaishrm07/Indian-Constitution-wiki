@@ -166,3 +166,7 @@ When deciding what to add next, the best guide is not abstract completeness. It 
 ### 31. Thin topic pages usually hide missing article series, not missing prose
 
 When a topic feels weak, the first fix is often to add the missing constitutional series around it rather than rewriting the topic summary. Secularism became materially stronger once Articles 26, 27, and 28 were added alongside the cases that readers actually need to understand them. The same pattern will likely repeat across other weak dossiers.
+
+### 32. Some weak dossiers are graph problems, not content problems
+
+A topic can look shallow even when the site already has the necessary material. Free speech and privacy improved simply by tagging Article 19, Article 21, and the relevant cases more accurately. Before adding new pages, it is often worth checking whether the graph already contains the answer but the relationships are too sparse for the UI to reveal it.

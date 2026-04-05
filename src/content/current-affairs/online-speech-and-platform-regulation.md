@@ -32,6 +32,7 @@ articles:
 parts:
   - part-iii
 cases:
+  - anuradha-bhasin
   - shreya-singhal
   - maneka-gandhi
 topics:

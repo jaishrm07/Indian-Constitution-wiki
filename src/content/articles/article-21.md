@@ -12,10 +12,14 @@ officialText: >-
 relatedArticles:
   - article-14
   - article-19
+  - article-22
   - article-32
 topics:
   - fundamental-rights
   - judiciary
+  - privacy
+  - preventive-detention
+  - property-and-due-process
 sources:
   - constitution-of-india
   - supreme-court-of-india

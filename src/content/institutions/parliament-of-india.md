@@ -21,6 +21,7 @@ parts:
 topics:
   - elections-and-institutions
   - basic-structure
+  - delhi-governance
   - federalism
 currentAffairs:
   - one-nation-one-election

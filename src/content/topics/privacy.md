@@ -6,6 +6,7 @@ intro: Privacy is a relatively modern constitutional vocabulary in India, but it
 parts:
   - part-iii
 sources:
+  - constitution-of-india
   - supreme-court-of-india
   - prs-india
 ---

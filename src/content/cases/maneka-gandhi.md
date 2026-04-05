@@ -15,6 +15,8 @@ articles:
 topics:
   - fundamental-rights
   - judiciary
+  - privacy
+  - property-and-due-process
 sources:
   - supreme-court-of-india
 ---

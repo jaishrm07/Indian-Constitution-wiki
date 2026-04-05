@@ -23,6 +23,7 @@ relatedArticles:
   - article-21
 topics:
   - fundamental-rights
+  - free-speech
 sources:
   - constitution-of-india
   - supreme-court-of-india

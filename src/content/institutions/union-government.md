@@ -15,6 +15,7 @@ parts:
 topics:
   - federalism
   - basic-structure
+  - delhi-governance
   - free-speech
   - privacy
 currentAffairs:

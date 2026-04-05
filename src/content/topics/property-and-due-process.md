@@ -3,6 +3,9 @@ title: Property and Due Process
 slug: property-and-due-process
 summary: Property remains constitutionally protected through Article 300A, even though it is no longer a fundamental right.
 intro: Property questions still matter constitutionally because state deprivation requires lawful authority and often implicates fairness and due process concerns.
+parts:
+  - part-iii
+  - part-xii
 sources:
   - constitution-of-india
   - supreme-court-of-india
@@ -14,4 +17,4 @@ Land, acquisition, dispossession, and authority of law remain recurring constitu
 
 ## How to read the topic
 
-Readers should connect Article 300A with legality, procedural fairness, and the continuing constitutional significance of property after the Forty-Fourth Amendment era.
+Readers should connect Article 300A with Article 21, legality, procedural fairness, and the continuing constitutional significance of property after the Forty-Fourth Amendment era.
