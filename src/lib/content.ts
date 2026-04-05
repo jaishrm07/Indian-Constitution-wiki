@@ -25,6 +25,23 @@ const collectionPaths: Record<LinkedCollection, string> = {
 	sources: '/sources',
 };
 
+export function withBase(path: string) {
+	if (!path || path === '/') {
+		return import.meta.env.BASE_URL;
+	}
+
+	if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('#')) {
+		return path;
+	}
+
+	if (path.startsWith(import.meta.env.BASE_URL)) {
+		return path;
+	}
+
+	const normalized = path.startsWith('/') ? path.slice(1) : path;
+	return `${import.meta.env.BASE_URL}${normalized}`;
+}
+
 type SluggedEntry = {
 	data: {
 		slug: string;
@@ -34,7 +51,7 @@ type SluggedEntry = {
 };
 
 export function getEntryHref(collection: LinkedCollection, slug: string) {
-	return `${collectionPaths[collection]}/${slug}`;
+	return withBase(`${collectionPaths[collection]}/${slug}`);
 }
 
 export function resolveBySlugs<T extends SluggedEntry>(entries: T[], slugs: string[] = []) {

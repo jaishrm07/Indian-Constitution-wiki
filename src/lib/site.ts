@@ -1,17 +1,19 @@
+import { withBase } from './content';
+
 export const siteName = 'Constitution Atlas';
 
 export const navItems = [
-	{ href: '/articles', label: 'Articles' },
-	{ href: '/parts', label: 'Parts' },
-	{ href: '/schedules', label: 'Schedules' },
-	{ href: '/topics', label: 'Topics' },
-	{ href: '/institutions', label: 'Institutions' },
-	{ href: '/sources', label: 'Sources' },
-	{ href: '/graph', label: 'Graph' },
-	{ href: '/cases', label: 'Cases' },
-	{ href: '/amendments', label: 'Amendments' },
-	{ href: '/current-affairs', label: 'Current Affairs' },
-	{ href: '/timeline', label: 'Timeline' },
-	{ href: '/glossary', label: 'Glossary' },
-	{ href: '/search', label: 'Search' },
+	{ href: withBase('/articles'), label: 'Articles' },
+	{ href: withBase('/parts'), label: 'Parts' },
+	{ href: withBase('/schedules'), label: 'Schedules' },
+	{ href: withBase('/topics'), label: 'Topics' },
+	{ href: withBase('/institutions'), label: 'Institutions' },
+	{ href: withBase('/sources'), label: 'Sources' },
+	{ href: withBase('/graph'), label: 'Graph' },
+	{ href: withBase('/cases'), label: 'Cases' },
+	{ href: withBase('/amendments'), label: 'Amendments' },
+	{ href: withBase('/current-affairs'), label: 'Current Affairs' },
+	{ href: withBase('/timeline'), label: 'Timeline' },
+	{ href: withBase('/glossary'), label: 'Glossary' },
+	{ href: withBase('/search'), label: 'Search' },
 ];

@@ -16,6 +16,7 @@ import {
 	sortByDateAsc,
 	titleCaseStatus,
 	uniqueBySlug,
+	withBase,
 } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -197,7 +198,7 @@ const sourceGroups = [
 					<>
 						<h3>Longer constitutional arc</h3>
 						<div class="stack">
-							{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+							{relatedTimeline.map((item) => <a class="search-result" href={withBase(`/timeline#${item.data.slug}`)}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
 						</div>
 					</>
 				)}

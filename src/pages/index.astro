@@ -11,6 +11,7 @@ import {
 	sortByNumericField,
 	sortByTitle,
 	titleCaseStatus,
+	withBase,
 } from '../lib/content';
 
 const [articles, parts, schedules, topics, institutions, glossary, cases, amendments, timeline, currentAffairs, sources] = await Promise.all([
@@ -52,7 +53,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				Browse Articles, landmark cases, amendments, and current constitutional debates in one linked reading
 				system built for students, journalists, and serious readers.
 			</p>
-			<form class="hero-search" action="/search" method="get">
+			<form class="hero-search" action={withBase('/search')} method="get">
 				<label class="sr-only" for="home-search">Search the site</label>
 				<input
 					id="home-search"
@@ -63,8 +64,8 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<button type="submit">Search</button>
 			</form>
 			<div class="hero-actions">
-				<a class="button-primary" href="/articles">Browse Articles</a>
-				<a class="button-secondary" href="/current-affairs">Track Current Affairs</a>
+				<a class="button-primary" href={withBase('/articles')}>Browse Articles</a>
+				<a class="button-secondary" href={withBase('/current-affairs')}>Track Current Affairs</a>
 			</div>
 		</div>
 		<div class="hero-panel">
@@ -87,62 +88,62 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 			<p class="section-note">The reference layer anchors the live explainers.</p>
 		</div>
 		<div class="feature-grid">
-			<a class="feature-tile" href="/articles">
+			<a class="feature-tile" href={withBase('/articles')}>
 				<span>Articles</span>
 				<strong>{articles.length} constitutional provisions</strong>
 				<p>Plain-English summaries, related cases, and linked issue pages.</p>
 			</a>
-			<a class="feature-tile" href="/parts">
+			<a class="feature-tile" href={withBase('/parts')}>
 				<span>Parts</span>
 				<strong>{parts.length} structural divisions</strong>
 				<p>Read rights, emergency powers, and amendment logic in constitutional context.</p>
 			</a>
-			<a class="feature-tile" href="/schedules">
+			<a class="feature-tile" href={withBase('/schedules')}>
 				<span>Schedules</span>
 				<strong>{schedules.length} operational annexes</strong>
 				<p>Surface the lists and frameworks that make the text work in practice.</p>
 			</a>
-			<a class="feature-tile" href="/topics">
+			<a class="feature-tile" href={withBase('/topics')}>
 				<span>Topics</span>
 				<strong>{topics.length} thematic hubs</strong>
 				<p>Use broad themes like federalism and fundamental rights to navigate.</p>
 			</a>
-			<a class="feature-tile" href="/institutions">
+			<a class="feature-tile" href={withBase('/institutions')}>
 				<span>Institutions</span>
 				<strong>{institutions.length} constitutional actors</strong>
 				<p>Follow Parliament, the Court, ECI, governors, and other actors behind live disputes.</p>
 			</a>
-			<a class="feature-tile" href="/sources">
+			<a class="feature-tile" href={withBase('/sources')}>
 				<span>Sources</span>
 				<strong>{sources.length} registered source profiles</strong>
 				<p>See which official, court, policy, and reference sources the site relies on and when each should be used.</p>
 			</a>
-			<a class="feature-tile" href="/cases">
+			<a class="feature-tile" href={withBase('/cases')}>
 				<span>Landmark Cases</span>
 				<strong>{cases.length} foundational judgments</strong>
 				<p>See how doctrine and interpretation shape constitutional meaning.</p>
 			</a>
-			<a class="feature-tile" href="/amendments">
+			<a class="feature-tile" href={withBase('/amendments')}>
 				<span>Amendments</span>
 				<strong>{amendments.length} constitutional changes</strong>
 				<p>Track how the document evolved and which Articles were affected.</p>
 			</a>
-			<a class="feature-tile" href="/glossary">
+			<a class="feature-tile" href={withBase('/glossary')}>
 				<span>Glossary</span>
 				<strong>{glossary.length} plain-English terms</strong>
 				<p>Decode doctrinal language without leaving the reading flow.</p>
 			</a>
-			<a class="feature-tile" href="/timeline">
+			<a class="feature-tile" href={withBase('/timeline')}>
 				<span>Timeline</span>
 				<strong>{timeline.length} turning points</strong>
 				<p>See how cases, crises, and amendments changed constitutional meaning.</p>
 			</a>
-			<a class="feature-tile" href="/graph">
+			<a class="feature-tile" href={withBase('/graph')}>
 				<span>Graph</span>
 				<strong>Interactive relationship explorer</strong>
 				<p>See Articles, institutions, cases, amendments, and live issues as one connected map.</p>
 			</a>
-			<a class="feature-tile" href="/search">
+			<a class="feature-tile" href={withBase('/search')}>
 				<span>Search</span>
 				<strong>Cross-site lookup</strong>
 				<p>Find Articles, Parts, cases, schedules, current affairs, and glossary terms.</p>
@@ -156,7 +157,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<p class="eyebrow">Graph</p>
 				<h2>Explore the site as a constitutional network</h2>
 			</div>
-			<a class="section-link" href="/graph">Open the Relationship Explorer</a>
+			<a class="section-link" href={withBase('/graph')}>Open the Relationship Explorer</a>
 		</div>
 		<div class="search-result">
 			<p class="eyebrow">Knowledge Graph</p>
@@ -174,7 +175,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<p class="eyebrow">Institutions</p>
 				<h2>Follow the constitutional actors</h2>
 			</div>
-			<a class="section-link" href="/institutions">See all Institutions</a>
+			<a class="section-link" href={withBase('/institutions')}>See all Institutions</a>
 		</div>
 		<div class="card-grid">
 			{
@@ -196,7 +197,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<p class="eyebrow">Articles</p>
 				<h2>Core provisions</h2>
 			</div>
-			<a class="section-link" href="/articles">See all Articles</a>
+			<a class="section-link" href={withBase('/articles')}>See all Articles</a>
 		</div>
 		<div class="card-grid">
 			{
@@ -219,7 +220,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<p class="eyebrow">Topics</p>
 				<h2>Browse by constitutional theme</h2>
 			</div>
-			<a class="section-link" href="/topics">See all Topics</a>
+			<a class="section-link" href={withBase('/topics')}>See all Topics</a>
 		</div>
 		<div class="card-grid">
 			{
@@ -242,7 +243,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 					<p class="eyebrow">Parts</p>
 					<h2>Read the constitutional structure</h2>
 				</div>
-				<a class="section-link" href="/parts">See all</a>
+				<a class="section-link" href={withBase('/parts')}>See all</a>
 			</div>
 			<div class="stack">
 				{
@@ -263,7 +264,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 					<p class="eyebrow">Schedules</p>
 					<h2>Reference the working detail</h2>
 				</div>
-				<a class="section-link" href="/schedules">See all</a>
+				<a class="section-link" href={withBase('/schedules')}>See all</a>
 			</div>
 			<div class="stack">
 				{
@@ -287,7 +288,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 					<p class="eyebrow">Cases</p>
 					<h2>Landmark judgments</h2>
 				</div>
-				<a class="section-link" href="/cases">View all</a>
+				<a class="section-link" href={withBase('/cases')}>View all</a>
 			</div>
 			<div class="stack">
 				{
@@ -309,7 +310,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 					<p class="eyebrow">Current Affairs</p>
 					<h2>Live constitutional explainers</h2>
 				</div>
-				<a class="section-link" href="/current-affairs">Track all</a>
+				<a class="section-link" href={withBase('/current-affairs')}>Track all</a>
 			</div>
 			<div class="stack">
 				{
@@ -334,7 +335,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 					<p class="eyebrow">Glossary</p>
 					<h2>Decode constitutional language</h2>
 				</div>
-				<a class="section-link" href="/glossary">Browse all</a>
+				<a class="section-link" href={withBase('/glossary')}>Browse all</a>
 			</div>
 			<div class="stack">
 				{
@@ -355,7 +356,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 					<p class="eyebrow">Sources</p>
 					<h2>Trust and verification layer</h2>
 				</div>
-				<a class="section-link" href="/sources">Open source registry</a>
+				<a class="section-link" href={withBase('/sources')}>Open source registry</a>
 			</div>
 			<div class="stack">
 				{
@@ -379,12 +380,12 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<p class="eyebrow">Timeline</p>
 				<h2>Major turning points</h2>
 			</div>
-			<a class="section-link" href="/timeline">Open timeline</a>
+			<a class="section-link" href={withBase('/timeline')}>Open timeline</a>
 		</div>
 		<div class="stack">
 			{
 				featuredTimeline.map((item) => (
-					<a class="search-result" href={`/timeline#${item.data.slug}`}>
+					<a class="search-result" href={withBase(`/timeline#${item.data.slug}`)}>
 						<p class="eyebrow">{formatDate(item.data.date)}</p>
 						<strong>{item.data.title}</strong>
 						<p>{item.data.summary}</p>
@@ -400,7 +401,7 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<p class="eyebrow">Amendments</p>
 				<h2>Constitutional change over time</h2>
 			</div>
-			<a class="section-link" href="/amendments">See amendment archive</a>
+			<a class="section-link" href={withBase('/amendments')}>See amendment archive</a>
 		</div>
 		<div class="timeline-strip">
 			{

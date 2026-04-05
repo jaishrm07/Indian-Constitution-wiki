@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 const initialQuery = Astro.url.searchParams.get('q') ?? '';
+const baseUrl = import.meta.env.BASE_URL;
 const initialFilters: Record<string, string[]> = {};
 
 for (const [key, value] of Astro.url.searchParams.entries()) {
@@ -47,7 +48,7 @@ for (const [key, value] of Astro.url.searchParams.entries()) {
 		</div>
 	</section>
 
-	<script define:vars={{ initialQuery, initialFilters }}>
+	<script define:vars={{ initialQuery, initialFilters, baseUrl }}>
 		const input = document.getElementById('search-input');
 		const results = document.getElementById('search-results');
 		const state = document.getElementById('search-state');
@@ -374,7 +375,7 @@ for (const [key, value] of Astro.url.searchParams.entries()) {
 
 		async function initSearch() {
 			try {
-				pagefind = await import('/pagefind/pagefind.js');
+				pagefind = await import(`${baseUrl}pagefind/pagefind.js`);
 				await pagefind.options({
 					excerptLength: 18,
 					highlightParam: 'pagefind-highlight',

@@ -1,3 +1,7 @@
+---
+import { withBase } from '../lib/content';
+---
+
 <footer class="site-footer" data-pagefind-ignore>
 	<div class="container site-footer__inner">
 		<div>
@@ -7,13 +11,13 @@
 			</p>
 		</div>
 		<div class="footer-links">
-			<a href="/parts">Parts</a>
-			<a href="/schedules">Schedules</a>
-			<a href="/timeline">Timeline</a>
-			<a href="/glossary">Glossary</a>
-			<a href="/about">About</a>
-			<a href="/methodology">Methodology</a>
-			<a href="/sources">Sources</a>
+			<a href={withBase('/parts')}>Parts</a>
+			<a href={withBase('/schedules')}>Schedules</a>
+			<a href={withBase('/timeline')}>Timeline</a>
+			<a href={withBase('/glossary')}>Glossary</a>
+			<a href={withBase('/about')}>About</a>
+			<a href={withBase('/methodology')}>Methodology</a>
+			<a href={withBase('/sources')}>Sources</a>
 		</div>
 	</div>
 </footer>

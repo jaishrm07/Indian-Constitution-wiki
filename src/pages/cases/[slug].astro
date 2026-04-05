@@ -5,7 +5,7 @@ import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
-import { filterByRelationship, formatDate, getEntryHref, resolveBySlugs, sortByDateDesc, titleCaseStatus } from '../../lib/content';
+import { filterByRelationship, formatDate, getEntryHref, resolveBySlugs, sortByDateDesc, titleCaseStatus, withBase } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const cases = await getCollection('cases');
@@ -185,7 +185,7 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 						</div>
 					</div>
 					<div class="stack">
-						{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+						{relatedTimeline.map((item) => <a class="search-result" href={withBase(`/timeline#${item.data.slug}`)}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
 					</div>
 				</div>
 			)}

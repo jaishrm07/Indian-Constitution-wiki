@@ -1,10 +1,11 @@
 ---
 import { navItems, siteName } from '../lib/site';
+import { withBase } from '../lib/content';
 ---
 
 <header class="site-header" data-pagefind-ignore>
 	<div class="container site-header__inner">
-		<a class="brand" href="/">
+		<a class="brand" href={withBase('/')}>
 			<span class="brand-mark">CA</span>
 			<span class="brand-copy">
 				<strong>{siteName}</strong>

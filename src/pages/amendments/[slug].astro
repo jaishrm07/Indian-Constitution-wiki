@@ -12,6 +12,7 @@ import {
 	resolveBySlugs,
 	titleCaseStatus,
 	uniqueBySlug,
+	withBase,
 } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -118,7 +119,7 @@ const compareCandidates = allAmendments
 			</div>
 			<div class="info-panel">
 				<h3>Compare</h3>
-				<a class="button-secondary" href={`/amendments/compare/${entry.data.slug}/${entry.data.slug === 'forty-second-amendment' ? 'forty-fourth-amendment' : 'forty-second-amendment'}`}>Open in compare studio</a>
+				<a class="button-secondary" href={withBase(`/amendments/compare/${entry.data.slug}/${entry.data.slug === 'forty-second-amendment' ? 'forty-fourth-amendment' : 'forty-second-amendment'}`)}>Open in compare studio</a>
 			</div>
 			<div class="info-panel">
 				<h3>Sources</h3>
@@ -173,7 +174,7 @@ const compareCandidates = allAmendments
 							eyebrow="Compare"
 							title={item.data.title}
 							description={item.data.summary}
-							href={`/amendments/compare/${entry.data.slug}/${item.data.slug}`}
+							href={withBase(`/amendments/compare/${entry.data.slug}/${item.data.slug}`)}
 							meta={item.data.year.toString()}
 						/>
 					))
@@ -206,7 +207,7 @@ const compareCandidates = allAmendments
 						</div>
 					</div>
 					<div class="stack">
-						{relatedTimeline.map((item) => <a class="search-result" href={`/timeline#${item.data.slug}`}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
+						{relatedTimeline.map((item) => <a class="search-result" href={withBase(`/timeline#${item.data.slug}`)}><p class="eyebrow">{formatDate(item.data.date)}</p><strong>{item.data.title}</strong><p>{item.data.summary}</p></a>)}
 					</div>
 				</div>
 			)}

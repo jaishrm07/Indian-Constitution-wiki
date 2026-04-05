@@ -5,7 +5,7 @@ import GraphExplorer from '../../components/GraphExplorer.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getEntryHref, sortArticles, sortByDateDesc, sortByNumericField, sortByTitle } from '../../lib/content';
+import { getEntryHref, sortArticles, sortByDateDesc, sortByNumericField, sortByTitle, withBase } from '../../lib/content';
 
 type GraphNode = {
 	id: string;
@@ -261,10 +261,10 @@ const edges = Array.from(edgeMap.values()).map((edge, index) => ({
 const stats = [
 	{ label: 'Nodes', value: nodes.length },
 	{ label: 'Relationships', value: edges.length },
-	{ label: 'Articles', value: articles.length, href: '/articles' },
-	{ label: 'Cases', value: cases.length, href: '/cases' },
-	{ label: 'Current Affairs', value: currentAffairs.length, href: '/current-affairs' },
-	{ label: 'Institutions', value: institutions.length, href: '/institutions' },
+	{ label: 'Articles', value: articles.length, href: withBase('/articles') },
+	{ label: 'Cases', value: cases.length, href: withBase('/cases') },
+	{ label: 'Current Affairs', value: currentAffairs.length, href: withBase('/current-affairs') },
+	{ label: 'Institutions', value: institutions.length, href: withBase('/institutions') },
 ];
 ---
 

@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import ContentCard from '../../components/ContentCard.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getEntryHref, ordinal } from '../../lib/content';
+import { getEntryHref, ordinal, withBase } from '../../lib/content';
 
 const amendments = [...(await getCollection('amendments'))].sort((left, right) => right.data.year - left.data.year);
 ---
@@ -23,20 +23,20 @@ const amendments = [...(await getCollection('amendments'))].sort((left, right) =
 				Open side-by-side comparisons that stay anchored to Articles, Parts, Schedules, and official constitutional
 				citations instead of treating amendments as isolated summaries.
 			</p>
-			<p><a class="button-secondary" href="/amendments/compare">Open compare studio</a></p>
+			<p><a class="button-secondary" href={withBase('/amendments/compare')}>Open compare studio</a></p>
 		</div>
 		<div class="feature-grid compare-grid">
-			<a class="feature-tile" href="/amendments/compare/forty-second-amendment/forty-fourth-amendment">
+			<a class="feature-tile" href={withBase('/amendments/compare/forty-second-amendment/forty-fourth-amendment')}>
 				<span>Compare</span>
 				<strong>Emergency power and correction</strong>
 				<p>Compare the Forty-Second and Forty-Fourth Amendments as a sequence of concentration and constitutional repair.</p>
 			</a>
-			<a class="feature-tile" href="/amendments/compare/seventy-third-amendment/seventy-fourth-amendment">
+			<a class="feature-tile" href={withBase('/amendments/compare/seventy-third-amendment/seventy-fourth-amendment')}>
 				<span>Compare</span>
 				<strong>Rural vs urban local self-government</strong>
 				<p>Compare the Seventy-Third and Seventy-Fourth Amendments as parallel decentralisation projects.</p>
 			</a>
-			<a class="feature-tile" href="/amendments/compare/first-amendment/forty-fourth-amendment">
+			<a class="feature-tile" href={withBase('/amendments/compare/first-amendment/forty-fourth-amendment')}>
 				<span>Compare</span>
 				<strong>Two moments of rights recalibration</strong>
 				<p>Compare the First and Forty-Fourth Amendments to see very different responses to rights stress and constitutional adjustment.</p>
