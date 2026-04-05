@@ -17,3 +17,13 @@ Secularism often appears in disputes over religious freedom, institutional neutr
 ## How to read the topic
 
 Readers should connect Articles 25 to 28, equality doctrine, and the broader constitutional commitment to non-theocratic public power.
+
+## Key cases
+
+- [Bijoe Emmanuel v. State of Kerala](../cases/bijoe-emmanuel) is the clearest conscience-and-secularism case in the repository.
+- [St. Stephen's College v. University of Delhi](../cases/st-stephens-college) shows how secular constitutionalism can still protect minority educational identity.
+- [T.M.A. Pai Foundation v. State of Karnataka](../cases/tma-pai-foundation) and [P.A. Inamdar v. State of Maharashtra](../cases/pa-inamdar) both shape the boundary between regulation and autonomy.
+
+## Current significance
+
+Secularism is still a live constitutional issue whenever state power, minority institutions, or religious freedom collide. The ongoing discussion around [waqf governance and minority autonomy](../current-affairs/waqf-governance-and-minority-autonomy) is one of the clearest current examples.
