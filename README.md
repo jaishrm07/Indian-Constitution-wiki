@@ -10,6 +10,17 @@ Constitution Atlas is a static-first Astro site for the Indian Constitution. The
 - `Current Affairs` pages explain ongoing issues through a constitutional lens
 - `Glossary` and `Timeline` pages make the knowledge base easier to navigate
 
+Current corpus snapshot:
+
+- `501` Articles
+- `26` Parts
+- `12` Schedules
+- `24` Amendments
+- `21` Cases
+- `21` Topics
+- `10` Current Affairs desks
+- `32` Timeline entries
+
 ## Commands
 
 ```sh
@@ -17,6 +28,9 @@ npm install
 npm run dev
 npm run build
 npm run preview
+npm run content:lint
+npm run vault:sync
+npm run vault:lint
 ```
 
 ## Content Model
@@ -30,6 +44,7 @@ src/content/
 ├── schedules/
 ├── cases/
 ├── topics/
+├── institutions/
 ├── glossary/
 ├── amendments/
 ├── timeline/
@@ -47,12 +62,18 @@ Each entry uses frontmatter for metadata and Markdown for body sections. Relatio
 - `raw/` is the immutable evidence layer for source captures and extraction artifacts.
 - `knowledge-vault/` is the Obsidian-compatible research graph.
 
-## Near-Term Roadmap
+## Current Guardrails
 
-- expand constitutional coverage across all Articles and major amendment eras
-- move search from a lightweight inline index to a dedicated static search solution
+- `npm run content:lint` verifies that relationship fields only point to existing slugs
+- `npm run vault:sync` backfills missing research notes from canonical content
+- `npm run vault:lint` checks mapped coverage between `src/content/` and `knowledge-vault/`
+
+## Next Priorities
+
+- deepen case-law coverage across weaker doctrine clusters
+- expand the current-affairs desk with a tighter review cadence
+- enrich the timeline and amendment layers further without diluting source discipline
 - strengthen source normalization for official PDFs, judgments, and parliamentary records
-- prepare Cloudflare Pages deployment
 
 ## GitHub Pages Deployment
 

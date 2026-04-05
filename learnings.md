@@ -182,3 +182,11 @@ Maintainers should not have to remember the review shape for every new constitut
 ### 35. Source review should answer what the source proves, not just where it lives
 
 In a knowledge-heavy legal product, a source is only useful when the team knows its role in the stack. The source review process should force a decision: what this source establishes, what it cannot establish, and whether it should remain primary, secondary, or archival. That keeps source sprawl under control.
+
+### 36. Relationship linting is mandatory once the graph gets large
+
+As the corpus expands, broken slugs stop being edge cases and start becoming silent product defects. A content graph needs its own integrity check, separate from build success, because pages can still render while semantic links quietly fail. A dedicated reference-lint step becomes part of editorial quality control.
+
+### 37. Coverage expansion exposes hidden taxonomy gaps
+
+Adding more amendments and current-affairs pages does not only increase volume. It also reveals whether the topic system is actually complete enough to absorb that growth. Missing topic hubs such as representation, parliamentary procedure, or education rights can make a large corpus feel inconsistent even when the underlying pages are individually sound.

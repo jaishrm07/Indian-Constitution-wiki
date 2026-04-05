@@ -72,6 +72,7 @@ Periodically check for:
 
 Use `npm run vault:lint` to compare the canonical publishing graph against the research vault coverage for mapped collections.
 Use `npm run vault:sync` to seed missing research notes from canonical content without overwriting notes that already exist.
+Use `npm run content:lint` before merging content-heavy batches so broken cross-collection references do not silently enter the graph.
 
 ## Preferred direction of truth
 
