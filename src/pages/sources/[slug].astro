@@ -4,7 +4,7 @@ import ContentCard from '../../components/ContentCard.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
-import { filterByRelationship, getEntryHref, humanizeToken, resolveBySlugs, uniqueBySlug } from '../../lib/content';
+import { filterByRelationship, formatDate, getEntryHref, humanizeToken, resolveBySlugs, sortByDateDesc, uniqueBySlug } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const sources = await getCollection('sources');
@@ -36,6 +36,19 @@ const relatedInstitutions = uniqueBySlug([
 	...filterByRelationship(institutions, 'sources', entry.data.slug),
 ]);
 const peerSources = allSources.filter((source) => source.data.slug !== entry.data.slug && source.data.sourceType === entry.data.sourceType).slice(0, 4);
+const orderedCurrentAffairs = sortByDateDesc(relatedCurrentAffairs, 'updatedAt');
+const totalUsageCount =
+	relatedArticles.length +
+	relatedTopics.length +
+	relatedCases.length +
+	relatedAmendments.length +
+	relatedCurrentAffairs.length;
+const isSourceOfRecord = entry.data.sourceType === 'official' || entry.data.sourceType === 'court';
+const roleInStack = isSourceOfRecord
+	? 'Use this source early in the workflow. It belongs in the first verification layer before relying on secondary summaries.'
+	: entry.data.tier === 'secondary'
+		? 'Use this after identifying the governing constitutional text or official institutional record. It is valuable for context, tracking, and synthesis.'
+		: 'Use this as supporting context only after the governing text, notification, bill, or judgment has already been identified.';
 ---
 
 <Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.description} pagefindIndexed={true}>
@@ -59,11 +72,16 @@ const peerSources = allSources.filter((source) => source.data.slug !== entry.dat
 		filters={{
 			type: 'Source',
 			institution: relatedInstitutions.map((institution) => institution.data.title),
+			category: [humanizeToken(entry.data.sourceType), humanizeToken(entry.data.tier)],
 		}}
 	/>
 
 	<section class="page-grid">
 		<article class="page-copy prose" data-pagefind-body>
+			<section>
+				<h2>Role in the source stack</h2>
+				<p>{roleInStack}</p>
+			</section>
 			<section>
 				<h2>When to use this source</h2>
 				<ul>
@@ -84,12 +102,26 @@ const peerSources = allSources.filter((source) => source.data.slug !== entry.dat
 
 		<aside class="page-sidebar">
 			<div class="info-panel">
+				<h3>Source signals</h3>
+				<ul class="detail-list">
+					<li>{totalUsageCount} citing page{totalUsageCount === 1 ? '' : 's'}</li>
+					<li>{relatedInstitutions.length} linked institution{relatedInstitutions.length === 1 ? '' : 's'}</li>
+					<li>{orderedCurrentAffairs.length} linked live issue{orderedCurrentAffairs.length === 1 ? '' : 's'}</li>
+				</ul>
+			</div>
+			<div class="info-panel">
 				<h3>External source</h3>
 				<a class="button-secondary" href={entry.data.url} target="_blank" rel="noreferrer">Open source site</a>
 			</div>
+			<div class="info-panel">
+				<h3>Best used for</h3>
+				<div class="link-list">
+					{entry.data.recommendedFor.map((item) => <span class="tag-chip">{item}</span>)}
+				</div>
+			</div>
 			{relatedInstitutions.length > 0 && (
 				<div class="info-panel">
-					<h3>Linked institutions</h3>
+					<h3>Institutional coverage</h3>
 					<div class="link-list">
 						{relatedInstitutions.map((item) => <a class="tag-chip" href={getEntryHref('institutions', item.data.slug)}>{item.data.title}</a>)}
 					</div>
@@ -103,29 +135,40 @@ const peerSources = allSources.filter((source) => source.data.slug !== entry.dat
 			<div class="section-heading compact">
 				<div>
 					<p class="eyebrow">Used In</p>
-					<h2>Pages that cite this source</h2>
+					<h2>Current-affairs and case coverage</h2>
 				</div>
 			</div>
 			<div class="stack">
-				{relatedCurrentAffairs.map((item) => <ContentCard eyebrow="Current Affairs" title={item.data.title} description={item.data.summary} href={getEntryHref('current-affairs', item.data.slug)} />)}
+				{orderedCurrentAffairs.map((item) => <ContentCard eyebrow="Current Affairs" title={item.data.title} description={item.data.summary} href={getEntryHref('current-affairs', item.data.slug)} meta={`Updated ${formatDate(item.data.updatedAt)}`} />)}
 				{relatedCases.map((item) => <ContentCard eyebrow="Case" title={item.data.title} description={item.data.summary} href={getEntryHref('cases', item.data.slug)} meta={item.data.citation} />)}
+			</div>
+		</div>
+		<div class="section-panel">
+			<div class="section-heading compact">
+				<div>
+					<p class="eyebrow">Used In</p>
+					<h2>Reference pages citing this source</h2>
+				</div>
+			</div>
+			<div class="stack">
 				{relatedTopics.map((item) => <ContentCard eyebrow="Topic" title={item.data.title} description={item.data.summary} href={getEntryHref('topics', item.data.slug)} />)}
 				{relatedAmendments.map((item) => <ContentCard eyebrow="Amendment" title={item.data.title} description={item.data.summary} href={getEntryHref('amendments', item.data.slug)} meta={item.data.year.toString()} />)}
 				{relatedArticles.map((item) => <ContentCard eyebrow={`Article ${item.data.number}`} title={item.data.title} description={item.data.summary} href={getEntryHref('articles', item.data.slug)} />)}
 			</div>
 		</div>
-		{peerSources.length > 0 && (
-			<div class="section-panel">
-				<div class="section-heading compact">
-					<div>
-						<p class="eyebrow">Related Sources</p>
-						<h2>Other sources in the same class</h2>
-					</div>
-				</div>
-				<div class="stack">
-					{peerSources.map((item) => <ContentCard eyebrow={`${humanizeToken(item.data.tier)} · ${humanizeToken(item.data.sourceType)}`} title={item.data.title} description={item.data.description} href={getEntryHref('sources', item.data.slug)} />)}
+	</section>
+
+	{peerSources.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Related Sources</p>
+					<h2>Other sources in the same class</h2>
 				</div>
 			</div>
-		)}
-	</section>
+			<div class="card-grid">
+				{peerSources.map((item) => <ContentCard eyebrow={`${humanizeToken(item.data.tier)} · ${humanizeToken(item.data.sourceType)}`} title={item.data.title} description={item.data.description} href={getEntryHref('sources', item.data.slug)} />)}
+			</div>
+		</section>
+	)}
 </Layout>

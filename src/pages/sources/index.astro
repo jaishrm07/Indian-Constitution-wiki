@@ -1,14 +1,63 @@
 ---
 import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getEntryHref, sortByTitle } from '../../lib/content';
+import { getEntryHref, humanizeToken, sortByTitle } from '../../lib/content';
 
-const tierOrder = { primary: 0, secondary: 1, supporting: 2 } as const;
+const [sources, institutions, currentAffairs, cases, amendments, topics, articles] = await Promise.all([
+	getCollection('sources'),
+	getCollection('institutions'),
+	getCollection('current-affairs'),
+	getCollection('cases'),
+	getCollection('amendments'),
+	getCollection('topics'),
+	getCollection('articles'),
+]);
 
-const sources = [...sortByTitle(await getCollection('sources'))].sort((left, right) => {
-	const tierDelta = tierOrder[left.data.tier] - tierOrder[right.data.tier];
-	return tierDelta !== 0 ? tierDelta : left.data.title.localeCompare(right.data.title);
+const orderedSources = sortByTitle(sources);
+const sourceTypeOrder = { official: 0, court: 1, policy: 2, reference: 3 } as const;
+
+const sourcesWithSignals = orderedSources.map((source) => {
+	const usageCount =
+		currentAffairs.filter((item) => item.data.sources.includes(source.data.slug)).length +
+		cases.filter((item) => item.data.sources.includes(source.data.slug)).length +
+		amendments.filter((item) => item.data.sources.includes(source.data.slug)).length +
+		topics.filter((item) => item.data.sources.includes(source.data.slug)).length +
+		articles.filter((item) => item.data.sources.includes(source.data.slug)).length;
+	const institutionCount = institutions.filter((item) => item.data.sources.includes(source.data.slug) || source.data.institutions.includes(item.data.slug)).length;
+	return {
+		entry: source,
+		usageCount,
+		institutionCount,
+	};
 });
+
+const officialAndCourt = sourcesWithSignals.filter(
+	({ entry }) => entry.data.sourceType === 'official' || entry.data.sourceType === 'court',
+);
+
+const sourceTypeCounts = orderedSources.reduce((counts, item) => {
+	counts[item.data.sourceType] = (counts[item.data.sourceType] ?? 0) + 1;
+	return counts;
+}, {} as Record<string, number>);
+
+const featuredSources = [...sourcesWithSignals]
+	.sort(
+		(left, right) =>
+			sourceTypeOrder[left.entry.data.sourceType] - sourceTypeOrder[right.entry.data.sourceType] ||
+			right.usageCount - left.usageCount ||
+			left.entry.data.title.localeCompare(right.entry.data.title),
+	)
+	.slice(0, 8);
+
+const groupedSources = Object.entries(sourceTypeCounts)
+	.sort(([left], [right]) => sourceTypeOrder[left as keyof typeof sourceTypeOrder] - sourceTypeOrder[right as keyof typeof sourceTypeOrder])
+	.map(([type]) => ({
+		type,
+		items: sourcesWithSignals
+			.filter(({ entry }) => entry.data.sourceType === type)
+			.sort((left, right) => right.usageCount - left.usageCount || left.entry.data.title.localeCompare(right.entry.data.title)),
+	}));
 ---
 
 <Layout title="Sources | Constitution Atlas" description="Source registry for the constitutional content on this site.">
@@ -16,44 +65,74 @@ const sources = [...sortByTitle(await getCollection('sources'))].sort((left, rig
 		<div class="list-header">
 			<div>
 				<p class="eyebrow">Sources</p>
-				<h1>Source registry</h1>
+				<h1>Source registry and monitoring stack</h1>
 			</div>
-			<p class="muted">Every content page should draw from this registry or extend it.</p>
+			<p class="muted">The registry is part of the product. It tells readers what to trust first, what to use for monitoring, and where each source fits.</p>
 		</div>
 
-		<div class="stack">
-			{
-				sources.map((source) => (
-					<div class="search-result">
-						<p class="eyebrow">{source.data.tier} · {source.data.sourceType}</p>
-						<strong><a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a></strong>
-						<p>{source.data.description}</p>
-						{source.data.recommendedFor.length > 0 && (
-							<p>
-								<strong>Use for:</strong> {source.data.recommendedFor.join(', ')}.
-							</p>
-						)}
-						{source.data.formats.length > 0 && (
-							<p>
-								<strong>Formats:</strong> {source.data.formats.join(', ')}.
-							</p>
-						)}
-						{source.data.accessNotes && (
-							<p>
-								<strong>Access notes:</strong> {source.data.accessNotes}
-							</p>
-						)}
-						<p>
-							<a class="section-link" href={getEntryHref('sources', source.data.slug)}>Open source profile</a>
-						</p>
-						<p>
-							<a class="section-link" href={source.data.url} target="_blank" rel="noreferrer">
-								{source.data.publisher}
-							</a>
-						</p>
-					</div>
-				))
-			}
+		<div class="feature-grid">
+			<div class="feature-tile">
+				<span>Registry</span>
+				<strong>{orderedSources.length} tracked sources</strong>
+				<p>The site keeps a source registry so legal and civic explanations remain reproducible instead of ad hoc.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Sources of Record</span>
+				<strong>{officialAndCourt.length} official or court sources</strong>
+				<p>These are the first places to verify constitutional text, institutional action, and court material.</p>
+			</div>
+			{groupedSources.map(({ type, items }) => (
+				<div class="feature-tile">
+					<span>Source Type</span>
+					<strong>{humanizeToken(type)}</strong>
+					<p>{items.length} source profile{items.length === 1 ? '' : 's'} currently sit in this part of the trust stack.</p>
+				</div>
+			))}
 		</div>
 	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Start Here</p>
+				<h2>High-value sources to monitor first</h2>
+			</div>
+			<p class="section-note">Ordered to favor sources of record before explanatory or media layers.</p>
+		</div>
+		<div class="card-grid">
+			{featuredSources.map(({ entry, usageCount, institutionCount }) => (
+				<ContentCard
+					eyebrow={`${humanizeToken(entry.data.tier)} · ${humanizeToken(entry.data.sourceType)}`}
+					title={entry.data.title}
+					description={entry.data.description}
+					href={getEntryHref('sources', entry.data.slug)}
+					meta={`${usageCount} citing page${usageCount === 1 ? '' : 's'} · ${institutionCount} linked institution${institutionCount === 1 ? '' : 's'}`}
+				/>
+			))}
+		</div>
+	</section>
+
+	{
+		groupedSources.map(({ type, items }) => (
+			<section class="section-block">
+				<div class="section-heading">
+					<div>
+						<p class="eyebrow">Source Type</p>
+						<h2>{humanizeToken(type)}</h2>
+					</div>
+				</div>
+				<div class="card-grid">
+					{items.map(({ entry, usageCount, institutionCount }) => (
+						<ContentCard
+							eyebrow={`${humanizeToken(entry.data.tier)} · ${humanizeToken(entry.data.sourceType)}`}
+							title={entry.data.title}
+							description={entry.data.description}
+							href={getEntryHref('sources', entry.data.slug)}
+							meta={`${usageCount} citing page${usageCount === 1 ? '' : 's'} · ${institutionCount} linked institution${institutionCount === 1 ? '' : 's'}`}
+						/>
+					))}
+				</div>
+			</section>
+		))
+	}
 </Layout>

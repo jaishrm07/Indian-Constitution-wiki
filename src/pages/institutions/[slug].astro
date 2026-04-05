@@ -5,7 +5,17 @@ import ConstitutionRefs from '../../components/ConstitutionRefs.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
-import { filterByRelationship, getEntryHref, humanizeToken, resolveBySlugs, uniqueBySlug } from '../../lib/content';
+import {
+	filterByAnyRelationship,
+	filterByRelationship,
+	formatDate,
+	getEntryHref,
+	humanizeToken,
+	resolveBySlugs,
+	sortArticles,
+	sortByDateDesc,
+	uniqueBySlug,
+} from '../../lib/content';
 
 export async function getStaticPaths() {
 	const institutions = await getCollection('institutions');
@@ -31,11 +41,11 @@ const relatedArticles = resolveBySlugs(articles, entry.data.articles);
 const relatedParts = resolveBySlugs(parts, entry.data.parts);
 const relatedTopics = uniqueBySlug([
 	...resolveBySlugs(topics, entry.data.topics),
-	...filterByRelationship(topics, 'sources', entry.data.sources[0] ?? ''),
+	...filterByAnyRelationship(topics, 'sources', entry.data.sources),
 ]);
 const relatedCases = uniqueBySlug([
 	...resolveBySlugs(cases, entry.data.cases),
-	...filterByRelationship(cases, 'sources', entry.data.sources[0] ?? ''),
+	...filterByAnyRelationship(cases, 'sources', entry.data.sources),
 ]);
 const relatedCurrentAffairs = uniqueBySlug([
 	...resolveBySlugs(currentAffairs, entry.data.currentAffairs),
@@ -45,6 +55,24 @@ const relatedSources = uniqueBySlug([
 	...resolveBySlugs(sources, entry.data.sources),
 	...filterByRelationship(sources, 'institutions', entry.data.slug),
 ]);
+const orderedCurrentAffairs = sortByDateDesc(relatedCurrentAffairs, 'updatedAt');
+const ongoingCurrentAffairs = orderedCurrentAffairs.filter((item) => item.data.status === 'ongoing');
+const historicalCurrentAffairs = orderedCurrentAffairs.filter((item) => item.data.status !== 'ongoing');
+const sourceGroups = [
+	{
+		title: 'Official constitutional and institutional records',
+		items: relatedSources.filter((source) => source.data.sourceType === 'official'),
+	},
+	{
+		title: 'Court-hosted records and judgments',
+		items: relatedSources.filter((source) => source.data.sourceType === 'court'),
+	},
+	{
+		title: 'Context and monitoring sources',
+		items: relatedSources.filter((source) => source.data.sourceType !== 'official' && source.data.sourceType !== 'court'),
+	},
+].filter((group) => group.items.length > 0);
+const orderedArticles = sortArticles(relatedArticles);
 ---
 
 <Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
@@ -69,6 +97,7 @@ const relatedSources = uniqueBySlug([
 			type: 'Institution',
 			topic: relatedTopics.map((topic) => topic.data.title),
 			institution: entry.data.title,
+			category: humanizeToken(entry.data.institutionType),
 		}}
 	/>
 
@@ -90,33 +119,66 @@ const relatedSources = uniqueBySlug([
 					</ul>
 				</section>
 			)}
+			{ongoingCurrentAffairs.length > 0 && (
+				<section>
+					<h2>Current constitutional pressure points</h2>
+					<div class="stack">
+						{ongoingCurrentAffairs.map((item) => (
+							<a class="search-result" href={getEntryHref('current-affairs', item.data.slug)}>
+								<p class="eyebrow">Updated {formatDate(item.data.updatedAt)}</p>
+								<strong>{item.data.title}</strong>
+								<p>{item.data.constitutionalQuestion}</p>
+							</a>
+						))}
+					</div>
+				</section>
+			)}
+			{orderedArticles.length > 0 && (
+				<section>
+					<h2>Constitutional anchor provisions</h2>
+					<div class="card-grid card-grid--compact">
+						{orderedArticles.map((item) => <ContentCard eyebrow={`Article ${item.data.number}`} title={item.data.title} description={item.data.summary} href={getEntryHref('articles', item.data.slug)} meta={item.data.part} />)}
+					</div>
+				</section>
+			)}
 			<Content />
 		</article>
 
 		<aside class="page-sidebar">
+			<div class="info-panel">
+				<h3>Desk coverage</h3>
+				<ul class="detail-list">
+					<li>{ongoingCurrentAffairs.length} ongoing issue{ongoingCurrentAffairs.length === 1 ? '' : 's'}</li>
+					<li>{historicalCurrentAffairs.length} resolved or archived issue{historicalCurrentAffairs.length === 1 ? '' : 's'}</li>
+					<li>{relatedCases.length} linked case{relatedCases.length === 1 ? '' : 's'}</li>
+				</ul>
+			</div>
 			<ConstitutionRefs
 				parts={relatedParts.map((part) => ({ title: part.data.code, href: getEntryHref('parts', part.data.slug) }))}
 				articles={relatedArticles.map((article) => ({ title: `Article ${article.data.number}`, href: getEntryHref('articles', article.data.slug) }))}
 			/>
-			{relatedSources.length > 0 && (
-				<div class="info-panel">
-					<h3>Primary sources</h3>
-					<ul class="source-list">
-						{
-							relatedSources.map((source) => (
-								<li>
-									<a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a>
-									<small>{humanizeToken(source.data.tier)} · {humanizeToken(source.data.sourceType)}</small>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			)}
+			{
+				sourceGroups.map((group) => (
+					<div class="info-panel">
+						<h3>{group.title}</h3>
+						<ul class="source-list">
+							{
+								group.items.map((source) => (
+									<li>
+										<a href={getEntryHref('sources', source.data.slug)}>{source.data.title}</a>
+										<a class="source-list__external" href={source.data.url} target="_blank" rel="noreferrer">Open source</a>
+										<small>{humanizeToken(source.data.tier)} · {humanizeToken(source.data.sourceType)}</small>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				))
+			}
 		</aside>
 	</section>
 
-	{relatedCurrentAffairs.length > 0 && (
+	{ongoingCurrentAffairs.length > 0 && (
 		<section class="section-block">
 			<div class="section-heading">
 				<div>
@@ -125,7 +187,7 @@ const relatedSources = uniqueBySlug([
 				</div>
 			</div>
 			<div class="card-grid">
-				{relatedCurrentAffairs.map((item) => <ContentCard eyebrow="Current Affairs" title={item.data.title} description={item.data.summary} href={getEntryHref('current-affairs', item.data.slug)} />)}
+				{ongoingCurrentAffairs.map((item) => <ContentCard eyebrow="Current Affairs" title={item.data.title} description={item.data.summary} href={getEntryHref('current-affairs', item.data.slug)} meta={`Updated ${formatDate(item.data.updatedAt)}`} />)}
 			</div>
 		</section>
 	)}
@@ -158,6 +220,20 @@ const relatedSources = uniqueBySlug([
 					</div>
 				</div>
 			)}
+		</section>
+	)}
+
+	{historicalCurrentAffairs.length > 0 && (
+		<section class="section-block">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">History</p>
+					<h2>Earlier constitutional issues involving this institution</h2>
+				</div>
+			</div>
+			<div class="card-grid">
+				{historicalCurrentAffairs.map((item) => <ContentCard eyebrow={humanizeToken(item.data.status)} title={item.data.title} description={item.data.summary} href={getEntryHref('current-affairs', item.data.slug)} meta={`Updated ${formatDate(item.data.updatedAt)}`} />)}
+			</div>
 		</section>
 	)}
 </Layout>

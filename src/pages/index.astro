@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro';
 import {
 	formatDate,
 	getEntryHref,
+	humanizeToken,
 	sortArticles,
 	sortByDateDesc,
 	sortByNumericField,
@@ -12,7 +13,7 @@ import {
 	titleCaseStatus,
 } from '../lib/content';
 
-const [articles, parts, schedules, topics, institutions, glossary, cases, amendments, timeline, currentAffairs] = await Promise.all([
+const [articles, parts, schedules, topics, institutions, glossary, cases, amendments, timeline, currentAffairs, sources] = await Promise.all([
 	getCollection('articles'),
 	getCollection('parts'),
 	getCollection('schedules'),
@@ -23,6 +24,7 @@ const [articles, parts, schedules, topics, institutions, glossary, cases, amendm
 	getCollection('amendments'),
 	getCollection('timeline'),
 	getCollection('current-affairs'),
+	getCollection('sources'),
 ]);
 
 const featuredArticles = sortArticles(articles).slice(0, 4);
@@ -35,6 +37,7 @@ const featuredCases = sortByTitle(cases).slice(0, 3);
 const featuredAmendments = [...amendments].sort((left, right) => right.data.year - left.data.year).slice(0, 3);
 const featuredTimeline = sortByDateDesc(timeline, 'date').slice(0, 4);
 const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0, 3);
+const featuredSources = sortByTitle(sources).slice(0, 3);
 ---
 
 <Layout
@@ -108,6 +111,11 @@ const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0
 				<span>Institutions</span>
 				<strong>{institutions.length} constitutional actors</strong>
 				<p>Follow Parliament, the Court, ECI, governors, and other actors behind live disputes.</p>
+			</a>
+			<a class="feature-tile" href="/sources">
+				<span>Sources</span>
+				<strong>{sources.length} registered source profiles</strong>
+				<p>See which official, court, policy, and reference sources the site relies on and when each should be used.</p>
 			</a>
 			<a class="feature-tile" href="/cases">
 				<span>Landmark Cases</span>
@@ -344,22 +352,45 @@ const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0
 		<div class="section-panel">
 			<div class="section-heading compact">
 				<div>
-					<p class="eyebrow">Timeline</p>
-					<h2>Major turning points</h2>
+					<p class="eyebrow">Sources</p>
+					<h2>Trust and verification layer</h2>
 				</div>
-				<a class="section-link" href="/timeline">Open timeline</a>
+				<a class="section-link" href="/sources">Open source registry</a>
 			</div>
 			<div class="stack">
 				{
-					featuredTimeline.map((item) => (
-						<a class="search-result" href={`/timeline#${item.data.slug}`}>
-							<p class="eyebrow">{formatDate(item.data.date)}</p>
-							<strong>{item.data.title}</strong>
-							<p>{item.data.summary}</p>
-						</a>
+					featuredSources.map((item) => (
+						<ContentCard
+							eyebrow={`${humanizeToken(item.data.tier)} · ${humanizeToken(item.data.sourceType)}`}
+							title={item.data.title}
+							description={item.data.description}
+							href={getEntryHref('sources', item.data.slug)}
+							meta={item.data.publisher}
+						/>
 					))
 				}
 			</div>
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Timeline</p>
+				<h2>Major turning points</h2>
+			</div>
+			<a class="section-link" href="/timeline">Open timeline</a>
+		</div>
+		<div class="stack">
+			{
+				featuredTimeline.map((item) => (
+					<a class="search-result" href={`/timeline#${item.data.slug}`}>
+						<p class="eyebrow">{formatDate(item.data.date)}</p>
+						<strong>{item.data.title}</strong>
+						<p>{item.data.summary}</p>
+					</a>
+				))
+			}
 		</div>
 	</section>
 

@@ -146,3 +146,11 @@ That turns the live layer into a maintained desk rather than a stream of essays.
 ### 26. Issue chronology and constitutional chronology are different jobs
 
 For live issues, it helps to separate short-term desk chronology from the longer constitutional timeline. Readers need both, but they answer different questions. One explains what is happening now and when the page was reviewed; the other shows the deeper constitutional arc that makes the issue intelligible.
+
+### 27. Institution pages become more valuable when they act like operating consoles
+
+A reader often arrives at an institution page because they want to know where power is currently being exercised or contested. That means the page should surface live disputes, constitutional anchors, and the right monitoring sources immediately. If it behaves only like an encyclopedia entry, it underuses the structure already present in the knowledge graph.
+
+### 28. Source transparency should be navigable from the top level
+
+For a trust-heavy product, the source registry cannot stay hidden in methodology pages. Readers should be able to move directly from the main navigation into the source layer, inspect the source stack, and see how individual sources are used across Articles, cases, amendments, and current-affairs explainers.

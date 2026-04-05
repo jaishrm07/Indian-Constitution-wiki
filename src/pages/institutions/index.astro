@@ -4,7 +4,47 @@ import ContentCard from '../../components/ContentCard.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getEntryHref, humanizeToken, sortByTitle } from '../../lib/content';
 
-const institutions = sortByTitle(await getCollection('institutions'));
+const [institutions, currentAffairs, sources] = await Promise.all([
+	getCollection('institutions'),
+	getCollection('current-affairs'),
+	getCollection('sources'),
+]);
+
+const orderedInstitutions = sortByTitle(institutions);
+
+const typeCounts = orderedInstitutions.reduce((counts, item) => {
+	counts[item.data.institutionType] = (counts[item.data.institutionType] ?? 0) + 1;
+	return counts;
+}, {} as Record<string, number>);
+
+const institutionsWithSignals = orderedInstitutions.map((institution) => {
+	const issueCount = currentAffairs.filter((item) => item.data.institutions.includes(institution.data.slug)).length;
+	const officialSourceCount = sources.filter(
+		(source) =>
+			source.data.institutions.includes(institution.data.slug) &&
+			(source.data.sourceType === 'official' || source.data.sourceType === 'court'),
+	).length;
+	const allSourceCount = sources.filter((source) => source.data.institutions.includes(institution.data.slug)).length;
+	return {
+		entry: institution,
+		issueCount,
+		officialSourceCount,
+		allSourceCount,
+	};
+});
+
+const hotspotInstitutions = [...institutionsWithSignals]
+	.sort(
+		(left, right) =>
+			right.issueCount - left.issueCount ||
+			right.officialSourceCount - left.officialSourceCount ||
+			left.entry.data.title.localeCompare(right.entry.data.title),
+	)
+	.slice(0, 6);
+
+const totalOfficialWatchSources = sources.filter(
+	(source) => source.data.sourceType === 'official' || source.data.sourceType === 'court',
+).length;
 ---
 
 <Layout title="Institutions | Constitution Atlas" description="Browse the constitutional institutions and offices that shape constitutional practice in India.">
@@ -14,19 +54,76 @@ const institutions = sortByTitle(await getCollection('institutions'));
 				<p class="eyebrow">Institutions</p>
 				<h1>Constitutional actors and public institutions</h1>
 			</div>
-			<p class="muted">Use institutions to trace who acts, who decides, and where the constitutional friction actually sits.</p>
+			<p class="muted">Use institutions to trace who acts, who decides, and where constitutional friction is actually sitting.</p>
+		</div>
+
+		<div class="feature-grid">
+			<div class="feature-tile">
+				<span>Coverage</span>
+				<strong>{orderedInstitutions.length} institutions</strong>
+				<p>Each institution page ties together constitutional text, cases, current-affairs issues, and source packs.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Live Desk</span>
+				<strong>{currentAffairs.length} tracked issues</strong>
+				<p>Institution pages are designed to show where those live constitutional disputes are concentrating.</p>
+			</div>
+			<div class="feature-tile">
+				<span>Watch Sources</span>
+				<strong>{totalOfficialWatchSources} official or court sources</strong>
+				<p>These sources form the first monitoring layer before policy explainers or legal news coverage.</p>
+			</div>
+			{Object.entries(typeCounts)
+				.sort(([left], [right]) => left.localeCompare(right))
+				.map(([type, count]) => (
+					<div class="feature-tile">
+						<span>Institution Type</span>
+						<strong>{humanizeToken(type)}</strong>
+						<p>{count} institution page{count === 1 ? '' : 's'} currently fall into this constitutional role.</p>
+					</div>
+				))}
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Hotspots</p>
+				<h2>Institutions under the most live constitutional pressure</h2>
+			</div>
+			<p class="section-note">Sorted by tracked issue count, then by depth of official monitoring sources.</p>
 		</div>
 		<div class="card-grid">
-			{
-				institutions.map((item) => (
-					<ContentCard
-						eyebrow={humanizeToken(item.data.institutionType)}
-						title={item.data.title}
-						description={item.data.summary}
-						href={getEntryHref('institutions', item.data.slug)}
-					/>
-				))
-			}
+			{hotspotInstitutions.map(({ entry, issueCount, officialSourceCount }) => (
+				<ContentCard
+					eyebrow={humanizeToken(entry.data.institutionType)}
+					title={entry.data.title}
+					description={entry.data.summary}
+					href={getEntryHref('institutions', entry.data.slug)}
+					meta={`${issueCount} live issue${issueCount === 1 ? '' : 's'} · ${officialSourceCount} official watch source${officialSourceCount === 1 ? '' : 's'}`}
+				/>
+			))}
+		</div>
+	</section>
+
+	<section class="section-block">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Directory</p>
+				<h2>Browse all institution hubs</h2>
+			</div>
+			<p class="section-note">These pages are meant to be operational reference hubs, not just descriptive profiles.</p>
+		</div>
+		<div class="card-grid">
+			{institutionsWithSignals.map(({ entry, issueCount, allSourceCount }) => (
+				<ContentCard
+					eyebrow={humanizeToken(entry.data.institutionType)}
+					title={entry.data.title}
+					description={entry.data.summary}
+					href={getEntryHref('institutions', entry.data.slug)}
+					meta={`${issueCount} live issue${issueCount === 1 ? '' : 's'} · ${allSourceCount} linked source${allSourceCount === 1 ? '' : 's'}`}
+				/>
+			))}
 		</div>
 	</section>
 </Layout>
