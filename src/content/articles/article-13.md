@@ -6,13 +6,16 @@ part: Part III - Fundamental Rights
 partSlug: part-iii
 summary: Article 13 invalidates laws that are inconsistent with fundamental rights and anchors constitutional review of legislation.
 plainEnglish: If a law conflicts with fundamental rights, courts can treat that law as void to the extent of the inconsistency. Article 13 is therefore a foundational review provision.
-officialText: >-
-  All laws in force in the territory of India immediately before the
-  commencement of this Constitution, in so far as they are inconsistent with
-  the provisions of this Part, shall, to the extent of such inconsistency, be
-  void. The State shall not make any law which takes away or abridges the rights
-  conferred by this Part and any law made in contravention of this clause shall,
-  to the extent of the contravention, be void.
+officialText: |-
+  13. Laws inconsistent with or in derogation of the fundamental rights.—(1) All laws in force in the territory of India immediately before the commencement of this Constitution, in so far as they are inconsistent with the provisions of this Part, shall, to the extent of such inconsistency, be void.
+
+  (2) The State shall not make any law which takes away or abridges the rights conferred by this Part and any law made in contravention of this clause shall, to the extent of the contravention, be void.
+
+  (3) In this article, unless the context otherwise requires,—
+
+  (a) “law” includes any Ordinance, order, bye-law, rule, regulation, notification, custom or usage having in the territory of India the force of law;
+
+  (b) “laws in force” includes laws passed or made by a Legislature or other competent authority in the territory of India before the commencement of this Constitution and not previously repealed, notwithstanding that any such law or any part thereof may not be then in operation either at all or in particular areas. [(4) Nothing in this article shall apply to any amendment of this Constitution made under article 368.] Right to Equality
 relatedArticles:
   - article-12
   - article-14

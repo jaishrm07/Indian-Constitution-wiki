@@ -259,6 +259,7 @@ The best stack for this project is:
 
 ## Next build step
 
+If the project is adding live content or sources, follow the operating cadence in `docs/editorial-operations.md` alongside the knowledge-system rules above.
 The Obsidian-compatible vault structure and sync rules are now scaffolded in:
 
 - `raw/`

@@ -6,16 +6,22 @@ part: Part XII - Finance, Property, Contracts and Suits
 partSlug: part-xii
 summary: Article 269A governs the levy and apportionment of goods and services tax on inter-State supplies.
 plainEnglish: This Article explains how inter-State GST is constitutionally collected by the Union and then shared with the states. It is a core provision for understanding how the GST system balances national coordination with state fiscal interests.
-officialText: >-
-  Goods and services tax on supplies in the course of inter-State trade or
-  commerce shall be levied and collected by the Government of India and such
-  tax shall be apportioned between the Union and the States in the manner as
-  may be provided by Parliament by law on the recommendations of the Goods
-  and Services Tax Council. Parliament may by law formulate the principles for
-  determining the place of supply, and when a supply of goods, or of services,
-  or both takes place in the course of inter-State trade or commerce.
+officialText: |-
+  [269A. Levy and collection of goods and services tax in course of inter-State trade or commerce.— (1) Goods and services tax on supplies in the course of inter-State trade or commerce shall be levied and collected by the Government of India and such tax shall be apportioned between the Union and the States in the manner as may be provided by Parliament by law on the recommendations of the Goods and Services Tax Council.
+
+  Explanation.—For the purposes of this clause, supply of goods, or of services, or both in the course of import into the territory of India shall be deemed to be supply of goods, or of services, or both in the course of interState trade or commerce.
+
+  (2) The amount apportioned to a State under clause (1) shall not form part of the Consolidated Fund of India.
+
+  (3) Where an amount collected as tax levied under clause (1) has been used for payment of the tax levied by a State under article 246A, such amount shall not form part of the Consolidated Fund of India.
+
+  (4) Where an amount collected as tax levied by a State under article 246A has been used for payment of the tax levied under clause (1), such amount shall not form part of the Consolidated Fund of the State.
+
+  (5) Parliament may, by law, formulate the principles for determining the place of supply, and when a supply of goods, or of services, or both takes place in the course of inter-State trade or commerce.]
 relatedArticles:
   - article-246a
+  - article-269
+  - article-270
   - article-279a
 topics:
   - federalism

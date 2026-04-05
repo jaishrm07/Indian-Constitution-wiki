@@ -1,0 +1,61 @@
+---
+type: article
+slug: article-359
+title: Article 359
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-xviii|Part XVIII - Emergency Provisions]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 359 covers suspension of the enforcement of the rights conferred by Part III during emergencies.
+
+## Official text
+
+359. Suspension of the enforcement of the rights conferred by Part III during emergencies.—(1) Where a Proclamation of Emergency is in operation, the President may by order declare that the right to move any court for the enforcement of such of [the rights conferred by Part III (except articles 20 and 21)] as may be mentioned in the order and all proceedings pending in any court for the enforcement of the rights so mentioned shall remain suspended for the period during which the Proclamation is in force or for such shorter period as may be specified in the order. [(1A) While an order made under clause (1) mentioning any of [the rights conferred by Part III (except articles 20 and 21)] is in operation, nothing in that Part conferring those rights shall restrict the power of the State as defined in the said Part to make any law or to take any executive action which the State would but for the provisions contained in that Part be competent to make or to take, but any law so made shall, to the extent of the incompetency, cease to have effect as soon as the order aforesaid ceases to operate, except as respects things done or omitted to be done before the law so ceases to have effect:]
+
+[Provided that where a Proclamation of Emergency is in operation only in any part of the territory of India, any such law may be made, or any such executive action may be taken, under this article in relation to or in any State or Union territory in which or in any part of which the Proclamation of Emergency is not in operation, if and in so far as the security of India or any part of the territory thereof is threatened by activities in or in relation to the part of the territory of India in which the Proclamation of Emergency is in operation.] [(1B) Nothing in clause (1A) shall apply—
+
+(a) to any law which does not contain a recital to the effect that such law is in relation to the Proclamation of Emergency in operation when it is made; or
+
+(b) to any executive action taken otherwise than under a law containing such a recital.]
+
+(2) An order made as aforesaid may extend to the whole or any part of the territory of India:
+
+[Provided that where a Proclamation of Emergency is in operation only in a part of the territory of India, any such order shall not extend to any other part of the territory of India unless the President, being satisfied that the security of India or any part of the territory thereof is threatened by activities in or in relation to the part of the territory of India in which the Proclamation of Emergency is in operation, considers such extension to be necessary.]
+
+(3) Every order made under clause (1) shall, as soon as may be after it is made, be laid before each House of Parliament.
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 359. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?

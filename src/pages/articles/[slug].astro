@@ -43,6 +43,8 @@ const relatedCases = filterByRelationship(cases, 'articles', entry.data.slug);
 const relatedAmendments = filterByRelationship(amendments, 'affectedArticles', entry.data.slug);
 const relatedCurrentAffairs = sortByDateDesc(filterByRelationship(currentAffairs, 'articles', entry.data.slug), 'updatedAt');
 const relatedSources = resolveBySlugs(sources, entry.data.sources);
+const primaryOfficialSource =
+	relatedSources.find((source) => source.data.sourceType === 'official') ?? relatedSources[0];
 ---
 
 <Layout title={`${entry.data.title} | Constitution Atlas`} description={entry.data.summary} pagefindIndexed={true}>
@@ -76,9 +78,17 @@ const relatedSources = resolveBySlugs(sources, entry.data.sources);
 					<section>
 						<h2>Official text excerpt</h2>
 						<p class="official-copy">{entry.data.officialText}</p>
-						<p class="source-caption">
-							Primary source: <a href="https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf" target="_blank" rel="noreferrer">Constitution of India, India Code official PDF</a>.
-						</p>
+						{
+							primaryOfficialSource && (
+								<p class="source-caption">
+									Primary source:{' '}
+									<a href={primaryOfficialSource.data.url} target="_blank" rel="noreferrer">
+										{primaryOfficialSource.data.title}
+									</a>
+									.
+								</p>
+							)
+						}
 					</section>
 				)
 			}

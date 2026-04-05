@@ -1,0 +1,57 @@
+---
+type: article
+slug: article-330
+title: Article 330
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-xvi|Part XVI - Special Provisions Relating to Certain Classes]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 330 covers reservation of seats for Scheduled Castes and Scheduled Tribes in the House of the People.
+
+## Official text
+
+330. Reservation of seats for Scheduled Castes and Scheduled Tribes in the House of the People.—(1) Seats shall be reserved in the House of the People for —
+
+(a) the Scheduled Castes; [(b) the Scheduled Tribes except the Scheduled Tribes in the autonomous districts of Assam; and]
+
+(c) the Scheduled Tribes in the autonomous districts of Assam.
+
+(2) The number of seats reserved in any State [or Union territory] for the Scheduled Castes or the Scheduled Tribes under clause (1) shall bear, as nearly as may be, the same proportion to the total number of seats allotted to that State [or Union territory] in the House of the People as the population of the Scheduled Castes in the State [or Union territory] or of the Scheduled Tribes in the State [or Union territory] or part of the State [or Union territory], as the case may be, in respect of which seats are so reserved, bears to the total population of the State [or Union territory]. [(3) Notwithstanding anything contained in clause (2), the number of seats reserved in the House of the People for the Scheduled Tribes in the autonomous districts of Assam shall bear to the total number of seats allotted to that State a proportion not less than the population of the Scheduled Tribes in the said autonomous districts bears to the total population of the State.] [Explanation.—In this article and in article 332, the expression “population” means the population as ascertained at the last preceding census of which the relevant figures have been published:
+
+Provided that the reference in this Explanation to the last preceding census of which the relevant figures have been published shall, until the relevant figures for the first census taken after the year [2026] have been published, be construed as a reference to the [2001] census.]
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 330. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?

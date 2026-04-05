@@ -6,10 +6,7 @@ part: Part III - Fundamental Rights
 partSlug: part-iii
 summary: Article 27 protects people from being compelled to pay taxes specifically appropriated to promote or maintain a particular religion or denomination.
 plainEnglish: The Constitution does not allow the state to force citizens to financially support the promotion or maintenance of a particular religion through specifically appropriated taxation.
-officialText: >-
-  No person shall be compelled to pay any taxes, the proceeds of which are
-  specifically appropriated in payment of expenses for the promotion or
-  maintenance of any particular religion or religious denomination.
+officialText: 27. Freedom as to payment of taxes for promotion of any particular religion.—No person shall be compelled to pay any taxes, the proceeds of which are specifically appropriated in payment of expenses for the promotion or maintenance of any particular religion or religious denomination.
 relatedArticles:
   - article-25
   - article-26

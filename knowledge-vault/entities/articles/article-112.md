@@ -1,0 +1,71 @@
+---
+type: article
+slug: article-112
+title: Article 112
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-v|Part V - The Union]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 112 covers annual financial statement.
+
+## Official text
+
+112. Annual financial statement.—(1) The President shall in respect of every financial year cause to be laid before both the Houses of Parliament a statement of the estimated receipts and expenditure of the Government of India for that year, in this Part referred to as the "annual financial statement''.
+
+(2) The estimates of expenditure embodied in the annual financial statement shall show separately—
+
+(a) the sums required to meet expenditure described by this Constitution as expenditure charged upon the Consolidated Fund of India; and
+
+(b) the sums required to meet other expenditure proposed to be made from the Consolidated Fund of India, and shall distinguish expenditure on revenue account from other expenditure.
+
+(3) The following expenditure shall be expenditure charged on the Consolidated Fund of India—
+
+(a) the emoluments and allowances of the President and other expenditure relating to his office;
+
+(b) the salaries and allowances of the Chairman and the Deputy Chairman of the Council of States and the Speaker and the Deputy Speaker of the House of the People;
+
+(c) debt charges for which the Government of India is liable including interest, sinking fund charges and redemption charges, and other expenditure relating to the raising of loans and the service and redemption of debt;
+
+(d) (i) the salaries, allowances and pensions payable to or in respect of Judges of the Supreme Court; (ii) the pensions payable to or in respect of Judges of the Federal Court; (iii) the pensions payable to or in respect of Judges of any High Court which exercises jurisdiction in relation to any area included in the territory of India or which at any time before the commencement of this Constitution exercised jurisdiction in relation to any area included in [a Governor's Province of the Dominion of India];
+
+(e) the salary, allowances and pension payable to or in respect of the Comptroller and Auditor-General of India;
+
+(f) any sums required to satisfy any judgment, decree or award of any court or arbitral tribunal;
+
+(g) any other expenditure declared by this Constitution or by Parliament by law to be so charged.
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 112. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?

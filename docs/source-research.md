@@ -244,3 +244,4 @@ This research changes the product architecture in a few ways:
 2. Normalize the Constitution text against a clearly dated official upstream edition.
 3. Build a repeatable extraction workflow for constitutional text and judgment metadata.
 4. Treat source provenance as first-class metadata across the site.
+5. Follow the editorial cadence and review checklist in `docs/editorial-operations.md` when source changes need to become published updates.

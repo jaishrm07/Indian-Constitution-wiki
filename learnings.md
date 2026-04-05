@@ -170,3 +170,15 @@ When a topic feels weak, the first fix is often to add the missing constitutiona
 ### 32. Some weak dossiers are graph problems, not content problems
 
 A topic can look shallow even when the site already has the necessary material. Free speech and privacy improved simply by tagging Article 19, Article 21, and the relevant cases more accurately. Before adding new pages, it is often worth checking whether the graph already contains the answer but the relationships are too sparse for the UI to reveal it.
+
+### 33. Editorial operations need their own documented cadence
+
+When a constitutional site starts tracking live developments, the team needs a repeatable operating rhythm. Daily triage, weekly source review, monthly doctrine refreshes, and quarterly archival cleanup are more realistic than ad hoc publishing because they match the pace of constitutional change without encouraging churn.
+
+### 34. Issue templates are part of editorial quality control
+
+Maintainers should not have to remember the review shape for every new constitutional issue. A structured issue template for current-affairs updates and another for source review make the workflow explicit: constitutional question, official source, related anchors, and verification status. That reduces drift and makes handoffs cleaner.
+
+### 35. Source review should answer what the source proves, not just where it lives
+
+In a knowledge-heavy legal product, a source is only useful when the team knows its role in the stack. The source review process should force a decision: what this source establishes, what it cannot establish, and whether it should remain primary, secondary, or archival. That keeps source sprawl under control.

@@ -37,6 +37,19 @@ When adding a meaningful new source:
 5. append an entry to `knowledge-vault/log.md`
 6. update `knowledge-vault/index.md` if new durable notes or entities were created
 
+### Editorial cadence
+
+Use the operating loop in `docs/editorial-operations.md` for current-affairs updates, source reviews, and content refreshes.
+
+The default cadence is:
+
+1. daily triage for new constitutional developments
+2. weekly source and coverage review
+3. monthly doctrine and timeline refresh
+4. quarterly archive and cleanup pass
+
+When in doubt, prefer smaller reviewed updates over large unverified batches.
+
 ### Query
 
 When answering a project question:

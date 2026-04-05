@@ -6,15 +6,17 @@ part: Part XI - Relations Between the Union and the States
 partSlug: part-xi
 summary: Article 246A creates a special constitutional distribution of legislative power for goods and services tax.
 plainEnglish: This Article is a major departure from the older list-based tax structure. It gives both Parliament and state legislatures constitutional power over GST, while reserving inter-State GST to Parliament.
-officialText: >-
-  Notwithstanding anything contained in articles 246 and 254, Parliament, and,
-  subject to clause (2), the Legislature of every State, have power to make laws
-  with respect to goods and services tax imposed by the Union or by such State.
-  Parliament has exclusive power to make laws with respect to goods and
-  services tax where the supply of goods, or of services, or both takes place in
-  the course of inter-State trade or commerce.
+officialText: |-
+  [246A. Special provision with respect to goods and services tax.—(1)
+
+  Notwithstanding anything contained in articles 246 and 254, Parliament, and, subject to clause (2), the Legislature of every State, have power to make laws with respect to goods and services tax imposed by the Union or by such State.
+
+  (2) Parliament has exclusive power to make laws with respect to goods and services tax where the supply of goods, or of services, or both takes place in the course of inter-State trade or commerce.
+
+  Explanation.—The provisions of this article, shall, in respect of goods and services tax referred to in clause (5) of article 279A, take effect from the date recommended by the Goods and Services Tax Council.]
 relatedArticles:
   - article-246
+  - article-247
   - article-269a
   - article-279a
 schedules:

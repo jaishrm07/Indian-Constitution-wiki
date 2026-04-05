@@ -6,12 +6,9 @@ part: Part III - Fundamental Rights
 partSlug: part-iii
 summary: Article 12 defines what counts as the State for the purpose of enforcing fundamental rights.
 plainEnglish: Before rights can be enforced, courts need to know who is bound by them. Article 12 identifies the institutions and authorities whose actions can be tested against Part III.
-officialText: >-
-  In this Part, unless the context otherwise requires, “the State” includes the
-  Government and Parliament of India and the Government and the Legislature of
-  each of the States and all local or other authorities within the territory of
-  India or under the control of the Government of India.
+officialText: 12. Definition.—In this Part, unless the context otherwise requires, “the State” includes the Government and Parliament of India and the Government and the Legislature of each of the States and all local or other authorities within the territory of India or under the control of the Government of India.
 relatedArticles:
+  - article-2
   - article-13
   - article-14
 topics:

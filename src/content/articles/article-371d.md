@@ -1,0 +1,76 @@
+---
+title: Article 371D
+slug: article-371d
+number: 371D
+part: Part XXI - [temporary, Transitional and Special Provisions]
+partSlug: part-xxi
+summary: Article 371D covers special provisions with respect to [the State of Andhra Pradesh or the State of Telangana.
+plainEnglish: This page reproduces the official text of Article 371D. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+officialText: |-
+  [371D. Special provisions with respect to [the State of Andhra Pradesh or the State of Telangana].—5[(1) The President may by order made with respect to the State of Andhra Pradesh or the State of Telangana, provide, having regard to the requirement of each State, for equitable opportunities and facilities for the people belonging to different parts of such State, in the matter of public employment and in the matter of education, and different provisions may be made for various parts of the States.]
+
+  (2) An order made under clause (1) may, in particular,—
+
+  (a) require the State Government to organise any class or classes of posts in a civil service of, or any class or classes of civil posts under, the State into different local cadres for different parts of the State and allot in accordance with such principles and procedure as may be specified in the order the persons holding such posts to the local cadres so organised;
+
+  (b) specify any part or parts of the State which shall be regarded as the local area—
+
+  (i) for direct recruitment to posts in any local cadre (whether organised in pursuance of an order under this article or constituted otherwise) under the State Government; (ii) for direct recruitment to posts in any cadre under any local authority within the State; and (iii) for the purposes of admission to any University within the State or to any other educational institution which is subject to the control of the State Government;
+
+  (c) specify the extent to which, the manner in which and the conditions subject to which, preference or reservation shall be given or made—
+
+  (i) in the matter of direct recruitment to posts in any such cadre referred to in sub-clause (b) as may be specified in this behalf in the order; (ii) in the matter of admission to any such University or other educational institution referred to in sub-clause (b) as may be specified in this behalf in the order, to or in favour of candidates who have resided or studied for any period specified in the order in the local area in respect of such cadre, University or other educational institution, as the case may be.
+
+  (3) The President may, by order, provide for the constitution of an Administrative Tribunal for [the State of Andhra Pradesh and for the State of Telangana] to exercise such jurisdiction, powers and authority [including any jurisdiction, power and authority which immediately before the commencement of the Constitution (Thirty-second Amendment) Act, 1973, was exercisable by any court (other than the Supreme Court) or by any tribunal or other authority] as may be specified in the order with respect to the following matters, namely:—
+
+  (a) appointment, allotment or promotion to such class or classes of posts in any civil service of the State, or to such class or classes of civil posts under the State, or to such class or classes of posts under the control of any local authority within the State, as may be specified in the order;
+
+  (b) seniority of persons appointed, allotted or promoted to such class or classes of posts in any civil service of the State, or to such class or classes of civil posts under the State, or to such class or classes of posts under the control of any local authority within the State, as may be specified in the order;
+
+  (c) such other conditions of service of persons appointed, allotted or promoted to such class or classes of posts in any civil service of the State or to such class or classes of civil posts under the State or to such class or classes of posts under the control of any local authority within the State, as may be specified in the order.
+
+  (4) An order made under clause (3) may—
+
+  (a) authorise the Administrative Tribunal to receive representations for the redress of grievances relating to any matter within its jurisdiction as the President may specify in the order and to make such orders thereon as the Administrative Tribunal deems fit;
+
+  (b) contain such provisions with respect to the powers and authorities and procedure of the Administrative Tribunal (including provisions with respect to the powers of the Administrative Tribunal to punish for contempt of itself) as the President may deem necessary;
+
+  (c) provide for the transfer to the Administrative Tribunal of such classes of proceedings, being proceedings relating to matters within its jurisdiction and pending before any court (other than the Supreme Court) or tribunal or other authority immediately before the commencement of such order, as may be specified in the order;
+
+  (d) contain such supplemental, incidental and consequential provisions (including provisions as to fees and as to limitation, evidence or for the application of any law for the time being in force subject to any exceptions or modifications) as the President may deem necessary. 
+
+  (5) The Order of the Administrative Tribunal finally disposing of any case shall become effective upon its confirmation by the State Government or on the expiry of three months from the date on which the order is made, whichever is earlier:
+
+  Provided that the State Government may, by special order made in writing and for reasons to be specified therein, modify or annul any order of the Administrative Tribunal before it becomes effective and in such a case, the order of the Administrative Tribunal shall have effect only in such modified form or be of no effect, as the case may be.
+
+  (6) Every special order made by the State Government under the proviso to clause (5) shall be laid, as soon as may be after it is made, before both Houses of the State Legislature.
+
+  (7) The High Court for the State shall not have any powers of superintendence over the Administrative Tribunal and no court (other than the Supreme Court) or tribunal shall exercise any jurisdiction, power or authority in respect of any matter subject to the jurisdiction, power or authority of, or in relation to, the Administrative Tribunal.
+
+  (8) If the President is satisfied that the continued existence of the Administrative Tribunal is not necessary, the President may by order abolish the Administrative Tribunal and make such provisions in such order as he may deem fit for the transfer and disposal of cases pending before the Tribunal immediately before such abolition.
+
+  (9) Notwithstanding any judgment, decree or order of any court, tribunal or other authority,—
+
+  (a) no appointment, posting, promotion or transfer of any person—
+
+  (i) made before the 1st day of November, 1956, to any post under the Government of, or any local authority within, the State of Hyderabad as it existed before that date; or (ii) made before the commencement of the Constitution (Thirty-second Amendment) Act, 1973, to any post under the Government of, or any local or other authority within, the State of Andhra Pradesh; and
+
+  (b) no action taken or thing done by or before any person referred to in sub-clause (a), shall be deemed to be illegal or void or ever to have become illegal or void merely on the ground that the appointment, posting, promotion or transfer of such person was not made in accordance with any law, then in force, providing for any requirement as to residence within the State of Hyderabad or, as the case may be, within any part of the State of Andhra Pradesh, in respect of such appointment, posting, promotion or transfer.
+
+  (10) The provisions of this article and of any order made by the President thereunder shall have effect notwithstanding anything in any other provision of this Constitution or in any other law for the time being in force.
+relatedArticles:
+  - article-371c
+  - article-371e
+schedules: []
+topics: []
+sources:
+  - constitution-of-india
+---
+
+## Editorial status
+
+This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+
+## Reading note
+
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.

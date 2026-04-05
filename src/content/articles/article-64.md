@@ -1,0 +1,28 @@
+---
+title: Article 64
+slug: article-64
+number: '64'
+part: Part V - The Union
+partSlug: part-v
+summary: Article 64 covers the Vice-President to be ex officio Chairman of the Council of States.
+plainEnglish: This page reproduces the official text of Article 64. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+officialText: |-
+  64. The Vice-President to be ex officio Chairman of the Council of States.—The Vice-President shall be ex officio Chairman of the Council of the States and shall not hold any other office of profit:
+
+  Provided that during any period when the Vice-President acts as President or discharges the functions of the President under article 65, he shall not perform the duties of the office of Chairman of the Council of States and shall not be entitled to any salary or allowance payable to the Chairman of the Council of States under article 97.
+relatedArticles:
+  - article-63
+  - article-65
+schedules: []
+topics: []
+sources:
+  - constitution-of-india
+---
+
+## Editorial status
+
+This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+
+## Reading note
+
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.

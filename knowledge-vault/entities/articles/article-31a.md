@@ -1,0 +1,69 @@
+---
+type: article
+slug: article-31a
+title: Article 31A
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-iii|Part III - Fundamental Rights]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 31A covers saving of laws providing for acquisition of estates, etc.
+
+## Official text
+
+[31A. Saving of laws providing for acquisition of estates, etc.— [(1) Notwithstanding anything contained in article 13, no law providing for—
+
+(a) the acquisition by the State of any estate or of any rights therein or the extinguishment or modification of any such rights, or
+
+(b) the taking over of the management of any property by the State for a limited period either in the public interest or in order to secure the proper management of the property, or
+
+(c) the amalgamation of two or more corporations either in the public interest or in order to secure the proper management of any of the corporations, or
+
+(d) the extinguishment or modification of any rights of managing agents, secretaries and treasurers, managing directors, directors or managers of corporations, or of any voting rights of shareholders thereof, or
+
+(e) the extinguishment or modification of any rights accruing by virtue of any agreement, lease or licence for the purpose of searching for, or winning, any mineral or mineral oil, or the premature termination or cancellation of any such agreement, lease or licence, shall be deemed to be void on the ground that it is inconsistent with, or takes away or abridges any of the rights conferred by [article 14 or article 19]:
+
+Provided that where such law is a law made by the Legislature of a State, the provisions of this article shall not apply thereto unless such law, having been reserved for the consideration of the President, has received his assent:]
+
+[Provided further that where any law makes any provision for the acquisition by the State of any estate and where any land comprised therein is held by a person under his personal cultivation, it shall not be lawful for the State to acquire any portion of such land as is within the ceiling limit applicable to him under any law for the time being in force or any building or structure standing thereon or appurtenant thereto, unless the law relating to the acquisition of such land, building or structure, provides for payment of compensation at a rate which shall not be less than the market value thereof.]
+
+(2) In this article,— [(a) the expression “estate” shall, in relation to any local area, have the same meaning as that expression or its local equivalent has in the existing law relating to land tenures in force in that area and shall also include—
+
+(i) any jagir, inam or muafi or other similar grant and in the States of [Tamil Nadu] and Kerala, any janmam right; (ii) any land held under ryotwari settlement; (iii) any land held or let for purposes of agriculture or for purposes ancillary thereto, including waste land, forest land, land for pasture or sites of buildings and other structures occupied by cultivators of land, agricultural labourers and village artisans;]
+
+(b) the expression “rights”, in relation to an estate, shall include any rights vesting in a proprietor, sub-proprietor, under-proprietor, tenureholder, [raiyat, under-raiyat] or other intermediary and any rights or privileges in respect of land revenue.]
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 31A. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?

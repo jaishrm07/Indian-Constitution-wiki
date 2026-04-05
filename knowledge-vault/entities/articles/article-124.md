@@ -1,0 +1,77 @@
+---
+type: article
+slug: article-124
+title: Article 124
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-v|Part V - The Union]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 124 covers establishment and constitution of Supreme Court.
+
+## Official text
+
+124. Establishment and constitution of Supreme Court.—(1) There shall be a Supreme Court of India consisting of a Chief Justice of India and, until Parliament by law prescribes a larger number, of not more than [seven] other Judges.
+
+(2) Every Judge of the Supreme Court shall be appointed by the President by warrant under his hand and seal [on the recommendation of the National Judicial Appointments Commission referred to in article 124A] and shall hold office until he attains the age of sixty-five years: [* * * * *]
+
+[Provided that]—
+
+(a) a Judge may, by writing under his hand addressed to the President, resign his office;
+
+(b) a Judge may be removed from his office in the manner provided in clause (4). [(2A) The age of a Judge of the Supreme Court shall be determined by such authority and in such manner as Parliament may by law provide.]
+
+(3) A person shall not be qualified for appointment as a Judge of the Supreme Court unless he is a citizen of India and—
+
+(a) has been for at least five years a Judge of a High Court or of two or more such Courts in succession; or
+
+(b) has been for at least ten years an advocate of a High Court or of two or more such Courts in succession; or
+
+(c) is, in the opinion of the President, a distinguished jurist.
+
+Explanation I.—In this clause "High Court'' means a High Court which exercises, or which at any time before the commencement of this Constitution exercised, jurisdiction in any part of the territory of India.
+
+Explanation II.—In computing for the purpose of this clause the period during which a person has been an advocate, any period during which a person has held judicial office not inferior to that of a district judge after he became an advocate shall be included.
+
+(4) A Judge of the Supreme Court shall not be removed from his office except by an order of the President passed after an address by each House of Parliament supported by a majority of the total membership of that House and by a majority of not less than two-thirds of the members of that House present and voting has been presented to the President in the same session for such removal on the ground of proved misbehaviour or incapacity.
+
+(5) Parliament may by law regulate the procedure for the presentation of an address and for the investigation and proof of the misbehaviour or incapacity of a Judge under clause (4).
+
+(6) Every person appointed to be a Judge of the Supreme Court shall, before he enters upon his office, make and subscribe before the President, or some person appointed in that behalf by him, an oath or affirmation according to the form set out for the purpose in the Third Schedule.
+
+(7) No person who has held office as a Judge of the Supreme Court shall plead or act in any court or before any authority within the territory of India.
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 124. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?

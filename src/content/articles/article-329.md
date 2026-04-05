@@ -6,16 +6,18 @@ part: Part XV - Elections
 partSlug: part-xv
 summary: Article 329 limits judicial interference in electoral matters by channeling challenges through the election petition framework.
 plainEnglish: Courts do not ordinarily interrupt the electoral process midstream. Article 329 pushes most challenges into the election petition route after the election, so constitutional litigation does not routinely displace the conduct of elections.
-officialText: >-
-  The validity of any law relating to the delimitation of constituencies or the
-  allotment of seats made under article 327 or article 328 shall not be called
-  in question in any court, and no election to either House of Parliament or to
-  the House or either House of the Legislature of a State shall be called in
-  question except by an election petition presented as provided by law.
+officialText: |-
+  329. Bar to interference by courts in electoral matters.— [Notwithstanding anything in this Constitution —]
+
+  (a) the validity of any law relating to the delimitation of constituencies or the allotment of seats to such constituencies, made or purporting to be made under article 327 or article 328, shall not be called in question in any court;
+
+  (b) no election to either House of Parliament or to the House or either House of the Legislature of a State shall be called in question except by an election petition presented to such authority and in such manner as may be provided for by or under any law made by the appropriate Legislature.
 relatedArticles:
+  - article-226
   - article-324
   - article-327
-  - article-226
+  - article-328
+  - article-329a
 topics:
   - elections-and-institutions
   - judiciary

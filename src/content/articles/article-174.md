@@ -6,15 +6,19 @@ part: Part VI - The States
 partSlug: part-vi
 summary: Article 174 empowers the Governor to summon, prorogue, and dissolve the State Legislature, subject to constitutional structure.
 plainEnglish: This Article gives the Governor formal power over legislative sessions and dissolution, but those powers cannot be read in isolation from democratic government, cabinet responsibility, and the limits of discretion.
-officialText: >-
-  The Governor shall from time to time summon the House or each House of the
-  Legislature of the State to meet at such time and place as he thinks fit, but
-  six months shall not intervene between its last sitting in one session and the
-  date appointed for its first sitting in the next session. The Governor may
-  prorogue the House or either House and dissolve the Legislative Assembly.
+officialText: |-
+  [174. Sessions of the State Legislature, prorogation and dissolution.—(1) The Governor shall from time to time summon the House or each House of the Legislature of the State to meet at such time and place as he thinks fit, but six months shall not intervene between its last sitting in one session and the date appointed for its first sitting in the next session.
+
+  (2) The Governor may from time to time—
+
+  (a) prorogue the House or either House;
+
+  (b) dissolve the Legislative Assembly.]
 relatedArticles:
   - article-163
   - article-172
+  - article-173
+  - article-175
   - article-356
 topics:
   - federalism

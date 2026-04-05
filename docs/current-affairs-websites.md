@@ -163,3 +163,5 @@ For the website itself:
 - use Live Law and Bar and Bench mainly for monitoring and discovery
 
 That keeps the site fast on live developments without weakening the source standard.
+
+For the operating cadence and review steps that turn those sources into published issue pages, use `docs/editorial-operations.md`.

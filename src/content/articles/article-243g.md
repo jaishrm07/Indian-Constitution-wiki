@@ -6,16 +6,17 @@ part: Part IX - The Panchayats
 partSlug: part-ix
 summary: Article 243G empowers state legislatures to devolve powers and responsibilities to Panchayats as institutions of self-government.
 plainEnglish: This Article is the operating heart of constitutional local government in rural India. It explains why Panchayats are not only administrative bodies but constitutional institutions that can receive real planning and implementation authority.
-officialText: >-
-  Subject to the provisions of this Constitution, the Legislature of a State may,
-  by law, endow the Panchayats with such powers and authority as may be
-  necessary to enable them to function as institutions of self-government and
-  such law may contain provisions for the devolution of powers and
-  responsibilities upon Panchayats at the appropriate level, subject to such
-  conditions as may be specified therein, with respect to the preparation of plans
-  for economic development and social justice and the implementation of schemes
-  including those in relation to the matters listed in the Eleventh Schedule.
+officialText: |-
+  243G. Powers, authority and responsibilities of Panchayats.—
+
+  Subject to the provisions of this Constitution, the Legislature of a State may, by law, endow the Panchayats with such powers and authority as may be necessary to enable them to function as institutions of self-government and such law may contain provisions for the devolution of powers and responsibilities upon Panchayats at the appropriate level, subject to such conditions as may be specified therein, with respect to—
+
+  (a) the preparation of plans for economic development and social justice;
+
+  (b) the implementation of schemes for economic development and social justice as may be entrusted to them including those in relation to the matters listed in the Eleventh Schedule.
 relatedArticles:
+  - article-243f
+  - article-243h
   - article-243w
 schedules:
   - schedule-xi

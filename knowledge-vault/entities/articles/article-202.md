@@ -1,0 +1,69 @@
+---
+type: article
+slug: article-202
+title: Article 202
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-vi|Part VI - The States]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 202 covers annual financial statement.
+
+## Official text
+
+202. Annual financial statement.—(1) The Governor shall in respect of every financial year cause to be laid before the House or Houses of the Legislature of the State a statement of the estimated receipts and expenditure of the State for that year, in this Part referred to as the “annual financial statement”.
+
+(2) The estimates of expenditure embodied in the annual financial statement shall show separately—
+
+(a) the sums required to meet expenditure described by this Constitution as expenditure charged upon the Consolidated Fund of the State; and
+
+(b) the sums required to meet other expenditure proposed to be made from the Consolidated Fund of the State; and shall distinguish expenditure on revenue account from other expenditure.
+
+(3) The following expenditure shall be expenditure charged on the Consolidated Fund of each State—
+
+(a) the emoluments and allowances of the Governor and other expenditure relating to his office;
+
+(b) the salaries and allowances of the Speaker and the Deputy Speaker of the Legislative Assembly and, in the case of a State having a Legislative Council, also of the Chairman and the Deputy Chairman of the Legislative Council;
+
+(c) debt charges for which the State is liable including interest, sinking fund charges and redemption charges, and other expenditure relating to the raising of loans and the service and redemption of debt;
+
+(d) expenditure in respect of the salaries and allowances of Judges of any High Court;
+
+(e) any sums required to satisfy any judgment, decree or award of any court or arbitral tribunal;
+
+(f) any other expenditure declared by this Constitution, or by the Legislature of the State by law, to be so charged.
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 202. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?

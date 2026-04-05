@@ -6,16 +6,36 @@ order: 3
 summary: Part III contains the Constitution's rights chapter and anchors much of modern constitutional litigation in India.
 intro: Part III is where citizens and courts most often begin when questions of liberty, equality, and constitutional remedies arise.
 articleSlugs:
+  - article-12
+  - article-13
   - article-14
+  - article-15
+  - article-16
+  - article-17
+  - article-18
   - article-19
+  - article-20
   - article-21
+  - article-21a
+  - article-22
+  - article-23
+  - article-24
   - article-25
   - article-26
   - article-27
   - article-28
   - article-29
   - article-30
+  - article-31
+  - article-31a
+  - article-31b
+  - article-31c
+  - article-31d
   - article-32
+  - article-32a
+  - article-33
+  - article-34
+  - article-35
 topics:
   - fundamental-rights
   - judiciary

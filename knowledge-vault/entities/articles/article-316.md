@@ -1,0 +1,61 @@
+---
+type: article
+slug: article-316
+title: Article 316
+aliases: []
+constitution_refs: []
+related_parts:
+  - '[[../parts/part-xiv|Part XIV - Services Under the Union and the States]]'
+related_schedules: []
+related_cases: []
+related_topics: []
+related_issues: []
+official_sources:
+  - https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf
+secondary_sources: []
+status: seeded
+last_reviewed: '2026-04-05'
+---
+
+## Summary
+
+Article 316 covers appointment and term of office of members.
+
+## Official text
+
+316. Appointment and term of office of members.—(1) The Chairman and other members of a Public Service Commission shall be appointed, in the case of the Union Commission or a Joint Commission, by the President, and in the case of a State Commission, by the Governor of the State:
+
+Provided that as nearly as may be one-half of the members of every Public Service Commission shall be persons who at the dates of their respective appointments have held office for at least ten years either under the Government of India or under the Government of a State, and in computing the said period of ten years any period before the commencement of this Constitution during which a person has held office under the Crown in India or under the Government of an Indian State shall be included. [(1A) If the office of the Chairman of the Commission becomes vacant or if any such Chairman is by reason of absence or for any other reason unable to perform the duties of his office, those duties shall, until some person appointed under clause (1) to the vacant office has entered on the duties thereof or, as the case may be, until the Chairman has resumed his duties, be performed by such one of the other members of the Commission as the President, in the case of the Union Commission or a Joint Commission, and the Governor of the State in the case of a State Commission, may appoint for the purpose.]
+
+(2) A member of a Public Service Commission shall hold office for a term of six years from the date on which he enters upon his office or until he attains, in the case of the Union Commission, the age of sixty-five years, and in the case of a State Commission or a Joint Commission, the age of [sixty-two years], whichever is earlier:
+
+Provided that—
+
+(a) a member of a Public Service Commission may, by writing under his hand addressed, in the case of the Union Commission or a Joint Commission, to the President, and in the case of a State Commission, to the Governor of the State, resign his office;
+
+(b) a member of a Public Service Commission may be removed from his office in the manner provided in clause (1) or clause (3) of article 317.
+
+(3) A person who holds office as a member of a Public Service Commission shall, on the expiration of his term of office, be ineligible for re-appointment to that office.
+
+## Plain-English meaning
+
+This page reproduces the official text of Article 316. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+
+## Canonical site note
+
+Editorial status
+This reference page is generated from the official constitutional text so every Article has a reliable primarysource anchor on the site. Interpretive notes, case law, amendment history, and currentaffairs links can now be layered on top without losing the underlying text.
+Reading note
+Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+
+## Linked cases
+
+- None yet
+
+## Current relevance
+
+- None yet
+
+## Open questions
+
+- Which clause-level or doctrine-level sub-notes should branch from this Article?
