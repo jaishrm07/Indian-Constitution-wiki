@@ -17,6 +17,7 @@ const collections = [
 	'timeline',
 	'current-affairs',
 	'sources',
+	'edges',
 ];
 
 const relationRules = {
@@ -97,6 +98,11 @@ const relationRules = {
 		{ field: 'sources', target: 'sources' },
 	],
 	sources: [],
+	edges: [
+		{ field: 'fromSlug', targetField: 'fromCollection', mode: 'dynamic-single' },
+		{ field: 'toSlug', targetField: 'toCollection', mode: 'dynamic-single' },
+		{ field: 'sources', target: 'sources' },
+	],
 };
 
 const entriesByCollection = new Map();

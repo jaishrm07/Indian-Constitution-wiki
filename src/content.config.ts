@@ -1,6 +1,60 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const graphCollections = [
+	'articles',
+	'parts',
+	'schedules',
+	'topics',
+	'institutions',
+	'cases',
+	'glossary',
+	'amendments',
+	'timeline',
+	'current-affairs',
+] as const;
+
+const timelineRelatedCollections = [
+	'articles',
+	'parts',
+	'schedules',
+	'topics',
+	'cases',
+	'amendments',
+	'current-affairs',
+	'glossary',
+] as const;
+
+const edgeRelationTypes = [
+	'belongs-to',
+	'contains',
+	'cross-references',
+	'references',
+	'explains',
+	'interprets',
+	'defines',
+	'shapes',
+	'amends',
+	'reforms',
+	'anchors',
+	'involves',
+	'chronicles',
+	'overrules',
+	'reaffirms',
+	'builds-on',
+	'limits',
+	'frames',
+	'establishes',
+	'applies',
+	'operationalises',
+	'tests',
+	'administers',
+	'appears-in',
+	'tracked-through',
+	'extends',
+	'sourced-by',
+] as const;
+
 const articles = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
 	schema: z.object({
@@ -172,9 +226,7 @@ const timeline = defineCollection({
 		articleRefs: z.array(z.string()).default([]),
 		partRefs: z.array(z.string()).default([]),
 		scheduleRefs: z.array(z.string()).default([]),
-		relatedCollection: z
-			.enum(['articles', 'parts', 'schedules', 'topics', 'cases', 'amendments', 'current-affairs', 'glossary'])
-			.optional(),
+		relatedCollection: z.enum(timelineRelatedCollections).optional(),
 		relatedSlug: z.string().optional(),
 		sources: z.array(z.string()).default([]),
 	}),
@@ -234,6 +286,29 @@ const sources = defineCollection({
 	}),
 });
 
+const edges = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/edges' }),
+	schema: z.object({
+		title: z.string(),
+		slug: z.string(),
+		fromCollection: z.enum(graphCollections),
+		fromSlug: z.string(),
+		toCollection: z.enum(graphCollections),
+		toSlug: z.string(),
+		relationType: z.enum(edgeRelationTypes),
+		strength: z
+			.union([
+				z.number().int().min(1).max(5),
+				z.enum(['context', 'strong', 'core']).transform((value) => (value === 'core' ? 5 : value === 'strong' ? 4 : 2)),
+			])
+			.default(3),
+		summary: z.string().optional(),
+		note: z.string().optional(),
+		directional: z.boolean().default(false),
+		sources: z.array(z.string()).default([]),
+	}),
+});
+
 export const collections = {
 	articles,
 	parts,
@@ -246,4 +321,5 @@ export const collections = {
 	timeline,
 	'current-affairs': currentAffairs,
 	sources,
+	edges,
 };

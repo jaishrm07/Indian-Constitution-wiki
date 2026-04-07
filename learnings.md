@@ -280,3 +280,15 @@ Pending Constitution Benches as of 2026 include: CAA challenge (WP Civil 1474/20
 ### 60. The Article 131 original jurisdiction page needs special depth
 
 Article 131 is where federal disputes reach their only forum — the Supreme Court with exclusive jurisdiction. The "legal right" test it requires is stricter than it appears: the Court has repeatedly distinguished justiciable legal disputes (eligible) from political disagreements dressed as legal claims (excluded). This distinction has been central in water dispute cases, Article 356 proceedings, and GST Council disputes, and should be explained explicitly on the page.
+
+### 61. A superior knowledge graph starts with typed edges, not prettier nodes
+
+Graph quality degrades quickly when the site only stores generic backlinks and then tries to infer everything visually. The graph becomes materially more useful when relationships are first-class content with stable relation types such as `overrules`, `establishes`, `amends`, and `tracked-through`. Once those typed edges exist, the interface can support focused neighborhood views, shortest-path explanation, and better graph legend design without guessing what a connection means.
+
+### 62. Default graph state should be curated, not complete
+
+Showing the full constitutional network by default creates a hairball even when the underlying data is good. A better default is a curated overview of nodes that are especially central, explicitly connected, or structurally important. Readers can then drill into one-hop and two-hop neighborhoods or shortest paths when they actually need density.
+
+### 63. Build-time graph normalization is the right fit for a static legal reference site
+
+For this project, a static normalized graph payload generated from canonical content is more appropriate than introducing a graph database immediately. It keeps deployment simple, preserves source control over relationships, and still enables rich client-side interaction such as path search, typed-edge explanation, and mode-specific layouts. A graph database only becomes necessary once the product needs dynamic multi-user editing or much heavier query patterns.

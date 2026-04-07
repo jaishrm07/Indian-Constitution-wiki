@@ -9,6 +9,7 @@ type LinkedCollection =
 	| 'cases'
 	| 'glossary'
 	| 'amendments'
+	| 'timeline'
 	| 'current-affairs'
 	| 'sources';
 
@@ -21,6 +22,7 @@ const collectionPaths: Record<LinkedCollection, string> = {
 	cases: '/cases',
 	glossary: '/glossary',
 	amendments: '/amendments',
+	timeline: '/timeline',
 	'current-affairs': '/current-affairs',
 	sources: '/sources',
 };
@@ -51,6 +53,10 @@ type SluggedEntry = {
 };
 
 export function getEntryHref(collection: LinkedCollection, slug: string) {
+	if (collection === 'timeline') {
+		return withBase(`${collectionPaths.timeline}#${slug}`);
+	}
+
 	return withBase(`${collectionPaths[collection]}/${slug}`);
 }
 

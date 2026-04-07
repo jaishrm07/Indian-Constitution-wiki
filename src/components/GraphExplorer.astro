@@ -5,14 +5,40 @@ interface GraphNode {
 	subtitle: string;
 	summary: string;
 	type: string;
+	collection: string;
+	slug: string;
 	href: string;
+	degree: number;
+	overview: boolean;
+	explicitlyConnected: boolean;
+}
+
+interface GraphEdgeRelation {
+	from: string;
+	to: string;
+	relationType: string;
+	relationLabel: string;
+	explicit: boolean;
+	note?: string;
+	sources: string[];
+	strength: number;
 }
 
 interface GraphEdge {
 	id: string;
 	source: string;
 	target: string;
-	label: string;
+	family: string;
+	familyLabel: string;
+	familyDescription: string;
+	familyColor: string;
+	relationLabels: string[];
+	relationTypes: string[];
+	relations: GraphEdgeRelation[];
+	explicit: boolean;
+	note: string;
+	sourceCount: number;
+	weight: number;
 }
 
 interface GraphStat {
@@ -21,23 +47,70 @@ interface GraphStat {
 	href?: string;
 }
 
+interface GraphLegendItem {
+	family: string;
+	label: string;
+	description: string;
+	color: string;
+	count: number;
+}
+
 interface Props {
 	nodes: GraphNode[];
 	edges: GraphEdge[];
 	stats: GraphStat[];
+	legend: GraphLegendItem[];
 }
 
-const { nodes, edges, stats } = Astro.props;
+const { nodes, edges, stats, legend } = Astro.props;
 const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
+const nodeOptions = [...nodes].sort((left, right) => {
+	if (left.type !== right.type) {
+		return left.type.localeCompare(right.type);
+	}
+
+	if (right.degree !== left.degree) {
+		return right.degree - left.degree;
+	}
+
+	return left.label.localeCompare(right.label);
+});
 ---
 
 <section class="graph-shell" data-graph-shell>
 	<div class="graph-main">
 		<div class="graph-toolbar">
-			<label class="graph-search" for="graph-search">
-				<span class="sr-only">Search the relationship graph</span>
-				<input id="graph-search" type="search" placeholder="Search Article 21, Bommai, federalism..." data-graph-search />
-			</label>
+			<div class="graph-toolbar__row graph-toolbar__row--modes">
+				<div class="graph-mode-switch" data-graph-modes>
+					<button type="button" class:list={['filter-pill', 'is-active']} data-graph-mode="explore">Explore</button>
+					<button type="button" class="filter-pill" data-graph-mode="path">Shortest path</button>
+				</div>
+				<div class="graph-depth-switch" data-graph-depths>
+					<button type="button" class:list={['filter-pill', 'is-active']} data-graph-depth="1">1 hop</button>
+					<button type="button" class="filter-pill" data-graph-depth="2">2 hops</button>
+				</div>
+				<button type="button" class="button-secondary graph-reset" data-graph-reset>Reset view</button>
+			</div>
+
+			<div class="graph-field-grid">
+				<label class="graph-field">
+					<span>Focus node</span>
+					<input list="graph-node-options" type="search" placeholder="Article 21, Kesavananda Bharati, privacy..." data-graph-start />
+				</label>
+				<label class="graph-field graph-field--target is-hidden" data-graph-target-field>
+					<span>Path target</span>
+					<input list="graph-node-options" type="search" placeholder="Pick another node to trace the shortest path..." data-graph-target />
+				</label>
+			</div>
+
+			<datalist id="graph-node-options">
+				{
+					nodeOptions.map((node) => (
+						<option value={node.label} label={`${node.type} • ${node.subtitle}`} data-node-id={node.id} />
+					))
+				}
+			</datalist>
+
 			<div class="graph-filters" data-graph-filters>
 				{
 					filterTypes.map((type) => (
@@ -47,8 +120,26 @@ const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
 					))
 				}
 			</div>
+
+			<div class="graph-legend" data-graph-legend>
+				{
+					legend.map((item) => (
+						<div class="graph-legend__item" title={item.description}>
+							<span class="graph-legend__swatch" style={`--legend-color:${item.color}`}></span>
+							<div>
+								<strong>{item.label}</strong>
+								<small>{item.count} edges</small>
+							</div>
+						</div>
+					))
+				}
+			</div>
 		</div>
+
 		<div class="graph-canvas-frame">
+			<div class="graph-view-summary" data-graph-view-summary>
+				Showing the curated overview. Select a node to open a tighter constitutional neighborhood.
+			</div>
 			<div class="graph-canvas" data-graph-canvas></div>
 		</div>
 	</div>
@@ -73,13 +164,17 @@ const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
 		</div>
 
 		<div class="graph-detail" data-graph-detail>
-			<p class="eyebrow">Node Detail</p>
-			<h2 data-detail-title>Select a node</h2>
+			<p class="eyebrow">Graph Detail</p>
+			<h2 data-detail-title>Curated overview</h2>
 			<p class="graph-detail__summary" data-detail-summary>
-				Use the search box or click a node to inspect how Articles, cases, institutions, amendments, and current-affairs issues connect.
+				Start with a case, Article, or live desk. The graph will collapse into a focused neighborhood instead of
+				showing the whole network at once.
 			</p>
-			<p class="graph-detail__meta" data-detail-meta>Showing the full constitutional network.</p>
-			<div class="graph-detail__links" data-detail-links></div>
+			<p class="graph-detail__meta" data-detail-meta>Overview mode • core constitutional nodes only</p>
+			<div class="graph-detail__chips" data-detail-chips></div>
+			<div class="graph-detail__panel" data-detail-panel>
+				<p class="muted">Typed edges are color-coded by family so you can tell structure, doctrine, reform, live dispute, and history apart.</p>
+			</div>
 			<a class="button-secondary graph-detail__cta is-disabled" href="#" data-detail-link aria-disabled="true">Open page</a>
 		</div>
 	</aside>
@@ -91,28 +186,49 @@ const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
 	import cytoscape from 'cytoscape';
 
 	const COLOR_BY_TYPE = {
-		Article: '#b55e24',
-		Part: '#19415a',
-		Schedule: '#497255',
-		Topic: '#7d3812',
-		Institution: '#365f75',
-		Case: '#713f12',
-		Amendment: '#8d6e19',
-		'Current Affair': '#91453a',
+		Article: '#bc6324',
+		Part: '#1f4f74',
+		Schedule: '#3c7453',
+		Topic: '#7a3514',
+		Institution: '#355d73',
+		Case: '#6b4618',
+		Amendment: '#7c6a1b',
+		Glossary: '#5d5a4d',
+		Timeline: '#556264',
+		'Current Affair': '#92473a',
 	};
 
-	const BASE_LAYOUT = {
+	const OVERVIEW_LAYOUT = {
 		name: 'cose',
 		animate: false,
 		fit: true,
-		padding: 32,
-		idealEdgeLength: 120,
-		nodeRepulsion: 300000,
-		gravity: 0.45,
+		padding: 36,
+		idealEdgeLength: 130,
+		nodeRepulsion: 320000,
+		gravity: 0.42,
+	};
+
+	const FOCUS_LAYOUT = {
+		name: 'concentric',
+		animate: false,
+		fit: true,
+		padding: 36,
+		spacingFactor: 1.15,
+		concentric: (node) => node.data('isAnchor') ? 10 : Math.max(1, node.data('degree') || 1),
+		levelWidth: () => 2,
+	};
+
+	const PATH_LAYOUT = {
+		name: 'breadthfirst',
+		animate: false,
+		fit: true,
+		padding: 42,
+		directed: false,
+		spacingFactor: 1.25,
 	};
 
 	function escapeHtml(value) {
-		return value
+		return String(value)
 			.replaceAll('&', '&amp;')
 			.replaceAll('<', '&lt;')
 			.replaceAll('>', '&gt;')
@@ -120,42 +236,89 @@ const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
 			.replaceAll("'", '&#39;');
 	}
 
+	function pairKey(left, right) {
+		return [left, right].sort().join('__');
+	}
+
+	function unique(values) {
+		return [...new Set(values)];
+	}
+
 	document.querySelectorAll('[data-graph-shell]').forEach((root) => {
 		const payloadScript = root.querySelector('[data-graph-payload]');
 		const canvas = root.querySelector('[data-graph-canvas]');
-		const searchInput = root.querySelector('[data-graph-search]');
+		const startInput = root.querySelector('[data-graph-start]');
+		const targetInput = root.querySelector('[data-graph-target]');
+		const targetField = root.querySelector('[data-graph-target-field]');
 		const filterBar = root.querySelector('[data-graph-filters]');
+		const modeBar = root.querySelector('[data-graph-modes]');
+		const depthBar = root.querySelector('[data-graph-depths]');
+		const resetButton = root.querySelector('[data-graph-reset]');
+		const viewSummary = root.querySelector('[data-graph-view-summary]');
 		const detailTitle = root.querySelector('[data-detail-title]');
 		const detailSummary = root.querySelector('[data-detail-summary]');
 		const detailMeta = root.querySelector('[data-detail-meta]');
-		const detailLinks = root.querySelector('[data-detail-links]');
+		const detailChips = root.querySelector('[data-detail-chips]');
+		const detailPanel = root.querySelector('[data-detail-panel]');
 		const detailLink = root.querySelector('[data-detail-link]');
 
 		if (
 			!(payloadScript instanceof HTMLScriptElement) ||
 			!(canvas instanceof HTMLDivElement) ||
-			!(searchInput instanceof HTMLInputElement) ||
+			!(startInput instanceof HTMLInputElement) ||
+			!(targetInput instanceof HTMLInputElement) ||
+			!(targetField instanceof HTMLElement) ||
 			!(filterBar instanceof HTMLDivElement) ||
+			!(modeBar instanceof HTMLDivElement) ||
+			!(depthBar instanceof HTMLDivElement) ||
+			!(resetButton instanceof HTMLButtonElement) ||
+			!(viewSummary instanceof HTMLDivElement) ||
 			!(detailTitle instanceof HTMLElement) ||
 			!(detailSummary instanceof HTMLElement) ||
 			!(detailMeta instanceof HTMLElement) ||
-			!(detailLinks instanceof HTMLDivElement) ||
+			!(detailChips instanceof HTMLDivElement) ||
+			!(detailPanel instanceof HTMLDivElement) ||
 			!(detailLink instanceof HTMLAnchorElement)
 		) {
 			return;
 		}
 
 		const payload = JSON.parse(payloadScript.textContent ?? '{"nodes":[],"edges":[]}');
+		const nodes = payload.nodes ?? [];
+		const edges = payload.edges ?? [];
+		const nodeMap = new Map(nodes.map((node) => [node.id, node]));
+		const edgeMap = new Map(edges.map((edge) => [edge.id, edge]));
+		const edgeByPair = new Map(edges.map((edge) => [pairKey(edge.source, edge.target), edge]));
+		const adjacency = new Map();
+
+		for (const node of nodes) {
+			adjacency.set(node.id, new Set());
+		}
+
+		for (const edge of edges) {
+			adjacency.get(edge.source)?.add(edge.target);
+			adjacency.get(edge.target)?.add(edge.source);
+		}
+
+		let mode = 'explore';
 		let activeType = 'All';
-		let activeQuery = '';
+		let depth = 1;
+		let selectedNodeId = null;
+		let selectedEdgeId = null;
+		let startNodeId = null;
+		let targetNodeId = null;
 
 		const cy = cytoscape({
 			container: canvas,
 			elements: [
-				...payload.nodes.map((node) => ({
-					data: { ...node, weight: 1 },
+				...nodes.map((node) => ({
+					data: {
+						...node,
+						weight: Math.min(12, Math.max(2, node.degree || 1)),
+						isAnchor: false,
+					},
 				})),
-				...payload.edges.map((edge) => ({
+				...edges.map((edge) => ({
 					data: edge,
 				})),
 			],
@@ -163,162 +326,585 @@ const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
 				{
 					selector: 'node',
 					style: {
-						'label': 'data(label)',
-						'background-color': (element) => COLOR_BY_TYPE[element.data('type')] ?? '#5b5347',
-						'color': '#1f1b17',
+						label: 'data(label)',
+						'background-color': (element) => COLOR_BY_TYPE[element.data('type')] ?? '#64584b',
+						color: '#1f1b17',
 						'font-size': 11,
 						'font-family': 'Avenir Next, Segoe UI, Helvetica Neue, Helvetica, sans-serif',
 						'text-wrap': 'wrap',
-						'text-max-width': 96,
+						'text-max-width': 110,
 						'text-valign': 'center',
 						'text-halign': 'center',
 						'border-width': 2,
-						'border-color': '#fff8f1',
-						'width': 'mapData(weight, 1, 12, 34, 64)',
-						'height': 'mapData(weight, 1, 12, 34, 64)',
+						'border-color': '#fff7ef',
+						width: 'mapData(weight, 2, 12, 34, 66)',
+						height: 'mapData(weight, 2, 12, 34, 66)',
 					},
 				},
 				{
 					selector: 'edge',
 					style: {
-						'line-color': 'rgba(31, 27, 23, 0.18)',
 						'curve-style': 'bezier',
-						'width': 2,
-						'opacity': 0.65,
+						'line-color': 'data(familyColor)',
+						'line-style': (element) => element.data('explicit') ? 'solid' : 'dashed',
+						width: 'mapData(weight, 1, 5, 1.5, 4)',
+						opacity: 0.72,
 					},
 				},
 				{
-					selector: '.faded',
+					selector: '.is-hidden',
 					style: {
-						'opacity': 0.14,
+						display: 'none',
 					},
 				},
 				{
-					selector: 'node.highlighted',
+					selector: '.is-muted',
 					style: {
-						'border-color': '#7d3812',
+						opacity: 0.16,
+					},
+				},
+				{
+					selector: 'node.is-selected',
+					style: {
 						'border-width': 4,
-						'opacity': 1,
+						'border-color': '#7a3514',
+						opacity: 1,
 					},
 				},
 				{
-					selector: 'edge.highlighted',
+					selector: 'node.is-path',
 					style: {
-						'line-color': '#b55e24',
-						'width': 3,
-						'opacity': 1,
+						'border-width': 4,
+						'border-color': '#20486a',
+						opacity: 1,
+					},
+				},
+				{
+					selector: 'edge.is-selected',
+					style: {
+						width: 4.5,
+						opacity: 1,
+					},
+				},
+				{
+					selector: 'edge.is-path',
+					style: {
+						width: 4.8,
+						opacity: 1,
 					},
 				},
 			],
-			layout: BASE_LAYOUT,
+			layout: OVERVIEW_LAYOUT,
 		});
 
-		cy.nodes().forEach((node) => {
-			node.data('weight', Math.min(12, Math.max(1, node.connectedEdges().length)));
-		});
+		function resolveNodeId(rawValue) {
+			const value = rawValue.trim().toLowerCase();
+			if (!value) {
+				return null;
+			}
+
+			const exact = nodes.find((node) => node.label.toLowerCase() === value);
+			if (exact) {
+				return exact.id;
+			}
+
+			const exactSlug = nodes.find((node) => node.slug.toLowerCase() === value);
+			if (exactSlug) {
+				return exactSlug.id;
+			}
+
+			const fuzzy = nodes.find((node) =>
+				`${node.label} ${node.subtitle} ${node.summary}`.toLowerCase().includes(value),
+			);
+			return fuzzy?.id ?? null;
+		}
 
 		function resetDetail() {
-			detailTitle.textContent = 'Select a node';
+			detailTitle.textContent = 'Curated overview';
 			detailSummary.textContent =
-				'Use the search box or click a node to inspect how Articles, cases, institutions, amendments, and current-affairs issues connect.';
-			detailMeta.textContent = 'Showing the full constitutional network.';
-			detailLinks.innerHTML = '';
+				'Start with a case, Article, or live desk. The graph will collapse into a focused neighborhood instead of showing the whole network at once.';
+			detailMeta.textContent = 'Overview mode • core constitutional nodes only';
+			detailChips.innerHTML = '';
+			detailPanel.innerHTML =
+				'<p class="muted">Typed edges are color-coded by family so you can tell structure, doctrine, reform, live dispute, and history apart.</p>';
 			detailLink.classList.add('is-disabled');
 			detailLink.setAttribute('aria-disabled', 'true');
 			detailLink.setAttribute('tabindex', '-1');
 			detailLink.href = '#';
 		}
 
-		function renderDetail(node) {
-			const neighbors = node
-				.connectedEdges()
-				.connectedNodes()
-				.filter((item) => item.id() !== node.id())
-				.sort((left, right) => left.data('label').localeCompare(right.data('label')))
-				.slice(0, 8);
-
-			detailTitle.textContent = node.data('label');
-			detailSummary.textContent = node.data('summary');
-			detailMeta.textContent = `${node.data('type')} • ${node.connectedEdges().length} linked relationship${
-				node.connectedEdges().length === 1 ? '' : 's'
-			}${node.data('subtitle') ? ` • ${node.data('subtitle')}` : ''}`;
-			detailLinks.innerHTML = neighbors.length
-				? neighbors
-						.map(
-							(neighbor) =>
-								`<a class="tag-chip" href="${neighbor.data('href')}">${escapeHtml(neighbor.data('label'))}</a>`,
-						)
-						.join('')
-				: '<p class="muted">No immediate neighbors are currently indexed for this node.</p>';
+		function setDetailLink(node) {
 			detailLink.classList.remove('is-disabled');
 			detailLink.removeAttribute('aria-disabled');
 			detailLink.removeAttribute('tabindex');
-			detailLink.href = node.data('href');
+			detailLink.href = node.href;
 		}
 
-		function clearHighlight() {
-			cy.elements().removeClass('faded highlighted');
+		function neighborsFor(nodeId) {
+			return edges
+				.filter((edge) => edge.source === nodeId || edge.target === nodeId)
+				.map((edge) => {
+					const otherId = edge.source === nodeId ? edge.target : edge.source;
+					return {
+						edge,
+						node: nodeMap.get(otherId),
+					};
+				})
+				.filter((item) => item.node)
+				.sort((left, right) => {
+					if (right.edge.weight !== left.edge.weight) {
+						return right.edge.weight - left.edge.weight;
+					}
+					return left.node.label.localeCompare(right.node.label);
+				});
 		}
 
-		function highlightNeighborhood(node) {
-			clearHighlight();
-			cy.elements().addClass('faded');
-			node.closedNeighborhood().removeClass('faded').addClass('highlighted');
-		}
-
-		function applyFilters() {
-			const normalizedQuery = activeQuery.trim().toLowerCase();
-
-			cy.nodes().forEach((node) => {
-				const typeMatches = activeType === 'All' || node.data('type') === activeType;
-				const queryMatches = normalizedQuery
-					? `${node.data('label')} ${node.data('subtitle')} ${node.data('summary')}`.toLowerCase().includes(normalizedQuery)
-					: true;
-				node.style('display', typeMatches && queryMatches ? 'element' : 'none');
-			});
-
-			cy.edges().forEach((edge) => {
-				const sourceVisible = edge.source().style('display') !== 'none';
-				const targetVisible = edge.target().style('display') !== 'none';
-				edge.style('display', sourceVisible && targetVisible ? 'element' : 'none');
-			});
-
-			clearHighlight();
-			resetDetail();
-			cy.layout(BASE_LAYOUT).run();
-		}
-
-		filterBar.addEventListener('click', (event) => {
-			const button = event.target instanceof HTMLElement ? event.target.closest('[data-graph-filter]') : null;
-			if (!(button instanceof HTMLButtonElement)) {
+		function renderNodeDetail(nodeId) {
+			const node = nodeMap.get(nodeId);
+			if (!node) {
+				resetDetail();
 				return;
 			}
 
-			activeType = button.dataset.graphFilter ?? 'All';
-			filterBar.querySelectorAll('[data-graph-filter]').forEach((element) => {
-				element.classList.toggle('is-active', element === button);
+			const neighbors = neighborsFor(nodeId).slice(0, 10);
+			detailTitle.textContent = node.label;
+			detailSummary.textContent = node.summary;
+			detailMeta.textContent = `${node.type} • ${node.degree} direct link${node.degree === 1 ? '' : 's'} • ${node.subtitle}`;
+			detailChips.innerHTML = unique([
+				node.type,
+				node.collection,
+				node.explicitlyConnected ? 'Explicit doctrine edge' : '',
+			])
+				.filter(Boolean)
+				.map((item) => `<span class="tag-chip">${escapeHtml(item)}</span>`)
+				.join('');
+
+			detailPanel.innerHTML = neighbors.length
+				? `
+					<div class="graph-detail__section">
+						<strong>Key linked nodes</strong>
+						<ul class="graph-related-list">
+							${neighbors
+								.map(
+									(item) => `
+										<li class="graph-related-list__item">
+											<a href="${item.node.href}">${escapeHtml(item.node.label)}</a>
+											<small>${escapeHtml(item.edge.relationLabels.join(' • '))}</small>
+										</li>`,
+								)
+								.join('')}
+						</ul>
+					</div>
+				`
+				: '<p class="muted">No direct neighbors are currently visible for this node.</p>';
+
+			setDetailLink(node);
+		}
+
+		function renderEdgeDetail(edgeId) {
+			const edge = edgeMap.get(edgeId);
+			if (!edge) {
+				resetDetail();
+				return;
+			}
+
+			const left = nodeMap.get(edge.source);
+			const right = nodeMap.get(edge.target);
+			if (!left || !right) {
+				resetDetail();
+				return;
+			}
+
+			detailTitle.textContent = edge.familyLabel;
+			detailSummary.textContent = edge.note;
+			detailMeta.textContent = `${left.label} ↔ ${right.label}`;
+			detailChips.innerHTML = unique([
+				...edge.relationLabels,
+				edge.explicit ? 'Explicit edge' : 'Derived from content',
+				edge.sourceCount ? `${edge.sourceCount} source${edge.sourceCount === 1 ? '' : 's'}` : '',
+			])
+				.filter(Boolean)
+				.map((item) => `<span class="tag-chip">${escapeHtml(item)}</span>`)
+				.join('');
+
+			detailPanel.innerHTML = `
+				<div class="graph-detail__section">
+					<strong>Relationship</strong>
+					<p>${escapeHtml(left.label)} and ${escapeHtml(right.label)} connect through ${escapeHtml(edge.relationLabels.join(' • '))}.</p>
+				</div>
+				<div class="graph-detail__section">
+					<strong>Linked pages</strong>
+					<ul class="graph-related-list">
+						<li class="graph-related-list__item">
+							<a href="${left.href}">${escapeHtml(left.label)}</a>
+							<small>${escapeHtml(left.type)}</small>
+						</li>
+						<li class="graph-related-list__item">
+							<a href="${right.href}">${escapeHtml(right.label)}</a>
+							<small>${escapeHtml(right.type)}</small>
+						</li>
+					</ul>
+				</div>
+			`;
+
+			detailLink.classList.add('is-disabled');
+			detailLink.setAttribute('aria-disabled', 'true');
+			detailLink.setAttribute('tabindex', '-1');
+			detailLink.href = '#';
+		}
+
+		function neighborhood(nodeId, hops) {
+			const seen = new Set([nodeId]);
+			let frontier = [nodeId];
+
+			for (let index = 0; index < hops; index += 1) {
+				const next = [];
+				for (const current of frontier) {
+					for (const neighbor of adjacency.get(current) ?? []) {
+						if (seen.has(neighbor)) {
+							continue;
+						}
+						seen.add(neighbor);
+						next.push(neighbor);
+					}
+				}
+				frontier = next;
+			}
+
+			return seen;
+		}
+
+		function shortestPath(startId, endId) {
+			if (!startId || !endId) {
+				return [];
+			}
+
+			const queue = [startId];
+			const previous = new Map([[startId, null]]);
+
+			while (queue.length > 0) {
+				const current = queue.shift();
+				if (current === endId) {
+					break;
+				}
+
+				for (const neighbor of adjacency.get(current) ?? []) {
+					if (previous.has(neighbor)) {
+						continue;
+					}
+					previous.set(neighbor, current);
+					queue.push(neighbor);
+				}
+			}
+
+			if (!previous.has(endId)) {
+				return [];
+			}
+
+			const path = [];
+			let current = endId;
+			while (current) {
+				path.unshift(current);
+				current = previous.get(current) ?? null;
+			}
+			return path;
+		}
+
+		function updateControls() {
+			modeBar.querySelectorAll('[data-graph-mode]').forEach((button) => {
+				button.classList.toggle('is-active', button.getAttribute('data-graph-mode') === mode);
 			});
-			applyFilters();
+			depthBar.querySelectorAll('[data-graph-depth]').forEach((button) => {
+				button.classList.toggle('is-active', Number(button.getAttribute('data-graph-depth')) === depth);
+			});
+			filterBar.querySelectorAll('[data-graph-filter]').forEach((button) => {
+				button.classList.toggle('is-active', button.getAttribute('data-graph-filter') === activeType);
+			});
+			targetField.classList.toggle('is-hidden', mode !== 'path');
+		}
+
+		function applyTypeFilter(visibleNodeIds) {
+			if (activeType === 'All') {
+				return visibleNodeIds;
+			}
+
+			const anchors = new Set([selectedNodeId, startNodeId, targetNodeId].filter(Boolean));
+			const filtered = new Set(
+				[...visibleNodeIds].filter((nodeId) => {
+					const node = nodeMap.get(nodeId);
+					return node && (node.type === activeType || anchors.has(nodeId));
+				}),
+			);
+
+			return filtered.size > 0 ? filtered : visibleNodeIds;
+		}
+
+		function applyLayout(modeForRender) {
+			const visibleElements = cy.elements().not('.is-hidden');
+			if (visibleElements.length === 0) {
+				return;
+			}
+
+			if (modeForRender === 'path') {
+				visibleElements.layout(PATH_LAYOUT).run();
+				return;
+			}
+
+			if (selectedNodeId) {
+				visibleElements.layout(FOCUS_LAYOUT).run();
+				return;
+			}
+
+			visibleElements.layout(OVERVIEW_LAYOUT).run();
+		}
+
+		function renderPathDetail(path) {
+			if (path.length === 0) {
+				detailTitle.textContent = 'No path found';
+				detailSummary.textContent = 'Those two nodes are not currently connected in the indexed constitutional graph.';
+				detailMeta.textContent = 'Path mode';
+				detailChips.innerHTML = '';
+				detailPanel.innerHTML = '<p class="muted">Try a different pair or reset to the overview.</p>';
+				detailLink.classList.add('is-disabled');
+				detailLink.setAttribute('aria-disabled', 'true');
+				detailLink.setAttribute('tabindex', '-1');
+				detailLink.href = '#';
+				return;
+			}
+
+			const steps = [];
+			for (let index = 0; index < path.length - 1; index += 1) {
+				const from = nodeMap.get(path[index]);
+				const to = nodeMap.get(path[index + 1]);
+				const edge = edgeByPair.get(pairKey(path[index], path[index + 1]));
+				if (!from || !to || !edge) {
+					continue;
+				}
+
+				steps.push(`
+					<li class="graph-related-list__item">
+						<div>
+							<a href="${from.href}">${escapeHtml(from.label)}</a>
+							<small>${escapeHtml(edge.relationLabels.join(' • '))}</small>
+						</div>
+						<span class="graph-path-arrow">→</span>
+						<a href="${to.href}">${escapeHtml(to.label)}</a>
+					</li>
+				`);
+			}
+
+			detailTitle.textContent = 'Shortest constitutional path';
+			detailSummary.textContent = `${nodeMap.get(path[0])?.label ?? 'Start'} to ${nodeMap.get(path[path.length - 1])?.label ?? 'target'}`;
+			detailMeta.textContent = `${path.length} nodes • ${Math.max(0, path.length - 1)} relationships`;
+			detailChips.innerHTML = `<span class="tag-chip">Path mode</span><span class="tag-chip">Focused explanation</span>`;
+			detailPanel.innerHTML = `<ol class="graph-related-list graph-related-list--path">${steps.join('')}</ol>`;
+			detailLink.classList.add('is-disabled');
+			detailLink.setAttribute('aria-disabled', 'true');
+			detailLink.setAttribute('tabindex', '-1');
+			detailLink.href = '#';
+		}
+
+		function render() {
+			updateControls();
+
+			const baseVisible =
+				mode === 'path'
+					? startNodeId && targetNodeId
+						? new Set(shortestPath(startNodeId, targetNodeId))
+						: startNodeId
+							? neighborhood(startNodeId, 1)
+							: new Set(nodes.filter((node) => node.overview).map((node) => node.id))
+					: selectedNodeId
+						? neighborhood(selectedNodeId, depth)
+						: new Set(nodes.filter((node) => node.overview).map((node) => node.id));
+
+			const visibleNodeIds = applyTypeFilter(baseVisible);
+			const pathNodeIds = mode === 'path' && startNodeId && targetNodeId ? shortestPath(startNodeId, targetNodeId) : [];
+			const pathEdgeKeys = new Set(
+				pathNodeIds.slice(0, -1).map((nodeId, index) => pairKey(nodeId, pathNodeIds[index + 1])),
+			);
+
+			cy.batch(() => {
+				cy.elements().removeClass('is-hidden is-selected is-path');
+				cy.nodes().forEach((node) => {
+					node.data('isAnchor', node.id() === selectedNodeId || node.id() === startNodeId || node.id() === targetNodeId);
+					if (!visibleNodeIds.has(node.id())) {
+						node.addClass('is-hidden');
+					}
+				});
+				cy.edges().forEach((edge) => {
+					if (!(visibleNodeIds.has(edge.data('source')) && visibleNodeIds.has(edge.data('target')))) {
+						edge.addClass('is-hidden');
+					}
+				});
+
+				if (selectedNodeId) {
+					cy.getElementById(selectedNodeId).addClass('is-selected');
+				}
+				if (selectedEdgeId) {
+					cy.getElementById(selectedEdgeId).addClass('is-selected');
+				}
+				for (const nodeId of pathNodeIds) {
+					cy.getElementById(nodeId).addClass('is-path');
+				}
+				cy.edges().forEach((edge) => {
+					if (pathEdgeKeys.has(pairKey(edge.data('source'), edge.data('target')))) {
+						edge.addClass('is-path');
+					}
+				});
+			});
+
+			applyLayout(mode === 'path' && pathNodeIds.length > 0 ? 'path' : 'explore');
+
+			if (mode === 'path' && startNodeId && targetNodeId) {
+				if (pathNodeIds.length > 0) {
+					viewSummary.textContent = `Shortest path mode: ${pathNodeIds.length} nodes connect ${nodeMap.get(startNodeId)?.label ?? 'start'} to ${nodeMap.get(targetNodeId)?.label ?? 'target'}.`;
+				} else {
+					viewSummary.textContent = 'Shortest path mode: no path is currently indexed between those two nodes.';
+				}
+			} else if (mode === 'explore' && selectedNodeId) {
+				viewSummary.textContent = `Explore mode: ${visibleNodeIds.size} nodes in a ${depth}-hop neighborhood around ${nodeMap.get(selectedNodeId)?.label ?? 'the selected node'}.`;
+			} else {
+				viewSummary.textContent = `Overview mode: ${visibleNodeIds.size} core nodes. Select a node to open a tighter constitutional neighborhood.`;
+			}
+
+			if (mode === 'path' && startNodeId && targetNodeId) {
+				renderPathDetail(pathNodeIds);
+				return;
+			}
+
+			if (selectedEdgeId) {
+				renderEdgeDetail(selectedEdgeId);
+				return;
+			}
+
+			if (selectedNodeId) {
+				renderNodeDetail(selectedNodeId);
+				return;
+			}
+
+			resetDetail();
+		}
+
+		function commitStart() {
+			const nodeId = resolveNodeId(startInput.value);
+			startNodeId = nodeId;
+			selectedNodeId = mode === 'explore' ? nodeId : selectedNodeId;
+			selectedEdgeId = null;
+			if (!nodeId) {
+				if (mode === 'explore') {
+					selectedNodeId = null;
+				}
+				render();
+				return;
+			}
+
+			const node = nodeMap.get(nodeId);
+			if (node) {
+				startInput.value = node.label;
+			}
+
+			if (mode === 'explore') {
+				selectedNodeId = nodeId;
+			}
+			render();
+		}
+
+		function commitTarget() {
+			const nodeId = resolveNodeId(targetInput.value);
+			targetNodeId = nodeId;
+			selectedEdgeId = null;
+			if (nodeId) {
+				const node = nodeMap.get(nodeId);
+				if (node) {
+					targetInput.value = node.label;
+				}
+			}
+			render();
+		}
+
+		modeBar.addEventListener('click', (event) => {
+			const button = event.target.closest('[data-graph-mode]');
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+			mode = button.getAttribute('data-graph-mode') ?? 'explore';
+			selectedEdgeId = null;
+			if (mode === 'explore') {
+				selectedNodeId = startNodeId ?? selectedNodeId;
+				targetNodeId = null;
+				targetInput.value = '';
+			}
+			render();
 		});
 
-		searchInput.addEventListener('input', (event) => {
-			activeQuery = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value : '';
-			applyFilters();
+		depthBar.addEventListener('click', (event) => {
+			const button = event.target.closest('[data-graph-depth]');
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+			depth = Number(button.getAttribute('data-graph-depth')) || 1;
+			render();
 		});
+
+		filterBar.addEventListener('click', (event) => {
+			const button = event.target.closest('[data-graph-filter]');
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+			activeType = button.getAttribute('data-graph-filter') ?? 'All';
+			render();
+		});
+
+		resetButton.addEventListener('click', () => {
+			mode = 'explore';
+			activeType = 'All';
+			depth = 1;
+			selectedNodeId = null;
+			selectedEdgeId = null;
+			startNodeId = null;
+			targetNodeId = null;
+			startInput.value = '';
+			targetInput.value = '';
+			render();
+		});
+
+		startInput.addEventListener('change', commitStart);
+		startInput.addEventListener('search', commitStart);
+		targetInput.addEventListener('change', commitTarget);
+		targetInput.addEventListener('search', commitTarget);
 
 		cy.on('tap', 'node', (event) => {
-			const node = event.target;
-			highlightNeighborhood(node);
-			renderDetail(node);
-		});
+			const nodeId = event.target.id();
+			selectedEdgeId = null;
 
-		cy.on('tap', (event) => {
-			if (event.target === cy) {
-				clearHighlight();
-				resetDetail();
+			if (mode === 'path') {
+				if (!startNodeId || (startNodeId && targetNodeId)) {
+					startNodeId = nodeId;
+					targetNodeId = null;
+					startInput.value = nodeMap.get(nodeId)?.label ?? '';
+					targetInput.value = '';
+				} else if (nodeId !== startNodeId) {
+					targetNodeId = nodeId;
+					targetInput.value = nodeMap.get(nodeId)?.label ?? '';
+				}
+			} else {
+				selectedNodeId = nodeId;
+				startNodeId = nodeId;
+				startInput.value = nodeMap.get(nodeId)?.label ?? '';
 			}
+
+			render();
 		});
 
-		resetDetail();
+		cy.on('tap', 'edge', (event) => {
+			selectedEdgeId = event.target.id();
+			if (mode === 'explore') {
+				selectedNodeId = null;
+			}
+			render();
+		});
+
+		render();
 	});
 </script>
