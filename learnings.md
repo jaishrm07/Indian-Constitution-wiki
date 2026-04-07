@@ -219,6 +219,10 @@ A well-framed current-affairs page can still become stale if its milestone chain
 
 Candidate-disclosure and criminalisation-of-politics coverage becomes much stronger when the site models the actual public infrastructure voters use, such as affidavit portals, KYC apps, disclosure press notes, and qualification timelines. That turns abstract election law into an operational accountability system readers can inspect and revisit.
 
+### 45. Cross-country demography needs one official baseline and an explicit date convention
+
+When comparing countries, the hard part is not finding a number but keeping the dates and definitions aligned. The UN `World Population Prospects` files are unusually useful because they expose annual mid-year population, growth, fertility, age, natural change, and migration in one schema across countries. For this project, any cross-country population comparison should state the exact reference date, for example `1 July 2026`, and whether the figure is an estimate or a projection rather than mixing clocks, census years, and modelled mid-year series.
+
 ### 45. Source transparency requires more than listing sources — it requires telling readers how to use them
 
 Adding source slugs to frontmatter is not enough for a trust-heavy legal reference site. Readers need to know which specific claim each source supports and exactly how to retrieve the primary document. A "Sources and how to verify" section that names the eSCR citation, explains what the source proves, and identifies the exact sections to read transforms a passive bibliography into an active verification guide.

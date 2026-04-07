@@ -57,6 +57,7 @@ sources:
   - escr
   - election-commission-of-india
   - vidhi-centre-for-legal-policy
+  - un-world-population-prospects-2024
 ---
 
 ## The constitutional frame
@@ -91,4 +92,4 @@ Monitor the census completion announcement from the Office of the Registrar Gene
 - **Election Commission of India** (`election-commission-of-india`): Delimitation Commission reports and constituency boundary notifications once delimitation is triggered.
 - **PRS Legislative Research** (`prs-india`): Bill-level analysis of delimitation legislation and background papers on seat allocation formulas.
 - **Vidhi Centre for Legal Policy** (`vidhi-centre-for-legal-policy`): Analysis of constitutional constraints on delimitation design and the north-south representation challenge.
-
+- **UN World Population Prospects 2024** (`un-world-population-prospects-2024`): Comparable cross-country population and aging baselines that help contextualise population-change arguments, but should be used as background rather than as the legal authority for delimitation design.

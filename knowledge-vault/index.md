@@ -36,6 +36,11 @@ This file catalogs durable notes and hubs in the research graph. Update it whene
 - [[sources/legislative-department|Legislative Department]]
 - [[sources/parliament-digital-library|Parliament Digital Library]]
 - [[sources/election-commission-of-india|Election Commission of India]]
+- [[sources/un-world-population-prospects-2024|UN World Population Prospects 2024]]
+
+## Research Drafts
+
+- [[drafts/china-india-usa-population-trajectory-2026-2051|China, India, and United States population trajectories, 2026-2051]]
 
 ## Operating Notes
 

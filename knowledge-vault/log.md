@@ -29,3 +29,11 @@ Append new entries instead of rewriting history.
 - backfilled the remaining mapped collections so the vault mirrors the canonical site content
 - verified that `npm run vault:sync` is idempotent
 - verified that `npm run vault:lint` now passes with full mapped coverage
+
+## [2026-04-06] research | population-comparison-baseline
+
+- added a raw reference note for the UN `World Population Prospects 2024` demographic files
+- added a reusable source note for cross-country population, fertility, aging, and migration baselines
+- normalized a canonical source record in `src/content/sources/`
+- added a draft comparison of China, India, and United States population trajectories from `2026` to `2051`
+- linked the new material back to the delimitation and representation research thread
