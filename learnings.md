@@ -300,3 +300,7 @@ For this project, a static normalized graph payload generated from canonical con
 ### 64. Homepage graph and explorer graph should not use the same density budget
 
 A homepage graph is a product statement, not a dumping ground for every valid edge in the corpus. The strongest default is a smaller backbone graph built around explicit doctrinal links plus their highest-signal constitutional anchors. The broader explorer can remain richer, but the first thing a user sees should optimize for legibility and trust, not raw coverage.
+
+### 65. A graph becomes trustworthy only when it can explain its edges
+
+Users do not trust a legal knowledge graph merely because the nodes look organized. They trust it when clicking an edge reveals the actual relation type, the note explaining the link, and the sources behind it. In practice this means the graph payload needs relation-level evidence, not just aggregate edge labels.

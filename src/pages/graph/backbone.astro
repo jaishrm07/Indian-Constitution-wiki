@@ -1,0 +1,58 @@
+---
+import GraphExplorer from '../../components/GraphExplorer.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import SearchSignals from '../../components/SearchSignals.astro';
+import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../lib/content';
+import { defaultGraphPresets } from '../../lib/graph-presets';
+import { getGraphExplorerData } from '../../lib/graph';
+
+const graph = await getGraphExplorerData({ profile: 'home' });
+---
+
+<Layout
+	title="Backbone Graph | Constitution Atlas"
+	description="Explore the curated constitutional backbone: landmark doctrine, constitutional anchors, institutions, amendments, and live disputes."
+	pagefindIndexed={true}
+>
+	<PageIntro
+		eyebrow="Graph"
+		title="Explore the constitutional backbone"
+		summary="This view strips the graph down to the highest-signal constitutional network: landmark doctrine, formal constitutional anchors, institutional nodes, amendment pressure points, and live disputes that genuinely structure the corpus."
+		meta={['Backbone view', 'High-signal relationships only', 'Source-backed explicit edges']}
+		breadcrumbs={[
+			{ label: 'Home', href: '/' },
+			{ label: 'Graph', href: '/graph' },
+			{ label: 'Backbone View' },
+		]}
+	/>
+	<SearchSignals
+		meta={{
+			type: 'Page',
+			summary: 'Curated constitutional backbone graph with the highest-signal doctrinal, amendment, institutional, and live-issue relationships.',
+			subtitle: 'Backbone Graph',
+		}}
+		filters={{
+			type: 'Page',
+		}}
+	/>
+
+	<section class="list-shell graph-page-copy" data-pagefind-body>
+		<div class="filter-row graph-scope-nav" data-pagefind-ignore>
+			<a class="filter-pill" href={withBase('/graph')}>Expanded Explorer</a>
+			<a class="filter-pill is-active" href={withBase('/graph/backbone')}>Backbone View</a>
+		</div>
+		<p>
+			Use this view when you want the graph to behave like a constitutional map rather than a large content network.
+			It is optimized for legibility and trust first, then exploration.
+		</p>
+	</section>
+
+	<GraphExplorer
+		nodes={graph.nodes}
+		edges={graph.edges}
+		stats={graph.stats}
+		legend={graph.legend}
+		presets={defaultGraphPresets}
+	/>
+</Layout>

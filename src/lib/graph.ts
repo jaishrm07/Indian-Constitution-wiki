@@ -79,7 +79,14 @@ export type GraphEdgeRelation = {
 	explicit: boolean;
 	note?: string;
 	sources: string[];
+	sourceRefs: GraphSourceRef[];
 	strength: number;
+};
+
+export type GraphSourceRef = {
+	slug: string;
+	title: string;
+	href: string;
 };
 
 export type GraphEdge = {
@@ -135,6 +142,7 @@ type GraphCollectionsInput = {
 	amendments: CollectionEntry<'amendments'>[];
 	timeline: CollectionEntry<'timeline'>[];
 	currentAffairs: CollectionEntry<'current-affairs'>[];
+	sources: CollectionEntry<'sources'>[];
 	edges: CollectionEntry<'edges'>[];
 };
 
@@ -461,6 +469,7 @@ function accumulateEdge(
 		explicit: Boolean(contribution.explicit),
 		note: contribution.note,
 		sources: contribution.sources ?? [],
+		sourceRefs: [],
 		strength,
 	});
 	existing.relationLabels.add(relationLabel);
@@ -495,7 +504,11 @@ function pickPrimaryFamily(families: Map<GraphEdgeFamily, number>) {
 	return bestFamily;
 }
 
-function finalizeEdge(edge: EdgeAccumulator, index: number): GraphEdge {
+function finalizeEdge(
+	edge: EdgeAccumulator,
+	index: number,
+	sourceIndex: Map<string, GraphSourceRef>,
+): GraphEdge {
 	const family = pickPrimaryFamily(edge.families);
 	const meta = familyMeta[family];
 	const note =
@@ -512,7 +525,12 @@ function finalizeEdge(edge: EdgeAccumulator, index: number): GraphEdge {
 		familyColor: meta.color,
 		relationLabels: [...edge.relationLabels].sort(),
 		relationTypes: [...edge.relationTypes].sort(),
-		relations: edge.relations,
+		relations: edge.relations.map((relation) => ({
+			...relation,
+			sourceRefs: relation.sources
+				.map((slug) => sourceIndex.get(slug))
+				.filter((value): value is GraphSourceRef => Boolean(value)),
+		})),
 		explicit: edge.explicit,
 		note,
 		sourceCount: edge.sourceSlugs.size,
@@ -705,6 +723,16 @@ function hydrateNodeGraphState(nodes: GraphNode[], edges: GraphEdge[], profile: 
 
 export function buildGraphExplorerData(input: GraphCollectionsInput, options: GraphBuildOptions = {}): GraphExplorerData {
 	const profile = options.profile ?? 'display';
+	const sourceIndex = new Map(
+		input.sources.map((entry) => [
+			entry.data.slug,
+			{
+				slug: entry.data.slug,
+				title: entry.data.title,
+				href: getEntryHref('sources', entry.data.slug),
+			} satisfies GraphSourceRef,
+		]),
+	);
 	const nodes = [
 		...(includeCollectionInProfile('articles', profile) ? sortArticles(input.articles).map((entry) => createNode('articles', entry)) : []),
 		...(includeCollectionInProfile('parts', profile) ? sortByNumericField(input.parts, 'order').map((entry) => createNode('parts', entry)) : []),
@@ -1086,7 +1114,7 @@ export function buildGraphExplorerData(input: GraphCollectionsInput, options: Gr
 		});
 	}
 
-	let edges = [...edgeMap.values()].map((edge, index) => finalizeEdge(edge, index));
+	let edges = [...edgeMap.values()].map((edge, index) => finalizeEdge(edge, index, sourceIndex));
 	let finalNodes = nodes;
 
 	if (profile === 'home' || profile === 'display') {
@@ -1128,7 +1156,7 @@ export function buildGraphExplorerData(input: GraphCollectionsInput, options: Gr
 }
 
 export async function getGraphExplorerData(options: GraphBuildOptions = {}) {
-	const [articles, parts, schedules, topics, institutions, cases, glossary, amendments, timeline, currentAffairs, edges] =
+	const [articles, parts, schedules, topics, institutions, cases, glossary, amendments, timeline, currentAffairs, sources, edges] =
 		await Promise.all([
 			getCollection('articles'),
 			getCollection('parts'),
@@ -1140,6 +1168,7 @@ export async function getGraphExplorerData(options: GraphBuildOptions = {}) {
 			getCollection('amendments'),
 			getCollection('timeline'),
 			getCollection('current-affairs'),
+			getCollection('sources'),
 			getCollection('edges'),
 		]);
 
@@ -1155,6 +1184,7 @@ export async function getGraphExplorerData(options: GraphBuildOptions = {}) {
 			amendments,
 			timeline,
 			currentAffairs,
+			sources,
 			edges,
 		},
 		options,

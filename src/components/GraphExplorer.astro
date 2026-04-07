@@ -21,7 +21,14 @@ interface GraphEdgeRelation {
 	explicit: boolean;
 	note?: string;
 	sources: string[];
+	sourceRefs: GraphSourceRef[];
 	strength: number;
+}
+
+interface GraphSourceRef {
+	slug: string;
+	title: string;
+	href: string;
 }
 
 interface GraphEdge {
@@ -333,6 +340,10 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		return [...new Set(values)];
 	}
 
+	function relationTone(relation) {
+		return relation.explicit ? 'Explicitly modeled' : 'Derived from canonical content';
+	}
+
 	const CORE_RELATIONS = new Set([
 		'interprets',
 		'amends',
@@ -574,6 +585,25 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			detailLink.href = node.href;
 		}
 
+		function renderSourceLinks(sourceRefs) {
+			if (!sourceRefs?.length) {
+				return '';
+			}
+
+			return `
+				<div class="graph-source-links">
+					${sourceRefs
+						.map(
+							(sourceRef) => `
+								<a class="graph-source-link" href="${sourceRef.href}">
+									${escapeHtml(sourceRef.title)}
+								</a>`,
+						)
+						.join('')}
+				</div>
+			`;
+		}
+
 		function neighborsFor(nodeId) {
 			return edges
 				.filter((edge) => edge.source === nodeId || edge.target === nodeId)
@@ -616,18 +646,37 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			detailPanel.innerHTML = neighbors.length
 				? `
 					<div class="graph-detail__section">
-						<strong>Key linked nodes</strong>
-						<ul class="graph-related-list">
+						<strong>Why this node matters</strong>
+						<div class="graph-connection-list">
 							${neighbors
 								.map(
 									(item) => `
-										<li class="graph-related-list__item">
-											<a href="${item.node.href}">${escapeHtml(item.node.label)}</a>
-											<small>${escapeHtml(item.edge.relationLabels.join(' • '))}</small>
-										</li>`,
+										<article class="graph-connection-card">
+											<div class="graph-connection-card__header">
+												<a class="graph-connection-card__title" href="${item.node.href}">${escapeHtml(item.node.label)}</a>
+												<span class="graph-connection-card__meta">${escapeHtml(item.edge.familyLabel)}</span>
+											</div>
+											<div class="graph-connection-card__tags">
+												${item.edge.relationLabels
+													.map(
+														(label) => `
+															<span class="relation-pill" style="--relation-color:${item.edge.familyColor}">
+																${escapeHtml(label)}
+															</span>`,
+													)
+													.join('')}
+											</div>
+											<p class="graph-connection-card__note">${escapeHtml(item.edge.note)}</p>
+											${renderSourceLinks(
+												(item.edge.relations ?? [])
+													.flatMap((relation) => relation.sourceRefs ?? [])
+													.filter((value, index, array) => array.findIndex((candidate) => candidate.href === value.href) === index)
+													.slice(0, 3),
+											)}
+										</article>`,
 								)
 								.join('')}
-						</ul>
+						</div>
 					</div>
 				`
 				: '<p class="muted">No direct neighbors are currently visible for this node.</p>';
@@ -663,8 +712,28 @@ const nodeOptions = [...nodes].sort((left, right) => {
 
 			detailPanel.innerHTML = `
 				<div class="graph-detail__section">
-					<strong>Relationship</strong>
-					<p>${escapeHtml(left.label)} and ${escapeHtml(right.label)} connect through ${escapeHtml(edge.relationLabels.join(' • '))}.</p>
+					<strong>Why these are linked</strong>
+					<div class="graph-detail__relations">
+						${[...edge.relations]
+							.sort((leftRelation, rightRelation) => {
+								if (leftRelation.explicit !== rightRelation.explicit) {
+									return leftRelation.explicit ? -1 : 1;
+								}
+								return rightRelation.strength - leftRelation.strength;
+							})
+							.map(
+								(relation) => `
+									<article class="graph-relation-card">
+										<div class="graph-connection-card__header">
+											<p class="graph-relation-card__title">${escapeHtml(relation.relationLabel)}</p>
+											<small>${escapeHtml(relationTone(relation))}</small>
+										</div>
+										<p>${escapeHtml(relation.note ?? edge.note)}</p>
+										${renderSourceLinks(relation.sourceRefs)}
+									</article>`,
+							)
+							.join('')}
+					</div>
 				</div>
 				<div class="graph-detail__section">
 					<strong>Linked pages</strong>

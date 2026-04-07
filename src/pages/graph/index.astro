@@ -5,6 +5,7 @@ import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
 import { defaultGraphPresets } from '../../lib/graph-presets';
 import { getGraphExplorerData } from '../../lib/graph';
+import { withBase } from '../../lib/content';
 
 const graph = await getGraphExplorerData({ profile: 'display' });
 ---
@@ -36,6 +37,10 @@ const graph = await getGraphExplorerData({ profile: 'display' });
 	/>
 
 	<section class="list-shell graph-page-copy" data-pagefind-body>
+		<div class="filter-row graph-scope-nav" data-pagefind-ignore>
+			<a class="filter-pill is-active" href={withBase('/graph')}>Expanded Explorer</a>
+			<a class="filter-pill" href={withBase('/graph/backbone')}>Backbone View</a>
+		</div>
 		<p>
 			Start in Overview mode to see the strongest constitutional anchors, switch to Focus mode for a node-centered
 			dossier, and use Path mode when you need the shortest explainable route through the curated graph rather than
