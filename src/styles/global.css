@@ -324,6 +324,10 @@ h3 {
 	margin-top: 1.5rem;
 }
 
+.section-block--graph-highlight {
+	margin-top: 2rem;
+}
+
 .section-heading {
 	display: flex;
 	align-items: end;
@@ -369,6 +373,23 @@ h3 {
 
 .timeline-strip {
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.graph-home-copy {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.graph-home-callout {
+	margin: 0;
+}
+
+.graph-home-metrics {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.9rem;
 }
 
 .feature-tile,
@@ -1476,6 +1497,7 @@ h3 {
 	.search-layout,
 	.compare-grid,
 	.graph-shell,
+	.graph-home-copy,
 	.timeline-strip,
 	.timeline-event {
 		grid-template-columns: 1fr;
@@ -1507,6 +1529,10 @@ h3 {
 
 	.graph-field-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.graph-home-metrics {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.compare-picker,
@@ -1548,6 +1574,7 @@ h3 {
 	}
 
 	.graph-stats,
+	.graph-home-metrics,
 	.brief-grid {
 		grid-template-columns: 1fr;
 	}

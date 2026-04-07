@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import ContentCard from '../components/ContentCard.astro';
+import GraphExplorer from '../components/GraphExplorer.astro';
 import Layout from '../layouts/Layout.astro';
+import { buildGraphExplorerData } from '../lib/graph';
 import {
 	formatDate,
 	getEntryHref,
@@ -14,7 +16,7 @@ import {
 	withBase,
 } from '../lib/content';
 
-const [articles, parts, schedules, topics, institutions, glossary, cases, amendments, timeline, currentAffairs, sources] = await Promise.all([
+const [articles, parts, schedules, topics, institutions, glossary, cases, amendments, timeline, currentAffairs, sources, edges] = await Promise.all([
 	getCollection('articles'),
 	getCollection('parts'),
 	getCollection('schedules'),
@@ -26,6 +28,7 @@ const [articles, parts, schedules, topics, institutions, glossary, cases, amendm
 	getCollection('timeline'),
 	getCollection('current-affairs'),
 	getCollection('sources'),
+	getCollection('edges'),
 ]);
 
 const featuredArticles = sortArticles(articles).slice(0, 4);
@@ -39,6 +42,19 @@ const featuredAmendments = [...amendments].sort((left, right) => right.data.year
 const featuredTimeline = sortByDateDesc(timeline, 'date').slice(0, 4);
 const latestCurrentAffairs = sortByDateDesc(currentAffairs, 'updatedAt').slice(0, 3);
 const featuredSources = sortByTitle(sources).slice(0, 3);
+const graph = buildGraphExplorerData({
+	articles,
+	parts,
+	schedules,
+	topics,
+	institutions,
+	cases,
+	glossary,
+	amendments,
+	timeline,
+	currentAffairs,
+	edges,
+});
 ---
 
 <Layout
@@ -48,10 +64,10 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 	<section class="hero">
 		<div class="hero-copy">
 			<p class="eyebrow">Constitution Atlas</p>
-			<h1>Indian constitutional law, explained like a living reference work.</h1>
+			<h1>Indian constitutional law as one connected knowledge system.</h1>
 			<p class="hero-text">
-				Browse Articles, landmark cases, amendments, and current constitutional debates in one linked reading
-				system built for students, journalists, and serious readers.
+				Follow Articles, landmark cases, amendments, institutions, and live constitutional disputes through a
+				linked graph built for serious reading, research, and explanation.
 			</p>
 			<form class="hero-search" action={withBase('/search')} method="get">
 				<label class="sr-only" for="home-search">Search the site</label>
@@ -64,20 +80,61 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<button type="submit">Search</button>
 			</form>
 			<div class="hero-actions">
-				<a class="button-primary" href={withBase('/articles')}>Browse Articles</a>
+				<a class="button-primary" href={withBase('/graph')}>Open the Knowledge Graph</a>
 				<a class="button-secondary" href={withBase('/current-affairs')}>Track Current Affairs</a>
 			</div>
 		</div>
 		<div class="hero-panel">
-			<p class="panel-label">What this first build includes</p>
+			<p class="panel-label">What makes this project different</p>
 			<ul class="hero-list">
-				<li>Article-by-article explainers with related case law</li>
-				<li>Current-affairs issue pages linked back to constitutional provisions</li>
-				<li>Amendment and doctrine pages that surface historical context</li>
-				<li>A search-first navigation model instead of a blog archive</li>
+				<li>A live constitutional graph instead of disconnected article pages</li>
+				<li>Current-affairs issue desks linked back to constitutional text and doctrine</li>
+				<li>Amendment, timeline, and case layers that explain how meaning changed</li>
+				<li>A source-backed reading model built around the Constitution itself</li>
 			</ul>
 		</div>
 	</section>
+
+	<section class="section-block section-block--graph-highlight">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Highlight</p>
+				<h2>The graph is the front door</h2>
+			</div>
+			<a class="section-link" href={withBase('/graph')}>Open the full Relationship Explorer</a>
+		</div>
+		<div class="graph-home-copy">
+			<div class="search-result graph-home-callout">
+				<p class="eyebrow">Constitutional Intelligence</p>
+				<strong>Trace doctrine, amendment, history, and live disputes from one node</strong>
+				<p>
+					Start from Article 21, Kesavananda Bharati, the Election Commission, or an active controversy, then
+					follow the shortest constitutional path across the site. This is the fastest way to understand why a
+					page matters and what it is connected to.
+				</p>
+			</div>
+			<div class="graph-home-metrics">
+				<div class="stat-card">
+					<strong>{graph.nodes.length}</strong>
+					<span>Indexed nodes</span>
+				</div>
+				<div class="stat-card">
+					<strong>{graph.edges.length}</strong>
+					<span>Typed relationships</span>
+				</div>
+				<div class="stat-card">
+					<strong>{graph.legend.length}</strong>
+					<span>Relationship families</span>
+				</div>
+				<div class="stat-card">
+					<strong>{graph.edges.filter((edge) => edge.explicit).length}</strong>
+					<span>Explicit doctrine links</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<GraphExplorer nodes={graph.nodes} edges={graph.edges} stats={graph.stats} legend={graph.legend} />
 
 	<section class="section-block">
 		<div class="section-heading">
@@ -148,24 +205,6 @@ const featuredSources = sortByTitle(sources).slice(0, 3);
 				<strong>Cross-site lookup</strong>
 				<p>Find Articles, Parts, cases, schedules, current affairs, and glossary terms.</p>
 			</a>
-		</div>
-	</section>
-
-	<section class="section-block">
-		<div class="section-heading">
-			<div>
-				<p class="eyebrow">Graph</p>
-				<h2>Explore the site as a constitutional network</h2>
-			</div>
-			<a class="section-link" href={withBase('/graph')}>Open the Relationship Explorer</a>
-		</div>
-		<div class="search-result">
-			<p class="eyebrow">Knowledge Graph</p>
-			<strong>Trace how provisions, institutions, cases, and live disputes connect</strong>
-			<p>
-				The Relationship Explorer converts the site’s structured content into a navigable semantic map. It is the
-				fastest way to discover what a case touches, which institution is in conflict, or which Articles anchor a live issue.
-			</p>
 		</div>
 	</section>
 
