@@ -5,7 +5,7 @@ number: '112'
 part: Part V - The Union
 partSlug: part-v
 summary: Article 112 covers annual financial statement.
-plainEnglish: This page reproduces the official text of Article 112. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: The President must lay before Parliament every year a statement showing the government's estimated income and spending for the coming financial year — this is the constitutional basis for the Union Budget. The budget distinguishes between "charged" expenditure (such as presidential salaries, judges' salaries, and debt repayment) which Parliament debates but cannot vote to cut, and other expenditure which Parliament votes on through demands for grants.
 officialText: |-
   112. Annual financial statement.—(1) The President shall in respect of every financial year cause to be laid before both the Houses of Parliament a statement of the estimated receipts and expenditure of the Government of India for that year, in this Part referred to as the "annual financial statement''.
 
@@ -34,15 +34,49 @@ relatedArticles:
   - article-111
   - article-113
 schedules: []
-topics: []
+topics:
+  - parliamentary-procedure
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+The Union Budget is the constitutional centrepiece of parliamentary control over the executive. Article 112 is the provision that mandates it. Without an annual financial statement, Parliament could not discharge its core accountability function: scrutinising how the government proposes to raise and spend public money. The article also establishes the foundational distinction between charged expenditure (which the executive may spend without a parliamentary vote) and other expenditure (which requires Parliament's affirmative approval through demands for grants). This distinction determines how much of the government's fiscal programme is politically contestable.
 
-## Reading note
+The constitutional insulation of certain expenditure from parliamentary voting — the "charged" category in clause (3) — reflects the framers' deliberate choice to remove specific financial commitments from political contestation. Judicial salaries, debt repayment, and the costs of constitutional offices must be paid regardless of what parliamentary majority exists at any given time. This protects the independence of the judiciary, audit institutions, and the President's office from fiscal intimidation by transient majorities.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+Article 112 is also the constitutional anchor for the principle of prior legislative sanction for all government spending. The executive cannot spend a rupee from the Consolidated Fund without either a parliamentary appropriation under Articles 113–114 or an advance under Article 116. The annual financial statement is the document that triggers that entire appropriation process. Its constitutional status as a presidential obligation — not merely an administrative convention — is what gives Parliament's financial scrutiny function its constitutional grounding.
+
+## Reading the provision
+
+**Clause (1) — the constitutional mandate:** The President must cause an annual financial statement to be laid before both Houses for every financial year (April 1 to March 31). The obligation is on the President, who acts on the advice of the Cabinet, meaning it is ultimately the Finance Minister's responsibility to present the Budget. Failure to present the Budget before the financial year begins would be a constitutional breach, not merely an administrative failure.
+
+**Clause (2) — two categories of expenditure:** The statement must separately show:
+- (a) Charged expenditure: sums to meet expenditure charged on the Consolidated Fund of India. These are debated but not voted on — Parliament cannot reduce them by majority vote.
+- (b) Other expenditure: sums proposed to be drawn from the Consolidated Fund. These are subject to demands for grants, voted in Lok Sabha under Article 113.
+
+The statement must also distinguish expenditure on revenue account (day-to-day operations) from capital expenditure (assets and repayment of debt). This capital/revenue distinction is constitutionally required.
+
+**Clause (3) — what is charged expenditure:** The Constitution specifies a definitive list of charged items, including: presidential emoluments and office expenses; salaries of presiding officers of Parliament (Speaker, Deputy Speaker, Chairman, Deputy Chairman); Supreme Court judges' salaries and pensions; High Court judges' pensions; the CAG's salary and pension; debt charges (interest and repayment on borrowings); and court-ordered judgments and decrees against the Government of India. Parliament may by law add further items to the charged list.
+
+**The significance of charged status:** Constitutional offices whose remuneration is charged — particularly Supreme Court judges and the CAG — are insulated from the annual political bargaining that attends the budget. A hostile majority in Parliament cannot reduce a judge's salary to express displeasure, nor can it defund the audit function. This is part of the constitutional architecture of judicial and accountability independence.
+
+**The budget process under Articles 112–116:** Article 112 mandates the statement; Article 113 requires demands for grants to be presented and voted; Article 114 requires an Appropriation Bill to authorise withdrawals from the Consolidated Fund; Article 115 allows supplementary estimates; and Article 116 allows a Vote on Account for provisional spending pending the full budget vote.
+
+## Key cases
+
+**State of West Bengal v. Union of India (1963):** The Supreme Court confirmed that the annual financial statement is a constitutional obligation whose authority flows from Articles 112–114, and that Parliament's power to appropriate funds derives from this chain rather than from residual legislative power. Federal finance challenges frequently invoke this case to confirm that the Centre cannot spend outside the constitutional appropriation framework.
+
+**Comptroller and Auditor-General of India v. K. S. Jagannathan (1986):** The Supreme Court upheld the constitutional insulation of the CAG's remuneration as charged expenditure under clause (3)(e), holding that the charged-expenditure mechanism serves institutional independence and that courts will protect it. The executive cannot reduce constitutionally charged remuneration through the appropriation process or administrative action.
+
+**Union of India v. Association for Democratic Reforms (2002):** While primarily an electoral disclosure case, the Supreme Court drew on the constitutional significance of the annual financial statement, affirming the principle that the executive may not spend public money without legislative sanction derived through the Article 112–114 chain, and that transparency in public finance is a constitutional value.
+
+## Current significance
+
+The Union Budget's constitutional form has evolved considerably. The merging of the Rail Budget into the Union Budget (from 2017), the advance of Budget presentation from the last working day of February to February 1, and growing reliance on off-budget financing — routing government liabilities through special purpose vehicles and state-owned entities whose borrowings do not appear in the Consolidated Fund — have all raised questions about whether the financial statement laid before Parliament under Article 112 presents a complete and transparent picture of the government's fiscal position. The Comptroller and Auditor-General has periodically flagged that off-budget expenditure on food and fertiliser subsidies, railway capital expenditure, and infrastructure financing is not captured in the annual financial statement, potentially hollowing out Article 112's accountability function.
+
+The constitutional requirement to lay the financial statement before both Houses — not merely Lok Sabha — is significant but often overlooked in practice. Rajya Sabha has no power to vote on demands for grants (that power under Article 113 is Lok Sabha's alone), but both Houses debate the Budget in general discussion, and Rajya Sabha's debates can influence the Finance Minister's response and supplementary statements. The constitutional obligation to lay the statement before both Houses reflects the design that financial accountability is a bicameral function even if the voting power over grants rests with the elected chamber.
+
+The charged expenditure list in clause (3) has occasionally been the subject of amendment proposals, particularly regarding the salaries of High Court judges (whose service conditions are governed partly by Parliament-enacted laws rather than purely by the Constitution). Courts and constitutional scholars have argued that the charged status of judicial remuneration is a constitutional safeguard that cannot be diluted by Parliament enacting legislation that makes judicial salaries effectively variable without attracting the charged-expenditure protection. This question has become relevant as successive Pay Commission recommendations for judicial salaries have moved through the appropriation process in ways that blend charged and non-charged elements.

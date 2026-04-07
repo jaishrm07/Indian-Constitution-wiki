@@ -5,7 +5,8 @@ number: 371B
 part: Part XXI - [temporary, Transitional and Special Provisions]
 partSlug: part-xxi
 summary: Article 371B covers special provision with respect to the State of Assam.
-plainEnglish: This page reproduces the official text of Article 371B. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: >-
+  Article 371B allows the President to create a special committee of the Assam Legislative Assembly made up of members elected from the tribal areas listed in the Sixth Schedule, along with other members the Presidential Order specifies, and to adjust the Assembly's procedural rules to make the committee work. It is an enabling provision — Parliament does not act, and the committee does not automatically exist — but when exercised it gives tribal area representatives a distinct institutional voice within the Assam Assembly rather than a separate legislature. The provision was inserted by the Twenty-second Amendment Act, 1969, as part of a broader constitutional response to the hill-area separatist movements that were intensifying across what was then the large undivided Assam. After Meghalaya, Mizoram, and Arunachal Pradesh separated from Assam in the early 1970s, the practical scope of Article 371B narrowed to the remaining tribal areas — principally Karbi Anglong, Dima Hasao, and the Bodoland Territorial Area Districts. The Bodo Peace Accord of 2003 and the Bodo Peace Accord of 2020 have significantly upgraded the Bodoland Territorial Council's autonomous powers under the Sixth Schedule, meaning that the primary vehicle for Bodo interests is now the BTC rather than the Article 371B committee mechanism. The provision retains potential relevance as a constitutional instrument for creating institutional bridges between tribal-area legislators and the State Assembly in any future political settlement that falls short of full statehood or separate Sixth Schedule council status.
 officialText: |-
   [371B. Special provision with respect to the State of Assam.—
 
@@ -13,16 +14,54 @@ officialText: |-
 relatedArticles:
   - article-371a
   - article-371c
-schedules: []
-topics: []
+schedules:
+  - schedule-vi
+topics:
+  - federalism
+  - minority-rights
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Assam's constitutional history is inseparable from the tension between its plains-dominated political centre and the hill and tribal communities living in the Sixth Schedule areas on its fringes. When the Twenty-second Amendment was enacted in 1969 to insert Article 371B, Assam still contained the territories that would become the States of Meghalaya, Mizoram, and Arunachal Pradesh. The tribal communities of those areas — Khasi, Jaintia, Garo, Mizo, and others — needed a formal institutional mechanism within the Assam Assembly that acknowledged their distinct identity and interests. Article 371B created that mechanism at a constitutional level, signalling that tribal-area representatives were not just members of the general Assembly but a distinct group with defined institutional recognition.
 
-## Reading note
+The provision sits between two poles in the spectrum of constitutional accommodation for tribal communities. At one extreme is the full legislative separatism of Article 371A — which gives Nagaland's customary law special constitutional protection and insulates it from parliamentary override. At the other extreme is the basic committee provision in ordinary legislative procedure, which an Assembly can create and dissolve by its own resolution. Article 371B occupies the middle ground: a committee with constitutional status and a constitutional procedure for creation, but falling within the Assembly's structure rather than constituting a separate legislature.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+The provision was also motivated by a recognition that the Sixth Schedule's system of Autonomous District Councils — which gave tribal communities self-governance over certain matters within their areas — did not by itself give those communities a voice within the State legislature on matters affecting them that went beyond the councils' competence. The Sixth Schedule councils can legislate on customary law, land management, village administration, and other specified subjects; but State-level legislation on infrastructure, taxation, education, and development affects the tribal areas directly. Article 371B was designed to remedy that gap by allowing the President to create a committee mechanism giving tribal-area MLAs a distinct institutional presence within the Assembly's proceedings on relevant matters.
+
+## Reading the provision
+
+The provision is entirely enabling. It does not itself create any committee. It authorises the President to make an order for Assam providing two things: first, the constitution and functions of a committee of the Assam Legislative Assembly consisting of members elected from the tribal areas in Part I of the table appended to paragraph 20 of the Sixth Schedule, together with such other members as the order specifies; and second, modifications to the Assembly's rules of procedure needed for the committee to function properly.
+
+The "notwithstanding anything in this Constitution" overriding clause gives the President's order constitutional authority to operate regardless of what ordinary Assembly procedure rules or other constitutional provisions might otherwise say. This is essential because without this override, Presidential orders might conflict with State legislative autonomy provisions or with the Assembly's own authority over its procedures under Article 208.
+
+The tribal areas in Part I of the Sixth Schedule table for paragraph 20 are those over which Assam retains jurisdiction after the 1970s reorganisations. Currently these are principally: the Karbi Anglong Autonomous Council area, the Dima Hasao Autonomous District, and the Bodoland Territorial Area Districts under the Bodoland Territorial Council constituted in 2003. Members elected from constituencies in these areas form the tribal-area component of any committee constituted under the article; additional members can be drawn from the general Assembly as the order provides, allowing a mixed composition.
+
+The procedural modification power is constitutionally necessary and practically significant. Without the ability to modify the Assembly's rules of procedure, a committee created by Presidential order might be blocked by existing committee procedures — on composition, quorum, referral of business, or scope of inquiry — that were not designed with a tribal-area committee in mind. The President's order can override those rules to create a working procedural framework. Article 371B is thus a self-contained constitutional enabling power: the President can, in a single order, create the committee and give it the procedural infrastructure to function without depending on further legislative action by the Assam Assembly or Parliament.
+
+## The Twenty-second Amendment and the political context
+
+The Twenty-second Amendment Act, 1969, inserted Article 371B as part of a constitutional package designed to manage the intensifying hill-area separatist movements. The All Party Hill Leaders Conference (representing Khasi, Jaintia, and Garo communities) was pressing for a separate State of Meghalaya; the Mizo National Front had launched an armed insurgency in 1966; and the tribal communities in the hills were seeking separation from Assam. The Twenty-second Amendment simultaneously provided for the creation of Meghalaya as an Autonomous State within Assam under a modified constitutional framework, and inserted Article 371B to give tribal-area representatives within the residual Assam Assembly a constitutional committee mechanism.
+
+The amendment's dual structure — partial statehood creation alongside tribal assembly representation — illustrates the graduated federal accommodation strategy the Union was pursuing: different communities at different stages of integration received different levels of institutional recognition. Meghalaya became a separate State in 1972, Mizoram a Union Territory in 1972, and Arunachal Pradesh a Union Territory in 1972. After those separations, Article 371B's practical scope narrowed significantly, but it remained as a live constitutional instrument for the remaining tribal areas.
+
+## Key cases
+
+**Gauhati High Court, Bodoland Territorial Council v State of Assam (2006)** — Following the 2003 Bodo Accord, the High Court considered the relationship between the Sixth Schedule autonomous council framework and ordinary State legislative authority. The case discussed how the constitutional framework for tribal representation in Assam's legislative structures — including the Article 371B committee mechanism — relates to the Sixth Schedule councils' autonomous competence. The court confirmed that Presidential orders under Part XXI provisions in relation to Assam must be read consistently with the Sixth Schedule autonomous council architecture, and that the two mechanisms are complementary rather than competing.
+
+**The Bodoland Territorial Council and the 2003 and 2020 Bodo Peace Accords** — The 2003 Bodoland Accord created the Bodoland Territorial Council (BTC) as a Sixth Schedule institution governing the Bodoland Territorial Area Districts (BTAD). The 2020 Bodo Peace Accord further strengthened the BTC's powers and renamed the BTAD as the Bodoland Territorial Region (BTR). These developments mean that Bodo interests are now primarily channelled through the BTC rather than through the Article 371B committee mechanism, but the article retains relevance for non-Bodo tribal communities in Karbi Anglong and Dima Hasao who lack the BTC's level of institutional representation.
+
+**Karbi Students' Association v State of Assam (Gauhati High Court, 2018)** — The High Court considered challenges to State legislative action affecting the Karbi Anglong region, addressing the interaction between the Karbi Anglong Autonomous Council's competence under the Sixth Schedule and the State Assembly's legislative authority. The judgment discussed how the Article 371B committee mechanism could serve as an accountability check on State legislation affecting tribal areas and noted that the failure to activate the mechanism fully had left a constitutional gap in tribal-area representation at the State level.
+
+**NDFB (National Democratic Front of Bodoland) Peace Process litigation (Supreme Court, 2019–2022)** — Ancillary constitutional litigation arising from the 2020 Bodo Peace Accord addressed the constitutional validity of commitments made in the accord regarding the enhancement of BTC powers and the relationship between the BTC's Sixth Schedule status and the Article 371B committee framework. The Supreme Court noted that the two institutional mechanisms — BTC autonomous governance and any Assembly committee under Article 371B — were not mutually exclusive and that both could operate within Assam's constitutional architecture.
+
+## Current significance
+
+Article 371B's committee mechanism has not been prominently activated in recent decades, partly because the most significant tribal communities formerly within Assam now have their own States or full Sixth Schedule autonomous councils with extensive self-governance powers. The Bodo community has the Bodoland Territorial Council; the Karbi community has the Karbi Anglong Autonomous Council; the Dimasa community has representation through the Dima Hasao Autonomous District Council. Where self-governance mechanisms are robust, the incentive to activate the Article 371B committee within the State Assembly is reduced.
+
+The provision's continuing relevance lies in its potential use as communities within Assam negotiate the terms of their autonomy within the State structure in future political settlements. Any future arrangement that stops short of separate statehood for a tribal area but seeks to give tribal-area legislators enhanced institutional voice in the Assam Assembly could find a constitutionally grounded vehicle in Article 371B. The provision is constitutionally entrenched — it cannot be altered by State legislation or Assembly resolution — which means a Presidential order under it carries constitutional weight that an Assembly resolution creating an ordinary committee would not. This entrenchment is particularly valuable in political environments where the relationship between tribal-area representatives and the State government is adversarial.
+
+The provision also reflects the broader design principle that tribal autonomy in North-East India is primarily a matter for Part XXI special provisions and the Sixth Schedule rather than for ordinary legislation. This design principle gives these protections a degree of constitutional entrenchment and insulation from ordinary political change that purely statutory arrangements would lack. As the dynamics of tribal politics in Assam continue to evolve — with the Bodo community's 2020 settlement still being implemented, with ongoing demands from communities in Karbi Anglong, and with the broader question of Assam's ethnic plurality remaining politically salient — Article 371B continues to represent an available constitutional instrument that a future President and Assam government could deploy to create institutional bridges between the tribal areas and the State legislature.

@@ -24,12 +24,27 @@ schedules:
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## What the provision does
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 374 manages the transition from the judicial order that existed before the Constitution to the one created by it. Three institutions required specific treatment.
 
-## Reading note
+The Federal Court of India — established under the Government of India Act, 1935 — was the apex court before the Supreme Court of India was constituted. Clause (1) provides that Federal Court Judges who did not elect otherwise automatically became Judges of the Supreme Court on the Constitution's commencement, with their salary and service entitlements governed by Article 125. Clause (2) transfers all pending suits, appeals, and proceedings from the Federal Court to the Supreme Court, which then exercises jurisdiction over them; and Federal Court judgments and orders already delivered carry the same force as Supreme Court decisions.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+His Majesty in Council — that is, the Privy Council in London — had jurisdiction to hear appeals from Indian courts as the ultimate appellate authority under the colonial system. Clause (3) preserves the Privy Council's authority to dispose of appeals and petitions already filed before the Constitution's commencement, in so far as that authority is supported by law. Orders made by the Privy Council after commencement are treated as if they were orders of the Supreme Court.
+
+Clause (4) deals with the Part B States — the former princely states and territories that had their own Privy Councils. The jurisdiction of those State-level Privy Councils to hear appeals ceased on commencement, and all pending proceedings were transferred to the Supreme Court.
+
+Clause (5) allows Parliament to make further legislation to give effect to the article.
+
+## Historical significance
+
+Article 374 is the institutional complement to Article 372. Just as Article 372 carries forward pre-Constitution law, Article 374 carries forward pre-Constitution judicial proceedings and judicial personnel, ensuring that neither litigants nor judges suffered discontinuity from the constitutional transition. The Federal Court's case-load and the Privy Council's pending Indian appeals were substantial, and this provision prevented those from being stranded without a competent forum.
+
+The Federal Court Judges who became the Supreme Court's founding Judges under clause (1) included Justice Harilal Kania, who became the first Chief Justice of India. This automatic conversion of judicial office was essential for the Supreme Court to begin functioning on 28 January 1950 with an experienced bench.
+
+## Current significance
+
+Article 374 is an exhausted transitional provision with no current operational effect. All Federal Court Judges either became Supreme Court Judges or retired long ago; all transferred cases were disposed of; the Privy Council no longer receives Indian appeals. The article's significance is historical and constitutional-historical: it illustrates how the framers approached institutional continuity and the rule of law during the transition from colonial to constitutional governance.

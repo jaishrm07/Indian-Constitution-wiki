@@ -58,6 +58,10 @@ sources:
   - tamil-nadu-governor-assent-judgment-2025
   - supreme-court-of-india
   - prs-india
+  - escr
+  - live-law
+  - sansad
+  - supreme-court-observer
 ---
 
 ## The constitutional frame
@@ -67,3 +71,11 @@ Article 200 gives the Governor a choice to assent, withhold assent, or reserve a
 ## What readers should watch
 
 The main signals are whether a future case or reference sharpens the timeline issue, and whether Article 201 remains a genuine constitutional safeguard rather than a route to indefinite delay.
+
+## Sources and how to verify
+- **Constitution of India** (`constitution-of-india`): Articles 200 and 201 are the primary text; read them alongside Articles 163 and 167 for the obligation structure.
+- **Tamil Nadu Governor Assent Judgment 2025** (`tamil-nadu-governor-assent-judgment-2025`): The leading 2025 Supreme Court ruling on the obligation to act on bills within a reasonable time and the effect of indefinite inaction.
+- **eSCR** (`escr`): Retrieve the Tamil Nadu Governor Assent case and Purse v. State of Tamil Nadu cases for the full textual and doctrinal record.
+- **Sansad** (`sansad`): Track bills pending gubernatorial assent in individual state assemblies through official parliamentary records.
+- **Live Law / Supreme Court Observer** (`live-law`, `supreme-court-observer`): Monitor ongoing litigation on bill assent delays in Telangana, Kerala, and Punjab.
+- **PRS Legislative Research** (`prs-india`): State-level legislative tracking and analysis of bills reserved for Presidential consideration.

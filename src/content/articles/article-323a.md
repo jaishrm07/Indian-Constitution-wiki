@@ -5,7 +5,7 @@ number: 323A
 part: Part XIVA - Tribunals
 partSlug: part-xiva
 summary: Article 323A covers administrative tribunals.
-plainEnglish: This page reproduces the official text of Article 323A. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: Parliament can create special tribunals to decide disputes involving the service conditions of government employees, taking those cases out of the ordinary courts. The Central Administrative Tribunal (CAT) was set up under this provision. A 1997 Supreme Court ruling established that even though cases go to CAT first, government employees can still challenge CAT decisions in the High Court — Parliament cannot fully remove the High Court from this picture, because judicial review by High Courts is part of the Constitution's basic structure.
 officialText: |-
   323A. Administrative tribunals.—(1) Parliament may, by law, provide for the adjudication or trial by administrative tribunals of disputes and complaints with respect to recruitment and conditions of service of persons appointed to public services and posts in connection with the affairs of the Union or of any State or of any local or other authority within the territory of India or under the control of the Government of India or of any corporation owned or controlled by the Government.
 
@@ -32,12 +32,33 @@ schedules: []
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+By the 1970s the ordinary civil courts — and to a growing extent the High Courts under Article 226 — were flooded with service-dispute litigation filed by the millions of Union and State government employees who could challenge transfers, promotions, seniority lists, pension orders, and disciplinary proceedings in court. The resulting backlog made justice slow and made civil-service management unpredictable. Article 323A, inserted by the Forty-Second Amendment during the Emergency in 1976, was the constitutional enabling provision for a specialised tribunal system that would channel all service disputes into dedicated forums with procedural expertise and faster disposal.
 
-## Reading note
+The provision is also an illustration of constitutional overreach later corrected by the Court. Article 323A(2)(d) explicitly permitted Parliament to exclude High Court jurisdiction entirely, keeping only the Supreme Court's special-leave jurisdiction. Parliament did exactly this in the Administrative Tribunals Act 1985. The Supreme Court in L Chandra Kumar (1997) held that this exclusion violated the basic structure of the Constitution and could not stand — High Court judicial review is not merely a statutory right but a constitutional guarantee that even a constitutional amendment cannot remove from the citizen.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+## Reading the provision
+
+Clause (1) grants Parliament a broad enabling power: it may provide by law for the adjudication of service disputes by administrative tribunals covering Union and State employees, local-authority employees, and employees of government-owned corporations.
+
+Clause (2) specifies the menu of powers that Parliament may confer on or through such a law. Sub-clause (d) — the most consequential — permitted Parliament to exclude "the jurisdiction of all courts, except the jurisdiction of the Supreme Court under Article 136." This sub-clause is the provision that L Chandra Kumar rendered constitutionally impotent in relation to High Courts: Parliament may route service cases to tribunals, but it cannot prevent a litigant from challenging a tribunal order in the High Court under Articles 226 and 227.
+
+Clause (3) declares that Article 323A prevails notwithstanding anything in any other provision of the Constitution. This non-obstante clause was designed to allow Parliament to oust High Court jurisdiction despite Article 226. After L Chandra Kumar, courts read clause (3) as prevailing only in matters that do not touch the basic structure — meaning it cannot override the High Court's supervisory jurisdiction.
+
+The Administrative Tribunals Act 1985, enacted under Article 323A, created the Central Administrative Tribunal with its Principal Bench in New Delhi and regional benches across India, as well as State Administrative Tribunals for participating States.
+
+## Key cases
+
+**S P Sampath Kumar v Union of India (1987)** — The first Constitution Bench to address the Administrative Tribunals Act 1985 upheld it in full, holding that the ouster of High Court jurisdiction was constitutionally valid because Article 323A itself contemplated it and the tribunal provided an adequate alternative forum. This reasoning was substantially overruled a decade later.
+
+**L Chandra Kumar v Union of India (1997)** — A seven-judge Constitution Bench overruled the jurisdictional ouster holding in Sampath Kumar. The Court held that the power of judicial review vested in the High Courts under Articles 226 and 227 is part of the basic structure of the Constitution. Parliament cannot, even by a constitutional amendment, remove this power from the High Courts. Accordingly, the provisions of the Administrative Tribunals Act that made the CAT the sole forum (short of the Supreme Court) were struck down. The resulting architecture is: service dispute goes first to CAT, the aggrieved party then challenges the CAT order in the relevant High Court's Division Bench under Article 226, and from there may seek special leave to appeal to the Supreme Court.
+
+**Union of India v R Gandhi, President, Madras Bar Association (2010)** — Primarily an Article 323B case about company-law tribunals, but the Supreme Court comprehensively re-stated and reinforced the L Chandra Kumar principles for all tribunals under Part XIVA. The Court laid down detailed conditions for a constitutional tribunal: members must have judicial and technical qualifications equivalent to the High Court judges they replace; the appointing process must insulate the tribunal from executive influence; and the terms and removal conditions must ensure independence. These conditions, derived from the basic-structure rationale, apply with equal force to the CAT.
+
+## Current significance
+
+The CAT today operates across seventeen principal/circuit benches and handles a large volume of service-dispute filings annually, but chronic vacancies in the Chairman and member positions have produced significant case backlogs. After L Chandra Kumar, the two-tier system (CAT then Division Bench of High Court) has added a layer that sometimes produces delay rather than reducing it; some High Courts — notably the Karnataka High Court in certain periods — have questioned whether the CAT bench in their jurisdiction meets the constitutional composition standards required by R Gandhi. Proposals to merge or reconstitute service tribunals and to bring their appointment processes under an independent tribunals commission continue to be debated in law-reform circles, with the constitutional floor established by Article 323A read with L Chandra Kumar and R Gandhi serving as the frame within which any reform must operate.

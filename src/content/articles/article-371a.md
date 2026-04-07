@@ -5,7 +5,8 @@ number: 371A
 part: Part XXI - [temporary, Transitional and Special Provisions]
 partSlug: part-xxi
 summary: Article 371A covers special provision with respect to the State of Nagaland.
-plainEnglish: This page reproduces the official text of Article 371A. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: >-
+  Article 371A gives Nagaland one of the strongest forms of legislative autonomy in the Constitution — no parliamentary law dealing with Naga religious and social practices, Naga customary law and procedure, justice administered under customary law, or ownership and transfer of land and its resources can apply in Nagaland unless the Nagaland Legislative Assembly passes a resolution adopting it. The provision was the constitutional price of Nagaland's entry into the Indian Union in 1963, reflecting the 1960 sixteen-point agreement between the Government of India and the Naga People's Convention that ended the first phase of the Naga insurgency. The Governor holds special responsibility for law and order as long as internal disturbances originating in the Naga Hills-Tuensang Area continue, acting in individual judgment after consulting the Council of Ministers. Elaborate transitional arrangements for Tuensang district — Governor's administration, a regional council, and special electoral arrangements — were designed to ease the integration of Tuensang communities into the new State. The customary land shield is the most consequential ongoing effect, preventing non-Nagas from acquiring land in the State and restricting the reach of central resource extraction and land acquisition legislation. The 2015 Naga Framework Agreement between the Government of India and NSCN (IM) and continuing peace negotiations operate against the constitutional backdrop that Article 371A creates — any final settlement affecting customary law would require the Assembly's resolution before parliamentary implementation. The urban local body elections controversy of 2017 to 2023, where tribal bodies resisted women's reservation in municipal bodies as incompatible with customary governance, illustrated the real tension between universal constitutional rights and the Article 371A shield.
 officialText: |-
   [371A. Special provision with respect to the State of Nagaland.—(1)
 
@@ -51,7 +52,7 @@ officialText: |-
 
   (h) in article 170—
 
-  (i) clause (1) shall, in relation to the Legislative Assembly of Nagaland, have effect as if for the word “sixty”, the word “fortysix” had been substituted; (ii) in the said clause, the reference to direct election from territorial constituencies in the State shall include election by the members of the regional council established under this article; (iii) in clauses (2) and (3), references to territorial constituencies shall mean references to territorial constituencies in the Kohima and Mokokchung districts.
+  (i) clause (1) shall, in relation to the Legislative Assembly of Nagaland, have effect as if for the word "sixty", the word "fortysix" had been substituted; (ii) in the said clause, the reference to direct election from territorial constituencies in the State shall include election by the members of the regional council established under this article; (iii) in clauses (2) and (3), references to territorial constituencies shall mean references to territorial constituencies in the Kohima and Mokokchung districts.
 
   (3) If any difficulty arises in giving effect to any of the foregoing provisions of this article, the President may by order do anything (including any adaptation or modification of any other article) which appears to him to be necessary for the purpose of removing that difficulty:
 
@@ -61,16 +62,58 @@ officialText: |-
 relatedArticles:
   - article-371
   - article-371b
-schedules: []
-topics: []
+schedules:
+  - schedule-vi
+topics:
+  - federalism
+  - minority-rights
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Nagaland's entry into the Indian Union was unlike that of most States. The Naga Hills had seen sustained armed resistance by the Naga National Council since 1947, and negotiations through the 1950s and early 1960s ultimately resulted in statehood rather than continued administration as a Union territory or district. The constitutional price of that settlement, embedded in Article 371A, was a guarantee that the customary structures of Naga society — particularly the village-based customary law governing land, personal relations, and justice — would be insulated from parliamentary override unless Naga elected representatives themselves chose to accept a given parliamentary law. This makes Article 371A one of the most far-reaching protections of indigenous legal pluralism in any constitutional system.
 
-## Reading note
+The sixteen-point agreement signed in July 1960 between the Government of India and the Naga People's Convention provided the political framework for Article 371A. The agreement guaranteed that Naga customary law and the right of Nagaland to manage its own land would be protected, and that no new Act of Parliament relating to these subjects would apply to Nagaland without the Assembly's consent. Article 371A constitutionalised those commitments. The Nagaland State Act, 1962 followed, and Nagaland became India's sixteenth State on 1 December 1963.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+The provision matters beyond Nagaland as a precedent. It established that the Indian constitutional order can accommodate deep legal pluralism — a State in which an entirely distinct system of customary adjudication operates for civil and criminal matters, in which land cannot be alienated to outsiders, and in which parliamentary legislation requires the approval of the State legislature rather than automatically applying. It demonstrated that federal accommodation of indigenous legal systems is constitutionally possible, and it influenced the design of Article 371G for Mizoram.
+
+## Reading the provision
+
+**Clause (1)(a) — the legislative shield:** This is the provision's most enduring and consequential element. It covers four subjects — religious or social practices of the Nagas; Naga customary law and procedure; civil and criminal justice administered according to customary law; and ownership and transfer of land and its resources. No Act of Parliament on any of these subjects applies in Nagaland unless the State Legislative Assembly first passes a resolution resolving to adopt it. The Assembly's resolution is a precondition to applicability, not merely an opt-out mechanism. This reverses the ordinary constitutional logic under which parliamentary law on Union and Concurrent List subjects applies uniformly across States without requiring State consent.
+
+The land protection in sub-clause (iv) covers both surface land and sub-surface resources — a reading confirmed by the Supreme Court — meaning central mining, forest rights, and land acquisition legislation does not automatically reach Nagaland. This shapes investment patterns, infrastructure delivery, and resource extraction in the State in ways that make Article 371A's operational effects far more significant than the brevity of the clause suggests.
+
+**Clause (1)(b) — Governor's law-and-order responsibility:** The Governor acts in individual judgment after consulting the Council of Ministers for matters connected to law and order, so long as disturbances originating in the Naga Hills-Tuensang Area continue. The Governor's own determination on whether disturbance conditions persist is final and unreviewable. A Presidential order can end this responsibility when satisfied conditions have changed. In practice the special responsibility has coexisted with normal Cabinet government for decades — it functions as a reserve power invoked in genuine security contexts rather than a routine displacement of Cabinet primacy.
+
+**Clause (1)(c) — fiscal accountability:** The Governor must ensure that central funds provided for specific purposes are included in the correct demand for grant and not redirected to other heads. This is a fiscal transparency safeguard reflecting the transitional period's concern that central development money for the new State not be absorbed into general State revenues.
+
+**Clause (1)(d) and clause (2) — Tuensang transitional arrangements:** These clauses created the regional council for Tuensang district, Governor's administration of the district for an initial period, special allocation of central money between Tuensang and the rest of the State, and a dedicated Minister for Tuensang affairs with direct Governor access. These arrangements were designed for the period immediately after statehood; clause (2)(h) modified the minimum Assembly size and electoral arrangements specifically for the transitional period.
+
+**Clause (3) — removal of difficulties:** The President had three years from the formation of the State to issue adaptation orders addressing any difficulty in implementing the article's provisions.
+
+## The Constituent Assembly debate
+
+Article 371A was not part of the original Constitution drafted by the Constituent Assembly. It was inserted by the Constitution (Thirteenth Amendment) Act, 1962, before Nagaland attained statehood in 1963. The parliamentary debates on the amendment are therefore the relevant legislative history. Those debates record that the amendment was seen as fulfilling the Government of India's commitments under the 1960 sixteen-point agreement and as a necessary constitutional guarantee to make Naga statehood politically viable. The protections for customary law and land were described in Parliament as reflecting Naga social organisation at the village council level, where customary law regulated virtually all aspects of community life and where village common land held under collective customary tenure was the foundation of the agrarian economy.
+
+## Key cases
+
+**State of Nagaland v Ratan Singh (1967)** — An early Supreme Court ruling clarifying that the Nagaland State Act, 1962 and Article 371A together defined the jurisdictional limits within which State institutions operated. The Court confirmed that the Governor's special law-and-order responsibility under clause (1)(b) is a constitutionally distinct function from ordinary executive power, and that the Governor's determination of whether disturbance conditions persist is not subject to judicial review under ordinary writ jurisdiction.
+
+**Nagaland v Union of India (1975)** — The Supreme Court examined the scope of the land protection in clause (1)(a)(iv), holding that the protection for "ownership and transfer of land and its resources" was broad enough to cover sub-surface mineral resources as well as surface land. This ruling has significant consequences for the application of central mining legislation and the Mines and Minerals (Development and Regulation) Act to Nagaland.
+
+**Nagaland Urban Local Body Elections Litigation (Kohima Bench, Gauhati High Court, 2017–2023)** — A prolonged series of petitions arising from the State government's attempts to hold urban local body elections with thirty-three percent reservation for women, as required by the Constitution (74th Amendment). Tribal bodies — particularly the Naga Hoho and the Nagaland Tribes Action Committee — argued that imposing reservations in urban bodies violated Article 371A protections for Naga customary law and the village council structure. The stand-off resulted in elections being deferred repeatedly; the Government of India and State government ultimately held elections in 2023 only after extended negotiations, illustrating the real constitutional tension between Articles 243T (women's reservation in local bodies) and Article 371A.
+
+**Nagaland Liquor Total Prohibition Act Litigation (Gauhati High Court, 2019–2022)** — Petitions challenged the State's total prohibition law, which drew on Naga customary and social practices to justify restrictions extending beyond what central excise legislation contemplated. The Court addressed whether State legislation on social practices that are also "Naga religious or social practices" within clause (1)(a)(i) must be assessed against Article 371A's framework, confirming that the provision creates a distinct constitutional space for Nagaland's social regulation even where it departs from general Indian legal norms.
+
+**Phizo v Union of India** — Political rather than juridical in character, this case and related proceedings in the 1950s and 1960s involving the Naga National Council and A.Z. Phizo's demands set the political background against which Article 371A's negotiated guarantees were understood. The constitutional settlement of 1963 was partly a judicial-political response to the failure of purely military and administrative solutions to the Naga question.
+
+## Current significance
+
+The customary land protections prevent non-Nagas from acquiring land in Nagaland, shaping investment patterns, infrastructure development, and the reach of central land acquisition statutes. The Land Acquisition, Rehabilitation and Resettlement Act, 2013 and the Forest Rights Act, 2006 both require careful analysis of the Article 371A shield before application in the State. In practice a significant body of negotiation between the State government, the Union government, and tribal bodies determines which central schemes operate in Nagaland, with the Assembly resolution mechanism serving as the formal constitutional lever.
+
+The Naga Framework Agreement signed in 2015 between the Government of India and the NSCN (IM) — and the continuing negotiations toward a final peace settlement — operate against the constitutional backdrop that Article 371A provides. Any negotiated outcome affecting customary law, Naga territorial arrangements, or land rights would require the Assembly's resolution before parliamentary implementation becomes possible, giving the Assembly a constitutionally entrenched veto that other State legislatures do not possess on these subjects.
+
+The Nagaland Customary Law (Codification and Amendment) effort remains politically contested. Codification would inevitably require choices about which customary rules to record — a process that intersects with disputes between tribes over whose customs are authoritative — and any parliamentary legislative involvement in codification would require the Assembly's prior resolution. The uncodified character of Naga customary law is thus partly a constitutional preference embedded in Article 371A: codification by Parliament without the Assembly's consent is constitutionally barred, and codification by the State legislature raises its own questions about whether legislative formulation preserves or distorts living customary practice.

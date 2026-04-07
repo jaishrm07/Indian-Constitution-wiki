@@ -5,7 +5,18 @@ number: 338B
 part: Part XVI - Special Provisions Relating to Certain Classes
 partSlug: part-xvi
 summary: Article 338B covers national Commission for Backward Classes.
-plainEnglish: This page reproduces the official text of Article 338B. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: >-
+  Article 338B elevates the National Commission for Backward Classes (NCBC) to
+  constitutional status, inserted by the 102nd Amendment (2018). The Commission
+  advises the Central Government on inclusions in and exclusions from the Central
+  OBC list maintained under Article 342A, though under a critical exception — the
+  consultation obligation in clause (9) explicitly does not apply to Parliament's
+  power to alter the Central list under Article 342A(3). The Supreme Court in
+  Jaishri Patil v Chief Minister, Maharashtra (2021) confirmed that following the
+  102nd Amendment, States can no longer unilaterally add communities to OBC lists
+  for Central reservation purposes — a shift that has made the NCBC and Parliament
+  the exclusive gatekeepers for Central-list inclusions, raising the political
+  stakes of every Commission recommendation.
 officialText: |-
   [338B. National Commission for Backward Classes.—(1) There shall be a Commission for the socially and educationally backward classes to be known as the National Commission for Backward Classes.
 
@@ -57,12 +68,21 @@ schedules: []
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## What this Article does
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 338B establishes the National Commission for Backward Classes (NCBC) as a constitutional body, inserted by the Constitution (102nd Amendment) Act, 2018. Before the amendment the NCBC existed under ordinary legislation. The Commission has the same structural template as the NCSC and NCST — Chairperson, Vice-Chairperson, and three members appointed by the President — and comparable duties: investigating safeguards, receiving complaints, advising on development, and reporting to the President. It has civil-court investigative powers. Clause (9) mandates consultation by the Union and every State on all major policy matters affecting socially and educationally backward classes, with the proviso that this consultation obligation does not apply to the determination of the Central OBC list under Article 342A(3), which is exclusively a parliamentary function.
 
-## Reading note
+## Key cases
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+**Maratha Reservation case — Dr Jaishri Laxmanrao Patil v Chief Minister, Maharashtra (2021)** — A five-judge Constitution Bench struck down the Maharashtra SEBC Act granting reservation to the Maratha community. The Court held that States no longer have the power to add communities to their own OBC lists following the 102nd Amendment; that power now vests exclusively in Parliament through the Article 342A mechanism. The NCBC's constitutional role under Article 338B was central to the Court's analysis of the post-amendment framework.
+
+**Indra Sawhney v Union of India (1992)** — The foundational OBC reservation case predated the constitutional elevation of the NCBC. Its fifty-per-cent ceiling on reservations, its creamy-layer exclusion principle, and its requirement of periodic review of OBC lists inform the NCBC's ongoing work of recommending inclusions and exclusions.
+
+**Union of India v Rakesh Kumar (2010)** — On the question of OBC representation in elections, the Court read across from the service reservation framework, reinforcing that empirical data on backwardness and representation is a constitutional prerequisite that the NCBC is positioned to generate.
+
+## Current significance
+
+The 102nd Amendment and _Jaishri Patil_ together restructured the OBC landscape significantly: States must work through the NCBC and ultimately Parliament under Article 342A to modify the Central list, while their own State OBC lists remain under State legislative competence for State reservation purposes pending further clarification. The NCBC is therefore a constitutionally significant institution for communities seeking Central-list status. The commission's recommendations on inclusion or exclusion from the OBC list have high political salience, and its independence from executive pressure is a recurring concern in parliamentary debates.

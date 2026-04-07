@@ -33,12 +33,35 @@ schedules: []
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## The continuance principle
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 372 is the constitutional bridge between the colonial legal order and the Republic. Without it, the coming into force of the Constitution on 26 January 1950 would have created a legal vacuum: every statute, regulation, and statutory instrument enacted by Parliament, provincial legislatures, or the Crown-in-Council before that date would have ceased to operate until re-enacted. Article 372(1) prevents this by providing that all law in force immediately before commencement — regardless of whether the enacting authority itself survived — continues in force until a competent Legislature or authority alters, repeals, or amends it.
 
-## Reading note
+The scope of "law in force" is deliberately broad. Explanation I covers laws passed before commencement but not previously in operation in all areas; these are preserved too. Explanation II covers laws with extra-territorial effect. Explanation III excludes temporary laws whose expiry date had already passed. Explanation IV specifically addresses Governor-promulgated Ordinances from the Government of India Act, 1935 era, limiting their continued operation to six weeks from the first meeting of the new State Assembly.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+## The adaptation mechanism
+
+Clause (2) gave the President a three-year window (confirmed in clause (3)(a)) from the Constitution's commencement to adapt and modify inherited laws by order so that they conformed to the constitutional text. This power could include repeal or amendment. Adaptation orders issued under this mechanism are not subject to judicial challenge.
+
+The purpose of the adaptation window was practical. Statutes that referred to the Governor-General, to Crown officers, to the Dominion Legislature, or to pre-constitutional administrative units needed updating to function coherently within the new constitutional machinery. The Adaptation of Laws Order, 1950 was the primary instrument used under this power.
+
+Clause (3)(b) makes clear that even after adaptation, the competent legislature retains full power to repeal or further amend the adapted legislation.
+
+## Key cases on inherited legislation
+
+**State of Bombay v F N Balsara (1951)** — An early Supreme Court decision addressing whether pre-Constitution Bombay Prohibition Act provisions survived Article 13's requirement that pre-constitutional laws inconsistent with fundamental rights become void. The case established that Article 13(1) applies to pre-constitutional laws, operating prospectively to void them to the extent of inconsistency, but that Article 372 keeps them in force for all other purposes. This interaction between Article 372's saving and Article 13's voidance is foundational to the post-Constitution treatment of colonial statutes.
+
+**The Tata Engineering and Locomotive Co v State of Bihar (1964)** — The Supreme Court examined the continuance and adaptation of provisions in pre-Constitution taxation legislation, reaffirming that the adaptation power under Article 372(2) was administrative in character and that judicially testing the pre-existing legislation for constitutional consistency was governed by Article 13, not Article 372.
+
+## Interaction with personal laws and colonial-era statutes
+
+Many of the most consequential consequences of Article 372 lie in personal law. The Hindu Succession Act, 1956, the Hindu Marriage Act, 1955, and other personal law statutes were enacted to reform the pre-existing personal law that Article 372 would otherwise have continued in force. In areas not yet reformed by Parliament — such as certain aspects of Muslim personal law as applied through the Shariat Application Act, 1937, or customary practices governing property succession — Article 372 is the continued constitutional basis for the operation of those rules.
+
+Similarly, colonial-era criminal, evidentiary, and regulatory statutes continued under Article 372 and many remain operative despite calls for their repeal or replacement. The Indian Evidence Act, 1872, and the Indian Contract Act, 1872 (both since replaced or in the process of replacement through legislative reform as of 2023) derived their continued constitutional force from this provision until the amending legislature acted.
+
+## Current significance
+
+Article 372 is the silent foundation of a large proportion of India's operative law. Every time a court applies a pre-1950 statute — whether the Transfer of Property Act, 1882, or a pre-partition provincial regulation — it is relying on Article 372 as the constitutional basis for that statute's continued existence. The provision also matters for the ongoing reform of colonial-era criminal laws: the Bharatiya Nyaya Sanhita, Bharatiya Nagarik Suraksha Sanhita, and Bharatiya Sakshya Adhiniyam (enacted in 2023) replaced the Indian Penal Code, Code of Criminal Procedure, and Indian Evidence Act respectively — all of which had survived under Article 372 since 1950.

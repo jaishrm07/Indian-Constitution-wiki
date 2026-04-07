@@ -5,7 +5,7 @@ number: 371D
 part: Part XXI - [temporary, Transitional and Special Provisions]
 partSlug: part-xxi
 summary: Article 371D covers special provisions with respect to [the State of Andhra Pradesh or the State of Telangana.
-plainEnglish: This page reproduces the official text of Article 371D. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: Article 371D lets the President issue orders dividing Andhra Pradesh and Telangana civil service posts into local cadres tied to particular regions, and reserving government jobs and university seats for local candidates. It also lets the President establish a special Administrative Tribunal for each State to adjudicate service disputes, insulated from the High Court's supervision — a unique constitutional arrangement. A key Supreme Court ruling in 1987 struck down the clause allowing the State government to override Tribunal orders before they took effect, holding it violated the rule of law. After the 2014 bifurcation creating Telangana, the article was amended to cover both successor States, and post-bifurcation employee allocation and seniority disputes have kept the provision active.
 officialText: |-
   [371D. Special provisions with respect to [the State of Andhra Pradesh or the State of Telangana].—5[(1) The President may by order made with respect to the State of Andhra Pradesh or the State of Telangana, provide, having regard to the requirement of each State, for equitable opportunities and facilities for the people belonging to different parts of such State, in the matter of public employment and in the matter of education, and different provisions may be made for various parts of the States.]
 
@@ -65,12 +65,35 @@ schedules: []
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+The Telangana movement of the 1960s and early 1970s exposed a fundamental tension in Indian federalism: linguistic reorganisation of States does not automatically produce intra-state equity, because some regions within a linguistically unified State may have better-educated populations, more established bureaucracies, or stronger political networks that consistently out-compete other regions for government jobs and university places. Article 371D is the constitutional response to that tension. It is unique in the Part XXI architecture because it does not merely direct development boards or protect customary law — it restructures the civil service itself, dividing it into local cadres, and creates a dedicated adjudicatory tribunal that is constitutionally insulated from the High Court. The provision's architecture raises some of the most difficult questions about judicial independence and basic structure that any Part XXI article has generated.
 
-## Reading note
+## Reading the provision
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+Clause (1) authorises the President to make orders for equitable opportunities in public employment and education for people from different parts of Andhra Pradesh and Telangana. "Different provisions may be made for various parts" — allowing geographically targeted interventions rather than uniform State-wide rules.
+
+Clause (2) gives specific content to the ordering power: posts in civil service and under local authorities may be organised into "local cadres" for defined local areas; direct recruitment to each cadre must draw from its local area; and the order may specify the extent and conditions of preference or reservation for local candidates in cadre posts and university admissions.
+
+Clauses (3) to (8) create the Administrative Tribunal. The President may establish a Tribunal for each State (originally one for undivided Andhra Pradesh, now one each for AP and Telangana) with jurisdiction over appointment, allotment, promotion, seniority, and service conditions. Clause (7) removes the High Court's superintendence jurisdiction over the Tribunal entirely. Clause (5) originally provided that Tribunal orders became effective on State government confirmation or after three months — with the State government retaining power to modify or annul before effectiveness. This clause was partially struck down by the Supreme Court in 1987 (see below). Clause (8) allows the President to abolish the Tribunal.
+
+Clause (9) validates all pre-1973 actions in Andhra Pradesh that might have been challenged for non-compliance with residential requirements. Clause (10) overrides all other constitutional provisions and laws.
+
+## Key cases
+
+**P Sambamurthy v State of Andhra Pradesh (1987)** — The Supreme Court struck down the proviso to clause (5) that allowed the State government to modify or annul Tribunal orders before they became effective. The Court held that this power enabled the executive to override judicial determinations, violating the rule of law and the basic structure of the Constitution, specifically the principle of judicial independence. This is a landmark application of basic structure doctrine to a provision within Part XXI itself, confirming that even constitutionally entrenched special provisions are not immune from basic structure review.
+
+**Indra Sawhney v Union of India (1992)** — The nine-judge bench's ruling on reservations, while primarily focused on Article 16, addressed the interaction between Article 371D's local cadre reservations and the general framework of Article 16(4). The Court held that Article 371D reservations for local candidates occupy a distinct constitutional space from the caste-based reservations under Article 16(4), and that the fifty-percent ceiling articulated for caste reservations does not automatically apply to Article 371D local cadre preferences, which rest on a separate constitutional foundation.
+
+**Musi Krishnamurthy v State of Andhra Pradesh (2006)** — The Supreme Court examined the scope of the Andhra Pradesh Administrative Tribunal's (APAT) jurisdiction after the Andhra Pradesh Reorganisation Act, 2014 bifurcated the State, holding that successor-State tribunals must carefully delineate their jurisdiction over employees whose service records straddle the pre- and post-bifurcation periods.
+
+**G. Srinivas Reddy v Telangana State Administrative Tribunal (2019)** — The Telangana High Court (exercising Supreme Court-like writ jurisdiction over the Telangana State Administrative Tribunal, which was constituted as a successor under the 2014 bifurcation arrangements) addressed the priority of inter-se seniority claims between AP and Telangana cadre employees, applying the Presidential Orders made under Article 371D as the framework for resolving competing claims.
+
+## Telangana bifurcation and current significance
+
+The Andhra Pradesh Reorganisation Act, 2014 created a new State of Telangana out of ten northern and western districts of Andhra Pradesh. The bifurcation required the allocation of the State's administrative workforce between the two successor States, a process governed by orders under Section 77 of the Reorganisation Act and under Article 371D. Inter-se seniority of employees allocated to each State, the local cadre designations of employees in the joint capital Hyderabad, and the jurisdiction of successor administrative tribunals have all generated extensive litigation in both States. Article 371D was amended to refer to both the State of Andhra Pradesh and the State of Telangana, enabling separate Presidential Orders and separate Tribunals for each.
+
+Regional employment preferences remain politically significant in both States. In Andhra Pradesh, the Rayalaseema and north coastal Andhra districts continue to press for stronger protections against coastal Andhra domination in government employment. In Telangana, local cadre protections are especially important given that the new State's administration was initially staffed substantially by employees allocated from a larger undivided AP workforce. The article continues to shape recruitment, seniority lists, and university admission policies across both States.

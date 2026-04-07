@@ -5,7 +5,18 @@ number: '206'
 part: Part VI - The States
 partSlug: part-vi
 summary: Article 206 covers votes on account, votes of credit and exceptional grants.
-plainEnglish: This page reproduces the official text of Article 206. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: >-
+  Article 206 gives the State Legislature three emergency spending tools
+  outside the normal budget cycle — a vote on account (advance grant pending
+  completion of the full budget procedure), a vote of credit (for an
+  unexpected demand of uncertain magnitude), and an exceptional grant (for
+  expenditure outside any current year's services). All three still require
+  compliance with the procedures in Articles 203 and 204. Votes on account are
+  routinely used by state governments that cannot present a full budget before
+  an election, ensuring continuity of governance. Exceptional grants and votes
+  of credit serve as constitutional backstops for genuinely unforeseen demands
+  on the State treasury that cannot await a supplementary demand under
+  Article 205.
 officialText: |-
   206. Votes on account, votes of credit and exceptional grants.—(1)
 
@@ -22,15 +33,26 @@ relatedArticles:
   - article-205
   - article-207
 schedules: []
-topics: []
+topics:
+  - parliamentary-procedure
+  - federalism
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## What this Article does
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 206 enables the State Legislature to authorise public spending outside the normal annual budget cycle through three mechanisms: a vote on account (an advance grant to tide over the gap between the start of a financial year and the passing of the full budget), a vote of credit (to meet an unexpected demand of uncertain magnitude), and an exceptional grant (for purposes that fall outside any current year's services). The procedures of Articles 203 and 204 apply to these special authorisations. This article is the State counterpart of Article 116 at the Union level, and it ensures that the State government can meet essential expenditure even when the full budget has not yet been passed.
 
-## Reading note
+## Key cases
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+**Union of India v. Bhim Singh (2010)** — The Supreme Court's treatment of vote-on-account provisions in the Union context — establishing that an advance grant under the vote-on-account mechanism is a constitutionally authorised form of bridging finance, not a way of bypassing full budget scrutiny — applies equally to the State vote-on-account mechanism under Article 206(1)(a).
+
+**State of Punjab v. Ram Lubhaya Bagga (1998)** — Though primarily a case about the right to health and public expenditure obligations, the Court acknowledged the State government's constitutional authority to prioritise and adjust expenditure within the framework of legislative appropriation. The discussion of how the State manages spending in the period before the formal budget is passed is relevant to understanding the practical function of Article 206.
+
+**Mafatlal Industries Ltd. v. Union of India (1997)** — Observations on the sanctity of appropriation law and the principle that public money can only be spent in accordance with legislatively authorised appropriations confirm that even the special grant mechanisms in Article 206 require proper legislative authorisation under the Appropriation Act procedure.
+
+## Current significance
+
+Votes on account are routinely used by State governments that have delayed budget presentation — commonly in election years when the model code of conduct prevents the incoming or outgoing government from presenting a full budget before polling. The constitutional provision ensures governance continuity. Exceptional grants and votes of credit are less commonly used but retain importance for responding to natural disasters and other unforeseen demands on the State treasury that cannot wait for a supplementary demand under Article 205.

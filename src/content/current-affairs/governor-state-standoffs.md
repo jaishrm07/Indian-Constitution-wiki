@@ -54,6 +54,12 @@ sources:
   - tamil-nadu-governor-assent-judgment-2025
   - supreme-court-of-india
   - constitution-of-india
+  - escr
+  - prs-india
+  - live-law
+  - bar-and-bench
+  - supreme-court-observer
+  - press-information-bureau
 ---
 
 ## The constitutional frame
@@ -63,3 +69,15 @@ Not every political impasse justifies extraordinary intervention. Constitutional
 ## What readers should watch
 
 The key constitutional signals are whether the dispute concerns discretionary action, legislative majority, or a claim that ordinary government can no longer function according to the Constitution.
+
+## Key constitutional provisions
+
+Article 163 sets up the Governor's council of ministers but preserves a narrow discretionary space for a few specified functions. Article 174 gives the Governor power to summon, prorogue, and dissolve the Assembly, but this power is exercised on ministerial advice except in narrow circumstances. Article 200 governs assent to state bills, and Article 201 allows reservation for Presidential consideration, a mechanism that has become contested when governors withhold assent for political rather than constitutional reasons. Article 356 is the nuclear option — President's Rule — which S.R. Bommai made subject to judicial review and parliamentary confirmation within two months.
+
+## Sources and how to verify
+- **Constitution of India** (`constitution-of-india`): Articles 163, 174, 200, 201, and 356 are the constitutional text anchoring the governor-state standoff disputes.
+- **Tamil Nadu Governor Assent Judgment 2025** (`tamil-nadu-governor-assent-judgment-2025`): The 2025 Supreme Court ruling that directly addresses the constitutional obligation to grant or withhold assent promptly.
+- **eSCR** (`escr`): Use to retrieve S.R. Bommai (1994) 3 SCC 1 and Nabam Rebia (2016) 8 SCC 1 for the foundational texts on Governor discretion and Article 356 limits.
+- **Live Law / Bar and Bench** (`live-law`, `bar-and-bench`): Near-real-time monitoring of Governor-state litigation in the Supreme Court and High Courts.
+- **PRS Legislative Research** (`prs-india`): Background papers on governor-state standoff episodes and constitutional convention analysis.
+- **Press Information Bureau** (`press-information-bureau`): Official government statements and Raj Bhavan press releases on assent and summoning decisions.

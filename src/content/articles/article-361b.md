@@ -21,15 +21,30 @@ relatedArticles:
   - article-362
 schedules:
   - schedule-x
-topics: []
+topics:
+  - anti-defection
+  - parliamentary-procedure
+  - elections-and-democracy
 sources:
   - constitution-of-india
 ---
 
-## Editorial status
+## What this article does
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 361B closes a loophole in the anti-defection regime created by the Tenth Schedule. A member who is disqualified under paragraph 2 of the Tenth Schedule for defecting from a political party — whether by voluntarily giving up membership of that party or by voting against the party's direction contrary to its whip — not only loses the parliamentary seat but is also barred from holding any "remunerative political post" for the remainder of the term that would have run had the disqualification not occurred, or until the member is re-elected, whichever is earlier.
 
-## Reading note
+The article was inserted by the Constitution (Ninety-first Amendment) Act, 2003, alongside amendments to Article 75 (capping the size of the Council of Ministers at 15 percent of Lok Sabha strength) and consequential changes to the Tenth Schedule. The 91st Amendment addressed the political economy of defection: prior to it, a member could be disqualified from the House but immediately rewarded with a ministerial or parastatal post by the government that benefited from the defection.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+## Definition of remunerative political post
+
+The Explanation to Article 361B gives a wide meaning to "remunerative political post." It includes any office under the Government of India or a State government where the salary is paid from public revenue. It also includes offices under bodies — whether incorporated or not — wholly or partially owned by the government, where the body pays the salary or remuneration, unless that remuneration is purely compensatory in nature.
+
+Purely compensatory remuneration — covering actual costs and expenses of discharge of duty rather than conferring a benefit — is carved out, so the article does not prevent a disqualified member from serving on, say, an advisory committee that reimburses out-of-pocket expenses. The purpose is to deny the political windfall (a ministership, a chairmanship of a public sector undertaking, a parliamentary secretaryship) rather than to impose punitive exclusion from all public engagement.
+
+## Duration of the disqualification
+
+The disqualification runs from the date the Tenth Schedule disqualification takes effect until whichever of two events occurs first: the natural expiry of the term for which the defecting member was elected, or the date on which the member contests a subsequent election and is declared elected to a House. The second limb means a member who goes back to the electorate and wins is freed from the disqualification, reflecting the logic that a fresh electoral mandate wipes the slate.
+
+## Relationship with the Tenth Schedule
+
+The Tenth Schedule, inserted by the Constitution (Fifty-second Amendment) Act, 1985, created the substantive disqualification for defection. Articles 102 and 191 make a member who incurs that disqualification ineligible to be a member of Parliament or State Legislature. Article 361B layers an additional consequence on top of the membership loss: ineligibility for executive reward. Together they represent an attempt to make defection materially unattractive by removing both the seat and the immediate prospect of ministerial office that has historically made defection the instrument of government formation. The effectiveness of the deterrent remains contested given the continued frequency of floor-crossing in Indian politics.

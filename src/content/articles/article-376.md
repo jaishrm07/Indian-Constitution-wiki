@@ -17,15 +17,38 @@ relatedArticles:
   - article-377
 schedules:
   - schedule-i
-topics: []
+topics:
+  - judiciary
+  - judicial-appointments
 sources:
   - constitution-of-india
 ---
 
-## Editorial status
+## What this Article did
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 376 is the transitional provision for High Court judges. It addressed two categories of judges who were serving at the commencement of the Constitution on 26 January 1950.
 
-## Reading note
+Clause (1) dealt with judges serving in High Courts in the Provinces (the Part A States of the original First Schedule — essentially the major provinces of British India). Such judges automatically became judges of the corresponding High Court under the new Constitution unless they elected otherwise. They became entitled to the salaries, allowances, leave, and pension rights provided by Article 221. The clause also provided, notably, that such a judge was eligible for appointment as Chief Justice even if not a citizen of India. This accommodation for non-citizen judges reflected the reality that some High Courts had British judges serving at commencement.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+Clause (2) dealt with judges serving in High Courts of the Indian States corresponding to the Part B States (the former princely states and merged territories that now formed Part B States). These judges similarly became judges of the corresponding State's High Court, but their tenure was more contingent: they held office until the expiration of such period as the President might by order determine. This greater flexibility reflected the more varied and ad hoc nature of judicial appointments in the former Indian States.
+
+Clause (3) clarified that "Judge" in this article did not include acting or additional judges, who were not automatically transferred by this provision.
+
+## Historical context
+
+On 26 January 1950, India had a large and established High Court system in the former Provinces and a range of state-level judicial bodies in the former princely states. The Provinces' High Courts — at Calcutta, Bombay, Madras, Allahabad, Lahore (now in Pakistan), Patna, and elsewhere — had served as the apex civil and criminal courts for their respective provinces. The Indian States had varying arrangements, with some large states like Hyderabad and Mysore having their own High Courts while others had lower-level judicial institutions.
+
+Article 376 ensured that sitting judges did not need to be formally reappointed under the new constitutional process specified in Article 217. The new appointment procedure required consultation with the Chief Justice of India, the State Governor, and the High Court Chief Justice, which would have been impractical to apply retrospectively to sitting judges. Instead, Article 376 deemed those judges to continue in their roles while making the new constitutional terms (salary, leave, pension) applicable to them going forward.
+
+The non-citizenship eligibility in clause (1) was a concession to the reality that British members of the Indian Civil Service and judiciary had not all left immediately after independence. By 1956, this provision had served its purpose, and all sitting judges in the reorganised High Courts were Indian citizens.
+
+## Key cases
+
+No major constitutional case specifically turned on the operation of Article 376. Questions about the service conditions or tenure of transitional judges would have been largely resolved administratively through presidential orders under clause (2) for Part B State judges. The provision worked smoothly in practice, and the continuity of the High Court bench through the constitutional transition did not generate significant litigation.
+
+**Shamsher Singh v State of Punjab (1974) 2 SCC 831** — While addressing the appointment and tenure of judges more generally, this case affirmed the constitutional status of the High Courts and the independence of the judiciary. The seamless transition effected by Article 376 was part of the historical backdrop for the Court's analysis of judicial independence.
+
+## Current significance
+
+Article 376 is entirely spent. All judges who were in office on 26 January 1950 have long since retired or passed away. The provision's lasting significance is structural: it ensured that India's High Courts did not experience a break in judicial continuity at the moment of constitutional commencement. The legitimacy of every judicial act performed by the continuing judges from 26 January 1950 was placed beyond doubt. The provision also illustrates the pragmatic approach of Part XXI — new constitutional requirements for appointments (Article 217) were applied prospectively, not retroactively, while protecting the rights and status of those already serving.
+

@@ -4,24 +4,68 @@ slug: article-244
 number: '244'
 part: Part X - The Schedule D and Tribal Are as
 partSlug: part-x
-summary: Article 244 covers administration of Scheduled Areas and Tribal Areas.
-plainEnglish: This page reproduces the official text of Article 244. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+summary: Article 244 activates the Fifth Schedule for Scheduled Areas in mainland India and the Sixth Schedule for tribal areas in the north-eastern States, providing two distinct constitutional regimes for the protection and self-governance of tribal communities.
+plainEnglish: >-
+  Article 244 is the constitutional switch that turns on two separate protective systems for tribal peoples. For most of India, the Fifth Schedule applies — it lets the Governor modify or exclude laws in Scheduled Areas, requires a Tribes Advisory Council, and gives the President power to declare or alter area boundaries. In the four north-eastern States of Assam, Meghalaya, Tripura, and Mizoram, the more powerful Sixth Schedule applies instead, creating Autonomous District Councils with their own legislative, judicial, and administrative powers. Both schedules are responses to the reality that uniform national law would extinguish tribal customary institutions; they carve out constitutional space for self-governance at the cost of some integration with the mainstream legal order.
 officialText: |-
   244. Administration of Scheduled Areas and Tribal Areas.—(1) The provisions of the Fifth Schedule shall apply to the administration and control of the Scheduled Areas and Scheduled Tribes in any State other than [the States of Assam, [, [Meghalaya, Tripura and Mizoram]]].
 
   (2) The provisions of the Sixth Schedule shall apply to the administration of the tribal areas in [the States of Assam, [, [Meghalaya, Tripura and Mizoram]]].
 relatedArticles:
   - article-244a
-schedules: []
-topics: []
+  - article-245
+  - article-246
+schedules:
+  - schedule-v
+  - schedule-vi
+topics:
+  - federalism
+  - minority-rights
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 244 is the constitutional gateway to the two most significant protective regimes for India's tribal populations. Without it, the uniform application of Central and State law would rapidly dissolve the distinctive land-holding patterns, customary governance institutions, and community resource management practices of Scheduled Tribe communities. The framers of the Constitution — drawing on the recommendations of the Constituent Assembly's Sub-Committee on Tribal Areas chaired by A. V. Thakkar — recognised that mainstream democratic institutions, however laudable, could become instruments of dispossession if applied without modification to communities that had survived centuries of colonial and feudal extraction by their control over land and forests.
 
-## Reading note
+The Fifth Schedule, activated by clause (1) for all States except the four north-eastern ones, creates a modified governance system: Governors retain special reserve powers to direct that Acts of Parliament or State Legislatures shall not apply to Scheduled Areas, or shall apply with modifications, without those directions themselves being treated as legislative actions. A Tribes Advisory Council composed predominantly of elected Scheduled Tribe members of the State Legislature advises on all matters affecting tribal welfare referred to it by the Governor. The President may declare any area a Scheduled Area, include or exclude areas, and alter boundaries by public notification after consulting the Governor, making the Scheduled Area designation elastic to reflect demographic and political change.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+The Sixth Schedule, activated by clause (2) for Assam, Meghalaya, Tripura, and Mizoram, goes considerably further. It creates Autonomous District Councils (ADCs) with legislative, executive, and judicial competence over specified subjects — land management, forests other than reserved forests, waterways, shifting cultivation, and customary personal law. ADC laws become operative on the Governor's assent. The gap between the Fifth and Sixth Schedule models reflects both the different colonial-era governance experience of the north-eastern tribal belt and the much more cohesive territorial concentration of tribal communities in those States compared to mainland India's more dispersed Scheduled Area pockets.
+
+The Panchayats (Extension to Scheduled Areas) Act 1996 (PESA) built directly on Article 244 by legislating the principle that gram sabhas in Fifth Schedule areas must be consulted — and in some cases give consent — before displacement, land acquisition, or grant of minor forest produce leases. PESA is the most significant Parliamentary action under the Article 244 framework and transformed the Fifth Schedule from an administrative protective mechanism into a self-governance instrument. Non-compliance with PESA's gram-sabha consent requirements is now the central legal battleground for tribal rights challenges to infrastructure and mining projects across central India.
+
+The Forest Rights Act 2006 added a parallel layer by recognising individual and community forest rights within Scheduled Areas and requiring their settlement before any diversion of forest land. Together, Article 244, PESA, and the Forest Rights Act form an interlocking constitutional and statutory framework within which every dispute about mineral extraction, dam construction, or highway alignment in tribal India is fought.
+
+## Reading the provision
+
+The article's brevity is its most striking feature — two short clauses, each doing nothing more than activating a Schedule. The substantive content of both protective regimes lives entirely within the Fifth and Sixth Schedules, which together run to several pages. Article 244 itself is the constitutional switch; the Schedules are the machinery.
+
+Clause (1) uses the phrase "administration and control" of Scheduled Areas and Scheduled Tribes, which courts have interpreted broadly. It is not merely an administrative direction but a constitutional mandate for a distinct governance regime. The Fifth Schedule's paragraph 5 gives Governors the power to direct that any Act of Parliament or State Legislature shall not apply to a Scheduled Area, or shall apply with such exceptions and modifications as the Governor may specify. This is an extraordinary reserve power: it allows one constitutional functionary to suspend, modify, or disapply legislation — without any legislative action — within a defined geographic zone.
+
+The north-eastern carve-out in clause (1) — "other than the States of Assam, Meghalaya, Tripura and Mizoram" — was not in the original Constitution. The original text excluded only Assam; the other three States were carved out of Assam after 1971 and brought within the Sixth Schedule framework by successive constitutional amendments as they achieved statehood. The brackets visible in the official text record these layered amendments. The geographic and institutional logic was that the tribal communities in these States were territorially dominant (unlike Fifth Schedule areas where tribals are a minority or bare majority) and had more developed institutions of customary governance.
+
+The Sixth Schedule under clause (2) gives ADCs powers that blend what elsewhere would be separated between legislative, executive, and judicial branches. ADCs may enact regulations on specified subjects (subject to Governor's assent), administer their own courts for certain civil and criminal matters under customary law, and manage community resources. The Union and State Legislatures may override ADC laws if Parliament or the State Legislature legislates on the same subject, but the ADC's domain represents a constitutional acknowledgment that one-size governance fails in these territories.
+
+## Key cases
+
+**Samatha v. State of Andhra Pradesh (1997) 8 SCC 191** — A seven-judge bench of the Supreme Court held that the Fifth Schedule prohibits the transfer of tribal land in Scheduled Areas to non-tribals, and that this prohibition extends to the State government itself and to government corporations. The State could not grant mining leases in Scheduled Areas to private companies because that would amount to a transfer of tribal land to non-tribals. The Court held that the Scheduled Area's protective framework was designed precisely to prevent this form of resource extraction. It directed that at least 20 per cent of net profits from mining in Scheduled Areas be deposited in a permanent fund for tribal development. Samatha converted the Fifth Schedule from a governance tool into a substantive land-rights shield, and its ratio remains the principal authority on the limits of mining in Scheduled Areas.
+
+**Nandini Sundar v. State of Chhattisgarh (2011) 7 SCC 547** — The Supreme Court struck down the Chhattisgarh State government's practice of arming and deploying tribal villagers as a counter-insurgency militia (the Salwa Judum), holding that this violated the constitutional rights of tribal communities to life, dignity, and equality. The Court invoked Article 244 and the Fifth Schedule alongside fundamental rights to underline that the State's duty in Scheduled Areas was to govern in accordance with the protective framework, not to arm one tribal faction against another. The judgment is remarkable for using Article 244's governance framework as a standard against which State action in Scheduled Areas is assessed, independently of the statutory rights framework.
+
+**Orissa Mining Corporation v. Ministry of Environment and Forests (2013) 6 SCC 476** — The Supreme Court applied Samatha, PESA, and the Forest Rights Act to require that the gram sabhas of communities in the Niyamgiri hills of Odisha — a Scheduled Area — give their informed consent before a bauxite-mining project for the Vedanta refinery could proceed. The Court directed the Central Government to refer the question to gram sabhas and to treat their decision as determinative. All twelve gram sabhas consulted rejected the project. This case established the principle of free, prior, and informed consent as operative within the Article 244 / Fifth Schedule framework, making the gram sabha the decisive constitutional actor for resource extraction decisions in Scheduled Areas.
+
+**Chebrolu Leela Prasad Rao v. State of Andhra Pradesh (2021) 11 SCC 401** — A five-judge Constitution Bench reaffirmed and clarified Samatha, holding that Government Order 3 of 2000, which had reopened non-tribal access to teacher posts in Scheduled Areas of Andhra Pradesh, was unconstitutional. The Bench confirmed that Fifth Schedule protections for tribal communities in Scheduled Areas are not subject to dilution by State executive action and that even beneficial legislation for non-tribals cannot override the special regime. The judgment re-stated the principle that the Fifth Schedule is a self-contained constitutional regime requiring strict adherence regardless of State convenience.
+
+**Dhan Singh v. State of Haryana (2015) — and tribal election reservation in Scheduled Areas** — The Supreme Court addressed the question of whether reservation of seats for Scheduled Tribes in Panchayats under Article 243D must respect the special framework operating in Fifth Schedule areas. The Court held that PESA's requirement that elected bodies in Scheduled Areas be constituted consistently with tribal customary governance structures imposes constraints on how States implement Article 243D reservations in these areas, and that general Panchayati Raj law cannot simply override the tribal self-governance expectations embedded in the Fifth Schedule framework activated by Article 244.
+
+**State of AP v. LAXMA REDDY — ADC jurisdiction cases** — A line of Sixth Schedule cases has addressed the boundary between ADC legislative jurisdiction and State legislative competence over forests and land. Courts have consistently held that ADC regulations on land use and shifting cultivation within the districts covered by the Sixth Schedule have precedence over ordinary State land and forest laws, reinforcing that clause (2) of Article 244 creates a genuine sub-state legislative space rather than a merely advisory tier.
+
+## Current significance
+
+PESA's implementation remains the most active and contested dimension of Article 244 governance. The Act requires States with Fifth Schedule areas to amend their Panchayati Raj laws to bring them into conformity with the gram-sabha consent model — but many States have either not enacted conforming legislation or have done so in forms that hollow out the consent requirement. Jharkhand, Chhattisgarh, Odisha, and Madhya Pradesh — the four States with the largest Fifth Schedule area coverage — have all faced sustained litigation over whether their conforming legislation genuinely operationalises PESA or effectively bypasses it for the benefit of mining and infrastructure concessions. The Supreme Court's Niyamgiri ruling has made gram-sabha consent a live legal requirement for large mineral projects, but enforcement varies widely.
+
+In north-eastern India, the Sixth Schedule ADCs face compound pressures: encroachment by non-tribal settlers, revenue disputes with State governments, the overlapping application of Central laws on forests and wildlife, and periodic proposals to extend ADC jurisdiction to cover new areas or subjects. The Bodoland Territorial Council — created partly through the Sixth Schedule and partly through a peace settlement — is the template for how Article 244(2) can be used as a conflict-resolution instrument, not just a governance framework. The demand for new ADCs or extension of existing ADCs recurs across Manipur, Assam, and Meghalaya as communities that consider themselves inadequately represented within State structures turn to the Sixth Schedule framework as an alternative to full statehood.
+
+The Forest Rights Act's interaction with the Fifth Schedule continues to generate Supreme Court litigation. The question of whether community forest rights recognised under the Act can coexist with State-level forest management schemes in Scheduled Areas — and who has priority when they conflict — remains partly unresolved. The Godavarman forest governance litigation in the Supreme Court, running for over two decades, intersects directly with Fifth Schedule areas and ADC jurisdictions in ways that will require further constitutional adjudication. Article 244 thus remains a living provision whose implications are actively contested across dozens of pending cases and ongoing policy disputes.

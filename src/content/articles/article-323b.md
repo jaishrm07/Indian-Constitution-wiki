@@ -5,7 +5,16 @@ number: 323B
 part: Part XIVA - Tribunals
 partSlug: part-xiva
 summary: Article 323B covers tribunals for other matters.
-plainEnglish: This page reproduces the official text of Article 323B. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: >-
+  Article 323B allows Parliament and State Legislatures to create specialised
+  tribunals for a wide range of subjects — including taxation, labour disputes,
+  land reform, and elections — within their respective legislative competences.
+  Parliament used this power to establish bodies such as the Income Tax Appellate
+  Tribunal and the National Green Tribunal. Courts have held, however, that no law
+  under Article 323B can permanently exclude High Court or Supreme Court review,
+  and that executive control over tribunal appointments is incompatible with
+  constitutional judicial independence — limits enforced through repeated judicial
+  intervention including the partial striking-down of the Tribunal Reforms Act 2021.
 officialText: |-
   323B. Tribunals for other matters.—(1) The appropriate Legislature may, by law, provide for the adjudication or trial by tribunals of any disputes, complaints, or offences with respect to all or any of the matters specified in clause (2) with respect to which such Legislature has power to make laws.
 
@@ -48,12 +57,21 @@ schedules: []
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## What this Article does
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 323B, also inserted by the Forty-Second Amendment, extends the tribunal model beyond service disputes to a wide range of subjects including taxation, foreign exchange, industrial and labour disputes, land reform, elections (below the Supreme Court), and essential goods. It enables both Parliament and State Legislatures to create specialised tribunals within their respective legislative competences, allowing each subject area to have its own dedicated adjudicatory forum outside the ordinary court hierarchy.
 
-## Reading note
+## Key cases
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+**Union of India v R Gandhi, President, Madras Bar Association (2010)** — A Constitution Bench struck down provisions of the National Tax Tribunal Act that were modelled on the Article 323B template, holding that tribunals must have judicial members of sufficient seniority to be a genuine alternative to High Courts, that executive control over appointments and service conditions is incompatible with judicial independence, and that High Court jurisdiction over questions of law cannot be permanently excluded. The Court set out comprehensive guidelines on tribunal composition and independence.
+
+**L Chandra Kumar v Union of India (1997)** — The same bench that reshaped Article 323A also re-affirmed that no law made under Article 323B can exclude judicial review by High Courts or the Supreme Court, since such review is part of the basic structure; tribunals under Article 323B can serve as courts of first instance but must be subject to High Court supervision.
+
+**Roger Mathew v South Indian Bank Ltd (2019)** — A Constitution Bench referred to a larger bench the question of the constitutional validity of the Tribunal, Appellate Tribunal and other Authorities (Qualifications, Experience and other Conditions of Service of Members) Rules 2017, reiterating that executive intrusion into tribunal appointments is constitutionally suspect and underscoring the continuing tension between legislative efficiency and judicial independence in the Article 323B framework.
+
+## Current significance
+
+Article 323B underpins a sprawling landscape of specialised tribunals — including the Income Tax Appellate Tribunal, the National Green Tribunal, the Debt Recovery Tribunals, and the Armed Forces Tribunal — each subject to ongoing litigation about independence, composition, and the permissible scope of jurisdictional exclusion. Parliament's 2021 Tribunal Reforms Act, which merged several appellate bodies and altered service conditions for tribunal members, was partially struck down by the Supreme Court, illustrating that the constitutional constraints on Article 323B legislation remain vigorously enforced.

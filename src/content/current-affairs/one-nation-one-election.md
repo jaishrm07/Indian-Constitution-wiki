@@ -30,7 +30,9 @@ watchFor:
   - Whether federalism objections are treated as structural rather than merely political
 articles:
   - article-83
+  - article-85
   - article-172
+  - article-174
   - article-324
   - article-327
   - article-329
@@ -49,8 +51,10 @@ cases:
   - mohinder-singh-gill
   - sr-bommai
 topics:
+  - elections-and-democracy
   - elections-and-institutions
   - federalism
+  - parliamentary-power
   - basic-structure
 institutions:
   - parliament-of-india
@@ -66,6 +70,9 @@ sources:
   - sansad
   - parliament-digital-library
   - prs-india
+  - escr
+  - vidhi-centre-for-legal-policy
+  - live-law
 ---
 
 ## The constitutional frame
@@ -75,3 +82,11 @@ Synchronised elections are often presented as an efficiency reform, but constitu
 ## What readers should watch
 
 The key signals are whether reform proposals require deep amendments, how they would handle no-confidence scenarios, and whether they preserve the autonomy of state electoral politics.
+
+## Sources and how to verify
+- **Constitution of India** (`constitution-of-india`): Articles 83, 85, 172, 174, 324, 327, 356, and 368 are the provisions the Bills would need to amend or interact with.
+- **Joint Committee on ONOE 2024** (`one-nation-one-election-joint-committee-2024`): The official parliamentary Joint Committee page and report for the 129th Amendment Bill.
+- **Committee Extension 2025** (`one-nation-one-election-committee-extension-2025`): The official record of the August 2025 deadline extension through both Houses.
+- **Sansad** (`sansad`): Track the Bill's committee stage, extension motions, and final reporting date.
+- **PRS Legislative Research** (`prs-india`): Detailed bill analysis and constitutional amendment history background.
+- **Vidhi Centre for Legal Policy** (`vidhi-centre-for-legal-policy`): In-depth analysis of the federalism and basic structure implications of simultaneous elections.

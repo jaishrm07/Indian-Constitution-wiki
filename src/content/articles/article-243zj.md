@@ -4,8 +4,10 @@ slug: article-243zj
 number: 243ZJ
 part: Part IXB - The Co-operative Societies
 partSlug: part-ixb
-summary: Article 243ZJ covers number and term of members of board and its office bearers.
-plainEnglish: This page reproduces the official text of Article 243ZJ. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+summary: >-
+  Article 243ZJ, inserted by the 97th Amendment, sets constitutional limits on co-operative society board composition — maximum 21 elected directors, mandatory reservation of one seat for SC/ST and two seats for women, a five-year term for elected members, and provision for up to two co-opted expert members who may not vote in elections or become office bearers.
+plainEnglish: >-
+  A co-operative society's board cannot have more than 21 elected directors. Every co-operative with individual members that includes SC/ST or women members must reserve one board seat for SC/ST members and two for women. Elected board members serve five-year terms, and their office bearers' terms are coterminous with the board's term. Up to two extra expert members (in banking, finance, management) may be co-opted but cannot vote in elections or become office bearers. After the 2021 Rajendra N. Shah ruling, these requirements bind multi-State co-operatives but States are not constitutionally compelled to apply them to their own co-operatives.
 officialText: |-
   243ZJ. Number and term of members of board and its office bearers.—(1) The board shall consist of such number of directors as may be provided by the Legislature of a State, by law:
 
@@ -28,15 +30,26 @@ relatedArticles:
   - article-243zh
   - article-243zk
 schedules: []
-topics: []
+topics:
+  - equality-and-representation
+  - federalism
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Co-operative societies in India had developed a well-documented governance pathology: boards bloated to political convenience, with dozens of members appointed to accommodate factional interests rather than to manage the society's affairs; terms extended indefinitely through election postponements or court orders; women and marginalised communities shut out of governance; and professional expertise excluded in favour of political loyalty. Article 243ZJ was the 97th Amendment's structural answer to these problems — it imposed constitutional minimums on board size, representation, tenure, and expertise that State law could not lower.
 
-## Reading note
+The 21-director cap addresses board bloat: a large board is diffuse, hard to manage, and prone to factional deadlock. The five-year term cap prevents indefinite continuation in office by boards that rely on election postponements. The conterminous office-bearer rule prevents the paradox of office bearers continuing after their board has been reconstituted — a device used in some States to keep incumbent leaders in place beyond their electoral mandate.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+## Representation requirements
+
+The reservation of one seat for Scheduled Castes or Scheduled Tribes (the proviso uses "or," allowing a single seat to be shared between the two categories based on the composition of the society's membership) and two seats for women on boards of individual-membership societies with members from those categories reflects the same equity logic as reservations in panchayats and municipalities. Co-operative societies — particularly urban credit societies, housing societies, and dairy cooperatives — are economically significant institutions, and excluding marginalised communities from their governance perpetuates economic disadvantage. The constitutional mandate for representation makes these reservations non-derogable by State law.
+
+The expert co-option provision (up to two non-voting expert members) balances democratic accountability against professional governance: elected boards may lack the financial, management, or sector-specific expertise needed to oversee a banking cooperative or a large agricultural processing society. Co-opted experts bring technical capacity without displacing the primacy of elected members — hence the explicit prohibition on co-opted members voting in elections or becoming office bearers.
+
+## Post-Rajendra N. Shah position
+
+After Union of India v. Rajendra N. Shah (2021), Article 243ZJ's requirements are constitutionally binding on multi-State co-operative societies (governed under the Multi-State Co-operative Societies Act, 2002, as amended). For State co-operatives, the ruling means that Parliament cannot constitutionally compel States to implement the 21-director cap, the five-year term, or the reservation requirements through the 97th Amendment. States may choose to align their laws with Article 243ZJ's norms — and many already have equivalent provisions — but the constitutional compulsion has been removed for State-level societies. The practical significance varies by State: some States have comprehensive co-operative reform legislation that broadly mirrors Part IXB, while others continue with older frameworks that predate the 97th Amendment.

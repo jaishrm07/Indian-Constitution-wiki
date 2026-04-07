@@ -53,6 +53,12 @@ sources:
   - constitution-of-india
   - supreme-court-of-india
   - sansad
+  - escr
+  - parliament-digital-library
+  - prs-india
+  - live-law
+  - bar-and-bench
+  - supreme-court-observer
 ---
 
 ## The constitutional frame
@@ -62,3 +68,15 @@ The anti-defection framework aims to reduce opportunistic instability, but its o
 ## What readers should watch
 
 Watch the sequence of events: resignation, disqualification, Speaker action, court intervention, and whether the assembly floor remains the decisive site for majority determination.
+
+## Key constitutional provisions
+
+The Tenth Schedule, inserted by the Fifty-Second Amendment, defines defection as voluntarily giving up party membership or voting against party direction, and assigns the adjudicatory role to the Speaker or Chairman of the house concerned. Kihoto Hollohan upheld the Schedule's constitutional validity but confirmed that Speaker decisions are subject to judicial review for patent illegality, perversity, or constitutional infirmity, preventing the Speaker from functioning as a final unreviewable tribunal. The anti-defection framework does not protect splits unless at least two-thirds of the relevant legislative party merge with another party, closing off the older split exemption. Article 212 shields internal legislative proceedings from ordinary court scrutiny but does not immunise decisions taken under the Tenth Schedule, which have an external constitutional source and are therefore reviewable. The practical tension is that Speakers often belong to the ruling party, creating a structural conflict when disqualification petitions involve legislators whose defection may affect that party's majority.
+
+## Sources and how to verify
+- **Constitution of India** (`constitution-of-india`): The Tenth Schedule and Articles 102, 103, 190, 191, 212, and 361A are the primary text cluster.
+- **eSCR** (`escr`): Retrieve Kihoto Hollohan (1992) Supp 2 SCC 651, Nabam Rebia (2016) 8 SCC 1, and Shrimanth Balasaheb Patil (2020) 2 SCC 595 for the Speaker-power and timing jurisprudence.
+- **Sansad / Parliament Digital Library** (`sansad`, `parliament-digital-library`): Official records of disqualification petitions, whip notices, and presiding-officer communications where made public.
+- **PRS Legislative Research** (`prs-india`): Case-study analysis of anti-defection proceedings and legislative stability episodes.
+- **Supreme Court Observer** (`supreme-court-observer`): Structured tracking of pending anti-defection and floor-test cases.
+- **Live Law / Bar and Bench** (`live-law`, `bar-and-bench`): Near-real-time monitoring of Speaker delay mandamus petitions and disqualification proceedings.

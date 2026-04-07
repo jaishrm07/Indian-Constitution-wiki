@@ -44,6 +44,11 @@ sources:
   - supreme-court-of-india
   - sansad
   - prs-india
+  - escr
+  - vidhi-centre-for-legal-policy
+  - press-information-bureau
+  - egazette-of-india
+  - legislative-department
 ---
 
 ## The constitutional frame
@@ -53,3 +58,16 @@ The privacy question is not limited to secrecy. It includes dignity, information
 ## What readers should watch
 
 The most important issues are exemptions, surveillance pathways, remedies, institutional independence, and whether the legal regime meaningfully constrains coercive data access.
+
+## Key constitutional provisions
+
+Article 21 guarantees the right to life and personal liberty, and in K.S. Puttaswamy v. Union of India (2017) a nine-judge bench unanimously held that the right to privacy is a fundamental right inherent in Article 21, grounded in dignity and autonomy rather than mere secrecy. The right is not absolute: Puttaswamy itself recognised that state interference with privacy can be justified where it is backed by law, pursues a legitimate aim, is proportionate to that aim, and includes procedural safeguards — a four-part test that any data-access or surveillance regime must satisfy. The Digital Personal Data Protection Act, 2023 raises constitutional questions at precisely these pressure points: broad exemptions for government data processing, weak consent architecture, limited judicial oversight, and an appellate structure that may not provide the independent remedy that proportionality review requires. The interaction between Article 19(1)(a) and Article 21 also matters, because privacy constraints on data collection can protect not just informational autonomy but also the chilling effects that surveillance produces on speech and association.
+
+## Sources and how to verify
+- **Constitution of India** (`constitution-of-india`): Article 21 is the constitutional anchor; read with the Puttaswamy nine-judge bench judgment.
+- **eSCR** (`escr`): Retrieve K.S. Puttaswamy v. Union of India (Privacy) (2017) 10 SCC 1 for the foundational privacy jurisprudence and proportionality test.
+- **Legislative Department** (`legislative-department`): Official text of the Digital Personal Data Protection Act, 2023 and related rules.
+- **e-Gazette of India** (`egazette-of-india`): Commencement notifications and rule-making under the DPDP Act.
+- **Sansad** (`sansad`): Parliamentary deliberations on the DPDP Bill and JPC report.
+- **PRS Legislative Research** (`prs-india`): Bill summary and analysis of the Digital Personal Data Protection Act, 2023.
+- **Vidhi Centre for Legal Policy** (`vidhi-centre-for-legal-policy`): In-depth constitutional compliance analysis of the DPDP Act and the right to privacy framework.

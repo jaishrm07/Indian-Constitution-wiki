@@ -39,3 +39,15 @@ sources:
 ## Why it matters
 
 Urban governance is constitutionally significant because democratic accountability and service delivery in cities depend on institutional design, not only administrative choice.
+
+## What specifically changed
+
+The 74th Amendment inserted Part IXA (Articles 243P to 243ZG) and the Twelfth Schedule, which lists 18 subjects including urban planning, regulation of land use, construction of buildings, public health, sanitation, fire services, and urban poverty alleviation. It gave constitutional status to urban local bodies across three tiers — Nagar Panchayats for transitional areas, Municipal Councils for smaller urban areas, and Municipal Corporations for larger cities. Five-year election cycles are constitutionally mandated and enforced by State Election Commissions. Reservation requirements mirror the 73rd Amendment: seats for Scheduled Castes and Scheduled Tribes proportional to their population, reservation for OBCs at state discretion, and not less than one-third of all seats for women. The amendment also required State Finance Commissions for urban local bodies and established District Planning Committees and Metropolitan Planning Committees as coordination mechanisms.
+
+## The political and constitutional context
+
+The 74th Amendment was enacted simultaneously with the 73rd as a companion measure, addressing urban local government with the same constitutional logic applied to rural local government. India's accelerating urbanisation made constitutional grounding for municipal institutions increasingly urgent, as cities were growing faster than the administrative and financial frameworks available to govern them. Like the 73rd, the amendment sought to convert a Directive Principle aspiration — the improvement of public health and sanitation — into an enforceable constitutional structure rather than a policy preference. Both amendments were part of the same constitutional moment and share the same political history of a failed 1989 predecessor bill.
+
+## Long-term constitutional effect
+
+Urban local bodies remain constitutionally under-empowered relative to the Twelfth Schedule's aspirations, with most cities lacking effective control over urban planning, land use, and key service delivery functions that are retained by state-level parastatals and development authorities. Municipal election delays have generated Supreme Court litigation paralleling the panchayat cases, and problems of State Election Commission independence — including the appointment of compliant commissioners and delays engineered to defer inconvenient elections — are well documented. The District Planning Committee requirement of Article 243ZD has been largely ignored by states, leaving urban and rural planning coordination as a constitutional obligation honoured mainly in the breach. The gap between constitutional text and municipal reality remains the central problem of the 74th Amendment's legacy.

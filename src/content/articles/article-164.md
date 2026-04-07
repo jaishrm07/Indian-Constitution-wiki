@@ -5,7 +5,7 @@ number: '164'
 part: Part VI - The States
 partSlug: part-vi
 summary: Article 164 covers other provisions as to Ministers.
-plainEnglish: This page reproduces the official text of Article 164. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+plainEnglish: The Chief Minister is appointed by the Governor, and other Ministers are appointed on the Chief Minister's advice. The entire Cabinet is collectively responsible to the elected Assembly. A Minister who is not a member of the Legislature for more than six months must resign. The 91st Amendment capped Cabinet size at fifteen percent of Assembly strength.
 officialText: >-
   164. Other provisions as to Ministers.—(1) The Chief Minister shall be appointed by the Governor and the other Ministers shall be appointed by the Governor on the advice of the Chief Minister, and the Ministers shall hold office during the pleasure of the Governor:
 
@@ -38,12 +38,27 @@ schedules:
 topics: []
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 164 is the operational engine of parliamentary government at the State level. It operationalises the principle that the elected majority in the Assembly, not the appointed Governor, determines who governs the State. The Governor's nominal role in appointing Ministers is constitutionally constrained: the Chief Minister must command majority support, and other Ministers are appointed only on his advice. Clause (2)'s collective responsibility requirement means the Cabinet rises and falls together before the Assembly — a single confidence vote suffices to displace the entire government. The 91st Amendment Act (2003) strengthened the provision against abuse by capping ministerial numbers and disqualifying defectors from ministerial office, addressing the exponential growth of Council size seen in larger States through the 1990s.
 
-## Reading note
+## Reading the provision
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+Clause (1) requires the Governor to appoint the Chief Minister and, on his advice, other Ministers. Ministers "hold office during the pleasure of the Governor," but since the Governor himself must act on Cabinet advice under Article 163, this pleasure cannot be exercised to remove a Minister who continues to enjoy the Chief Minister's confidence and the Assembly's majority. The tribal welfare minister proviso reflects the Constitution's explicit concern for representation of Scheduled Tribe interests in certain States. Clause (1A), inserted by the 91st Amendment, caps Council size at fifteen percent of Assembly strength with a twelve-member floor. Clause (1B) bars anyone disqualified under the Tenth Schedule from being appointed a Minister for the duration of the term that would have run had they remained a member, closing the escape route of an immediately rewarded defector. Clause (4) — the six-month membership rule — means that a non-legislator can be brought into the Cabinet but must secure a seat within six months or vacate office, a provision used both legitimately and occasionally to appoint technocrats.
+
+## Key cases
+
+**Shamsher Singh v State of Punjab (1974)** — The Constitution Bench held that the Governor must appoint as Chief Minister the leader who commands majority support in the Assembly and must act on the Chief Minister's recommendations for other ministerial appointments. The Court found virtually no residual discretion in the Governor under Article 164(1) beyond identifying who commands majority support in an ambiguous post-election situation.
+
+**S.R. Bommai v Union of India (1994)** — The nine-judge bench confirmed that collective responsibility under Article 164(2) is the cornerstone of parliamentary government at the State level. The only constitutionally valid test of majority support is a floor test in the House, not the Governor's subjective assessment communicated to the President through a report triggering Article 356. The judgment has been applied to require immediate floor tests whenever a government's majority is genuinely in doubt.
+
+**Nabam Rebia v Deputy Speaker, Arunachal Pradesh (2016)** — The five-judge bench struck down the Governor's unilateral advancement of the Assembly session to a date inconsistent with the continuing collective responsibility of the Council of Ministers under Article 164. The Court held that gubernatorial action cannot pre-empt a confidence vote or tilt the floor-test mechanism against the incumbent government.
+
+**Shivraj Singh Chouhan v Speaker, Madhya Pradesh Legislative Assembly (2020)** — The Supreme Court ordered an immediate floor test within twenty-four hours after prolonged delay in convening a trust vote during the Madhya Pradesh political crisis, affirming that the collective responsibility principle in Article 164(2) is judicially enforceable and that delay in conducting a floor test can itself constitute a constitutional wrong.
+
+## Current significance
+
+Government-formation disputes in hung assemblies — Goa (2017), Manipur (2017), Karnataka (2018), Madhya Pradesh (2020), Maharashtra (2019 and 2022) — have repeatedly tested the limits of Article 164. Governors have been accused of inviting parties to form governments in a sequence that advantages the largest single party over post-poll alliances, and courts have had to intervene to direct or expedite floor tests. The cap on ministerial strength under clause (1A) has generally been complied with but creates acute tensions in small states where the twelve-member floor itself represents a significant proportion of the Assembly. The anti-defection bar in clause (1B) has not eliminated the practice of rewarding defectors with ministerial posts, because defectors who are declared disqualified typically contest by-elections and are then appointed after re-election — a cycle that the courts have noted but not yet definitively closed.

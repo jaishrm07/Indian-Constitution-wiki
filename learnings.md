@@ -218,3 +218,65 @@ A well-framed current-affairs page can still become stale if its milestone chain
 ### 44. Election accountability is a product of public infrastructure, not just doctrine
 
 Candidate-disclosure and criminalisation-of-politics coverage becomes much stronger when the site models the actual public infrastructure voters use, such as affidavit portals, KYC apps, disclosure press notes, and qualification timelines. That turns abstract election law into an operational accountability system readers can inspect and revisit.
+
+### 45. Source transparency requires more than listing sources — it requires telling readers how to use them
+
+Adding source slugs to frontmatter is not enough for a trust-heavy legal reference site. Readers need to know which specific claim each source supports and exactly how to retrieve the primary document. A "Sources and how to verify" section that names the eSCR citation, explains what the source proves, and identifies the exact sections to read transforms a passive bibliography into an active verification guide.
+
+### 46. Case pages need retrieval instructions, not just citations
+
+A citation like "(1973) 4 SCC 225" is not self-explanatory to most readers. Adding a dedicated "How to find the judgment" section that names the portal (eSCR), gives the citation, and points to the most-cited sections turns a reference tag into a usable research instruction. For long multi-opinion judgments like Kesavananda, knowing which opinion is authoritative is as important as knowing the citation.
+
+### 47. Amendment pages need three distinct layers: what changed, why it happened, and what effect it had
+
+An amendment page that only describes the amendment is incomplete. The political and constitutional context explains why the amendment was enacted — usually a Supreme Court judgment, a political crisis, or a social reform imperative. The long-term effect explains how the amendment was subsequently interpreted, challenged, or corrected. Without all three layers, readers cannot understand amendments as events in constitutional history rather than static text changes.
+
+### 48. Institution pages should behave like operating consoles, not encyclopedia entries
+
+An institution page becomes genuinely useful when it answers three questions: what is the institution's constitutional design, what live issues is it currently involved in, and how should a reader monitor it? A description of powers is only the starting point. Connecting the institution to active current-affairs desks, current case law, and monitoring sources makes the page a live tool rather than a historical reference.
+
+### 49. Timeline entries are the knowledge graph's chronological spine
+Timeline entries that list only a date and a verdict are navigational dead ends. Entries that include what happened, why it mattered constitutionally, and what doctrinal legacy it left transform the timeline into constitutional history a reader can actually traverse. Chronological depth is not decorative — it is how users connect a landmark judgment to its political moment and to the cases that followed from it.
+
+### 50. Glossary entries are the reading aids that unlock dense content
+A user who cannot parse "basic structure doctrine" or "collegium system" cannot use the rest of the site effectively. Thin glossary entries therefore defeat their own purpose. Deep entries that include how courts have applied the concept and why it remains contested today function as the site's interpretive scaffolding, reducing the barrier to every other page that references the term.
+
+### 51. Parts and Schedules pages carry interpretive weight that article pages cannot carry alone
+
+A Part III page that simply links its constituent articles is not doing enough. A well-written Part page explains why those articles should be read as a unified scheme, identifies the cases that have tested the Part's outer limits, and names the live debates that currently strain it. That interpretive framing is the work individual article pages are structurally unable to perform.
+
+### 52. Source records should be wired to the case files that discuss them
+
+Listing sources in a registry is necessary but not sufficient. Wiring judgment-specific source records into the frontmatter of the matching case file makes traceability transparent at the point of use, so a reader can see from the case page itself which official record supports each claim. This matters most for multi-opinion judgments where different opinions support different propositions and a separate methodology document is too far removed from the content to be useful.
+
+### 53. Sub-classification and the SC/ST reservation evolution
+
+After Davinder Singh (2024), the doctrine that SC/ST categories are internally homogeneous is definitively overruled — states now need empirical data to sub-classify. The doctrinal arc runs Champakam Dorairajan (1951) → Indra Sawhney (1992) → M. Nagaraj (2006) → Jarnail Singh (2018) → Davinder Singh (2024). Every reservation article page benefits from referencing this complete chronology.
+
+### 54. The money bill controversy requires dedicated coverage on the Article 110 page
+
+The Aadhaar Act money bill certification controversy (Justice Chandrachud's dissent in Puttaswamy Aadhaar 2018), the Finance Act money bill amendments to IBC and PMLA, and subsequent Constitution Bench references make Article 110 one of the most actively disputed procedural articles. The standard treatment for Part V Parliament articles must prioritize this controversy.
+
+### 55. Fiscal federalism coverage needs three distinct layers
+
+GST Articles (246A, 269A, 279A) fundamentally changed Indian fiscal federalism. Finance article coverage needs: (1) what the provision means in pre-GST constitutional text; (2) how GST restructured its practical scope; (3) what remains live after GST — petroleum/alcohol, Finance Commission devolution, cess proliferation. Without all three layers, readers cannot understand the current fiscal constitution.
+
+### 56. Part XXI special provisions are each historically specific
+
+Articles 371–371J each require understanding the specific political compact that created them — Naga peace accord (371A), Mizo peace accord (371G), Manipur hill-plains divide (371C), Andhra Pradesh-Telangana tensions (371D/E), Sikkim accession (371F). This contextual specificity makes Part XXI articles denser to write than normal Part III or Part IV articles.
+
+### 57. Ordinance re-promulgation is an underreported constitutional abuse
+
+Krishna Kumar Singh v. State of Bihar (2017) — a seven-judge bench — is the definitive ruling that re-promulgating an ordinance without placing it before the legislature is constitutionally impermissible. The case should be prominently featured on all three relevant article pages: Article 123 (Union), Article 213 (State), and Article 239B (UT).
+
+### 58. The collegium transparency improvement since 2017 is worth documenting
+
+From 2017 the Supreme Court began uploading collegium resolutions to its website — a post-NJAC reform requiring no constitutional amendment. The Judicial Appointments desk should document this as a tracked transparency measure alongside the pending Memorandum of Procedure gap, so readers can see what has and has not changed since the NJAC judgment.
+
+### 59. Current-affairs pages should be created for landmark pending Constitution Benches
+
+Pending Constitution Benches as of 2026 include: CAA challenge (WP Civil 1474/2019+), FCRA restrictions on foreign funding to civil society, Article 370 statehood restoration, and Article 31B post-1973 Ninth Schedule review. Each is a distinct live desk entry — a pending bench that shapes constitutional expectations is as live as a recently decided case.
+
+### 60. The Article 131 original jurisdiction page needs special depth
+
+Article 131 is where federal disputes reach their only forum — the Supreme Court with exclusive jurisdiction. The "legal right" test it requires is stricter than it appears: the Court has repeatedly distinguished justiciable legal disputes (eligible) from political disagreements dressed as legal claims (excluded). This distinction has been central in water dispute cases, Article 356 proceedings, and GST Council disputes, and should be explained explicitly on the page.

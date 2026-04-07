@@ -62,6 +62,10 @@ sources:
   - legislative-department
   - supreme-court-of-india
   - prs-india
+  - escr
+  - vidhi-centre-for-legal-policy
+  - live-law
+  - supreme-court-observer
 ---
 
 ## The constitutional frame
@@ -71,3 +75,12 @@ The live issue is the balance between institutional reform and minority autonomy
 ## What readers should watch
 
 The key signals are the commencement rules, any constitutional challenge to the Act, and whether state-level implementation turns the reform into a transparency exercise or an overreach into protected religious autonomy.
+
+## Sources and how to verify
+- **Constitution of India** (`constitution-of-india`): Articles 14, 25, 26, 29, 30, and 300A are the constitutional anchors; read Articles 25 and 26 together with the Shirur Mutt and TMA Pai frameworks.
+- **Waqf (Amendment) Act, 2025** (`waqf-act-2025`): The enacted law; read alongside the 2025 rules when notified for the full regulatory scheme.
+- **Waqf Amendment Bill 2025 / JPC Report** (`waqf-amendment-bill-2025`, `waqf-jpc-report-2025`): The pre-enactment bill text and Joint Parliamentary Committee report explaining the legislative intent.
+- **Waqf Supreme Court Orders 2025-2026** (`waqf-supreme-court-order-2025`, `waqf-supreme-court-office-report-2026`): The interim assurances recorded by the Court in April 2025 and subsequent monitoring proceedings.
+- **eSCR** (`escr`): Retrieve Shirur Mutt (1954) SCR 1005, St. Xavier's College (1974) 1 SCC 717, and TMA Pai (2002) 8 SCC 481 for the foundational minority-institution doctrine.
+- **PRS Legislative Research** (`prs-india`): Summary of the Waqf Amendment Bill's key changes and JPC deliberations.
+- **Live Law / Supreme Court Observer** (`live-law`, `supreme-court-observer`): Monitor ongoing Supreme Court proceedings on the constitutional challenge.

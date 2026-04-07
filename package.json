@@ -12,6 +12,9 @@
     "astro": "astro",
     "constitution:sync": "node scripts/sync-constitution-corpus.mjs",
     "content:lint": "node scripts/content-ref-lint.mjs",
+    "loop:done": "node scripts/loop-status.mjs done",
+    "loop:watch": "node scripts/keep-going-watcher.mjs",
+    "loop:working": "node scripts/loop-status.mjs working",
     "vault:lint": "node scripts/vault-lint.mjs",
     "vault:sync": "node scripts/vault-sync.mjs"
   },

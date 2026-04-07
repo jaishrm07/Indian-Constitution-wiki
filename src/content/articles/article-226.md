@@ -1,10 +1,12 @@
 ---
 title: Article 226
 slug: article-226
-number: 226
+number: '226'
 part: Part VI - The States
-summary: Article 226 empowers High Courts to issue writs for enforcement of rights and for other purposes.
-plainEnglish: High Courts have broad constitutional remedial power. They can protect rights, review public action, and provide urgent relief even beyond the narrow enforcement frame of Article 32.
+partSlug: part-vi
+summary: Article 226 empowers every High Court to issue writs, directions, and orders for enforcement of fundamental rights and for any other purpose — making it the most frequently used constitutional remedy in India.
+plainEnglish: >-
+  When a government officer refuses a legitimate claim, when a public authority acts arbitrarily, when a detainee is held without legal justification, or when an environmental clearance is granted in defiance of the law — the first constitutional door most citizens knock on is not the Supreme Court under Article 32 but their state High Court under Article 226. Every High Court can issue the five historic writs — habeas corpus, mandamus, prohibition, quo warranto, and certiorari — against any person, authority, or government within its territory. Unlike Article 32, which is confined to enforcing fundamental rights, Article 226 also covers violations of ordinary legal rights — making its scope broader. High Courts have used this power to develop a public interest litigation jurisdiction of their own, to review administrative action across the entire range of executive functions, and to provide urgent interim relief that protects individuals before a final hearing. The article is the constitutional spine of High Court judicial review — declared unamendable by the Supreme Court as part of the basic structure.
 officialText: |-
   [226. Power of High Courts to issue certain writs.—(1)
 
@@ -18,21 +20,120 @@ officialText: |-
 relatedArticles:
   - article-21
   - article-32
+  - article-132
   - article-225
-  - article-226a
+  - article-227
 topics:
   - judiciary
   - fundamental-rights
+  - federalism
 sources:
   - constitution-of-india
   - supreme-court-of-india
-partSlug: part-vi
 ---
 
 ## Why it matters
 
-Article 226 makes constitutional review geographically distributed and practically accessible. It is one of the key reasons the Constitution can operate through regular judicial supervision rather than only through the Supreme Court.
+For the vast majority of Indians, Article 226 is the Constitution's most accessible door to justice. The Supreme Court sits in Delhi and handles tens of thousands of special leave petitions; approaching it directly requires resources, travel, and counsel that most litigants cannot command. A person in Chennai, Kolkata, or Guwahati who faces arbitrary detention, an unlawful administrative order, or a denial of a statutory benefit can approach their High Court under Article 226 — a court in their own region, constitutionally obliged to hear them. This proximity, combined with the article's sweeping subject-matter jurisdiction, makes Article 226 the most exercised constitutional power in the Indian legal system.
 
-## How courts use it
+The "any other purpose" language in Article 226(1) is the phrase that sets this article apart from Article 32. Article 32 is strictly confined to enforcing the fundamental rights in Part III. Article 226 can also be used to enforce statutory rights, common-law entitlements, and any legal right recognised by law — an enormous additional swath of jurisdiction. A person denied a licence they are legally entitled to, or a public servant wrongfully dismissed in violation of service rules, or a company whose contract has been terminated in bad faith by a government department — none of these claimants is necessarily relying on a fundamental right, yet all of them can approach the High Court under Article 226. The breadth of this jurisdiction explains why government contracts, service matters, taxation disputes, tender cancellations, and regulatory orders all flow through High Courts as writ petitions even when they have nothing to do with Part III.
 
-The provision is used in service matters, detention challenges, administrative review, election questions, and urgent rights litigation. Its breadth makes it central to constitutional practice.
+Article 226 is also the constitutional anchor of High Court PIL jurisdiction. Just as the Supreme Court developed public interest litigation under Article 32, High Courts across the country have used Article 226 to hear petitions from social activists, legal aid organisations, and concerned citizens seeking systemic remedies — better conditions in state prisons, compliance with food security schemes, accountability for custodial deaths, enforcement of environmental regulations in their region. This regional PIL function allows constitutional review to be distributed geographically, so that issues specific to one state do not all have to travel to the Supreme Court.
+
+The stakes of Article 226 jurisdiction extend beyond individual cases to the structural relationship between the judiciary and the executive. When a High Court issues mandamus against a state government to pay wages under a labour statute, or certiorari to quash a land acquisition award, or habeas corpus to release an undertrial held beyond statutory limits, it is enforcing the constitutional principle that no public authority acts above the law. This routine enforcement of legality — millions of writ petitions decided annually across twenty-five High Courts — is the practical mechanism by which constitutionalism is maintained in day-to-day administration.
+
+The article's constitutional status was definitively settled in L. Chandra Kumar v. Union of India (1997), where a seven-judge bench held that Article 226 jurisdiction is part of the basic structure of the Constitution and is therefore immune from legislative abrogation. Parliament can create tribunals and direct that they handle matters that would otherwise go to High Courts, but it cannot cut off High Court review of those very tribunals under Article 226. This ruling ensures that the supervisory constitutional function of the High Courts cannot be stripped away — it is a permanent feature of the Indian constitutional order.
+
+## Reading the provision
+
+**Clause (1) — the core writ power**: The opening phrase — "Notwithstanding anything in article 32" — establishes that Article 226 is an independent source of jurisdiction. It does not derive its authority from Article 32 and is not subordinate to it. Every High Court (not just some — the grant is universal) has power "throughout the territories in relation to which it exercises jurisdiction." The writs are five in number: habeas corpus (to challenge unlawful detention), mandamus (to compel performance of a public duty), prohibition (to prevent an inferior court from exceeding jurisdiction), quo warranto (to challenge title to a public office), and certiorari (to quash an inferior tribunal's order). These may be issued against "any person or authority, including in appropriate cases, any Government." The phrase "any other purpose" beyond fundamental rights enforcement is the article's most consequential expansion over Article 32.
+
+**Clause (2) — extended territorial jurisdiction**: Article 226 writs are normally issued within the High Court's territorial jurisdiction. Clause (2), inserted by the Constitution (Fifteenth Amendment) Act 1963, extends this by providing that a writ may also issue if the cause of action arises, wholly or in part, within the Court's territory — even if the government authority or person against whom the writ is sought is located outside. This matters enormously in commercial and service matters: a company registered in Maharashtra may challenge a central government decision taken in Delhi if the decision was communicated to, or its effects felt by, the petitioner in Maharashtra. The "cause of action" test has generated a significant body of case law on which High Court has jurisdiction when the petitioner is in one state, the authority is in another, and the order was made in a third place.
+
+**Clause (3) — automatic vacation of ex parte interim orders**: Added by the Constitution (Forty-Fourth Amendment) Act 1978 in response to Emergency-era misuse of Article 226 to obtain ex parte stays against executive action, Clause (3) provides that where an interim order is made without serving the opposite party, and the opposite party applies to vacate it, the High Court must dispose of that application within two weeks. If it fails to do so, the interim order automatically stands vacated. This is a procedural safeguard that prevents Article 226 from being weaponised through indefinite stays obtained without notice to the government.
+
+**Clause (4) — non-derogation of Article 32**: The Supreme Court's jurisdiction under Article 32 is not diminished by Article 226. The two jurisdictions are concurrent for fundamental rights violations. A litigant whose fundamental rights are violated may choose either forum. The Supreme Court does not lose jurisdiction over a matter merely because the same issue could have been — or has been — taken to a High Court.
+
+**The five writs in Article 226 practice**: While the five writs under Articles 32 and 226 are formally the same, their practical application has diverged significantly. High Courts in Article 226 proceedings routinely issue writs that go beyond their strict English origins — certiorari has expanded to cover substantive legality and proportionality review, mandamus is issued with monitoring conditions, and habeas corpus is used to address constructive detention through coercive surveillance. The Indian constitutional writ is a more flexible instrument than its English predecessor, shaped over seven decades of practice to fit the administrative state.
+
+## Territorial jurisdiction and the cause of action test
+
+The cause of action test under Article 226(2) has produced some of the most litigated jurisdictional questions in Indian civil procedure. A cause of action, in the Article 226 context, is the bundle of facts that gives rise to the entitlement to approach the court. The test asks: did any part of that bundle of facts occur within this High Court's territory?
+
+The Supreme Court in Kusum Ingots and Alloys Ltd. v. Union of India (2004) addressed a critical question — can a company whose registered office is in one state invoke the High Court's jurisdiction in that state merely because Parliament, which sits in Delhi, enacted a law that affects the company? The Court held that the mere enactment of legislation by Parliament does not constitute a cause of action arising at the place where the petitioner resides. The cause of action must have a direct, not merely casual, connection to the territory. This ruling narrowed the jurisdictional reach of High Courts in challenges to central legislation and orders.
+
+Forum shopping has been a persistent concern under the cause of action test. Sophisticated petitioners have attempted to manufacture territorial connections — establishing offices in favourable jurisdictions, framing causes of action to include events in states with more petitioner-friendly benches, or exploiting the "in part" language of Clause (2) to assert a thin connection. High Courts have developed doctrines to address forum shopping, refusing jurisdiction where the primary seat of the controversy lies elsewhere and the territorial connection is merely incidental. This self-discipline is important for maintaining the integrity of the distributed High Court system.
+
+## Article 226 versus Article 32 — the concurrent jurisdiction question
+
+The relationship between Article 226 and Article 32 is one of concurrent but not identical jurisdiction. Both can be invoked to enforce fundamental rights; only Article 226 can be invoked to enforce non-fundamental legal rights. The choice of forum ordinarily belongs to the petitioner, and neither court can generally decline jurisdiction solely on the ground that the other forum is available.
+
+In practice, however, the Supreme Court regularly encourages petitioners who approach it under Article 32 on matters that involve disputed facts, local administrative conduct, or regional significance to instead approach the relevant High Court under Article 226. This informal channelling reflects institutional reality — the Supreme Court's docket is under severe strain, and High Courts are better placed to investigate facts and manage proceedings close to where the dispute arose. But because Article 32 access is itself a fundamental right, the Supreme Court cannot categorically refuse to hear any Article 32 petition that presents a genuine fundamental rights claim.
+
+The concurrent jurisdiction also means that res judicata and issue estoppel questions arise when a petitioner who lost in a High Court under Article 226 then tries to relitigate before the Supreme Court under Article 32. The Supreme Court has held that where a High Court has finally decided the constitutional question on the merits, Article 32 cannot be used as a second bite at the same cherry. The finality of High Court Article 226 decisions on fundamental rights questions is therefore constitutionally significant — they bind the parties even without a further appeal, unless the Supreme Court grants special leave under Article 136.
+
+## Exhaustion of alternative remedies
+
+One of the most important doctrines in Article 226 jurisprudence is that of exhaustion of alternative remedies — the principle that a petitioner who has access to a statutory appellate or review mechanism should ordinarily use it before approaching the High Court in writ jurisdiction. The doctrine is judge-made and does not appear in Article 226 itself, which confers jurisdiction in broad terms.
+
+The exhaustion doctrine is not absolute; it is a rule of prudence, not of jurisdiction. High Courts retain the power to issue writs even when alternative remedies exist. The question is whether it would be appropriate to do so. The recognized exceptions where High Courts will exercise jurisdiction despite an untried alternative remedy include: cases involving a fundamental rights violation that requires immediate relief; cases where the statutory authority has acted without jurisdiction rather than merely wrongly within it; cases where the alternative remedy is itself tainted by bias or is otherwise inadequate; cases of fraud or mala fides by the public authority; and cases where going through the statutory process would itself cause irreparable harm.
+
+The practical consequence is that High Courts hear far more writ petitions than a strict exhaustion doctrine would permit. The exceptions have become the norm in service matters, tax disputes, and regulatory challenges — litigants regularly bypass Income Tax Appellate Tribunals, Central Administrative Tribunals, and quasi-judicial bodies by framing their grievances as constitutional questions. This tension between the exhaustion doctrine and the practical breadth of Article 226 jurisdiction is a recurring theme in procedural law.
+
+## Writs against private entities performing public functions
+
+A distinctive feature of Article 226 that distinguishes it from Article 32 in practice is its capacity to reach private entities performing public functions. Article 32 writs technically require a "State" respondent within the Article 12 definition. Article 226's phrasing — "any person or authority" — opens the door to private-party writs in appropriate cases.
+
+The test for when a private entity can be a writ respondent has evolved through case law. A private body exercising statutory authority, or one that the State has so deeply integrated into public service delivery that it functions as a public authority, can be subjected to High Court writ jurisdiction under Article 226. Bodies like the Board of Control for Cricket in India (BCCI), private universities exercising statutory power over student admissions, and private bodies managing public utilities have been subjected to Article 226 jurisdiction on this basis. The Supreme Court in Zee Telefilms Ltd. v. Union of India (2005) drew the line at the BCCI for Article 32 purposes — holding the BCCI was not a State under Article 12 — while acknowledging that Article 226's wider reach might accommodate it. High Courts have applied a more functional test: whether the body exercises public power that affects rights.
+
+## Interaction with Article 227
+
+Article 226 (writ jurisdiction) must be read alongside Article 227 (superintendence over all courts and tribunals). Both vest supervisory powers in the High Court, but they operate differently. Article 226 writs are issued in the exercise of original jurisdiction, and the court acts as a constitutional remedial forum. Article 227 is a supervisory jurisdiction that enables the High Court to correct jurisdictional errors and ensure that subordinate courts function within their proper sphere — it is not available to correct mere errors within jurisdiction.
+
+In practice, petitions are often filed invoking both Article 226 and Article 227. Where a tribunal or inferior court has acted beyond jurisdiction, Article 226 certiorari is the appropriate remedy and the High Court's inquiry goes to legality. Where the inferior tribunal has acted within jurisdiction but made a procedural error, Article 227 superintendence may be available. The distinction has become less sharp in practice because High Courts often frame their relief in overlapping terms, but it has technical significance for questions of appeal — a decision under Article 227 does not attract the same appellate routes as one under Article 226.
+
+## Key cases
+
+### The foundational era
+
+**Dwaraka Nath v. Income Tax Officer (1965)** — The Supreme Court gave the most expansive early statement of Article 226's scope. The Court held that the article must be construed liberally and that the High Court's writ jurisdiction is not hedged by technical rules governing the English prerogative writs. The power is wide and unfettered, and the Court may issue any direction that the justice of the case requires. This liberal interpretive approach set the baseline for decades of High Court practice.
+
+**Calcutta Gas Company (Proprietary) Ltd. v. State of West Bengal (1962)** — The Supreme Court clarified the relationship between the breadth of Article 226 and the need for an underlying legal right. The Court confirmed that a writ under Article 226 for purposes other than fundamental rights enforcement still requires a petitioner to establish a legal right or legal interest that has been infringed. The article does not create a general superintendence over all executive action absent any right; it empowers the Court to remedy violations of existing rights — fundamental or otherwise.
+
+### The PIL and basic structure era
+
+**L. Chandra Kumar v. Union of India (1997)** — A seven-judge Constitution Bench held that the power of judicial review exercised by the High Courts under Article 226 is part of the basic structure of the Constitution. Provisions of the Administrative Tribunals Act that had routed tribunal matters away from High Courts were read down to preserve the High Court's power to entertain writ petitions against tribunal decisions. The ruling established that no legislation can permanently exclude Article 226 jurisdiction over a class of matters — the provision is unamendable in its essential character. This is the single most important case on the constitutional status of Article 226.
+
+**Bandhua Mukti Morcha v. Union of India (1984)** — Though primarily an Article 32 case, the Supreme Court's reasoning about expansive remedial jurisdiction and epistolary petitions has been consistently applied by High Courts in their Article 226 PIL jurisdiction. High Courts have taken up letters from prisoners, journalists, and social activists under Article 226 on the same logic, making the article the regional pillar of India's public interest litigation system.
+
+### Territorial and procedural jurisdiction
+
+**Kusum Ingots and Alloys Ltd. v. Union of India (2004)** — The Supreme Court addressed the cause of action test under Article 226(2) and held that a mere connection between the petitioner and the High Court's territory — such as the petitioner's registered office — is insufficient to found jurisdiction if the dispute itself has no meaningful connection to that territory. The act of Parliament is made in Delhi; its effects may be felt everywhere, but that does not give every High Court jurisdiction to entertain a challenge to it. The judgment imposed a meaningful restraint on forum shopping and forced petitioners to demonstrate a genuine territorial nexus.
+
+**Union of India v. Paul Manickam (2003)** — The Supreme Court addressed situations where petitioners approach multiple High Courts and the Supreme Court simultaneously on the same cause. The Court held that this practice is an abuse of process and that parties should not be permitted to use Article 226's concurrent jurisdiction as a tool for obtaining contradictory orders from different High Courts. Petitioners must disclose all pending proceedings arising from the same cause and seek appropriate consolidation. The case established the disclosure norm that now forms part of writ petition practice across High Courts.
+
+### The exhaustion and alternative remedies doctrine
+
+**Whirlpool Corporation v. Registrar of Trade Marks (1998)** — A landmark case on the exhaustion of alternative remedies doctrine. The Supreme Court held that the doctrine is a rule of convenience and discretion, not a rule of law, and that High Courts retain full Article 226 jurisdiction even when a statutory appeal exists. The exceptions to the exhaustion rule — fundamental rights violations, lack of jurisdiction, mala fides, inadequacy of the alternative remedy — were clearly enumerated. The judgment is the authoritative modern statement of the limits of the exhaustion doctrine and is cited in virtually every writ petition where the respondent contends that statutory remedies should have been used first.
+
+**Keshav Mills Co. Ltd. v. Union of India (1973)** — An important case on the scope of certiorari under Article 226. The Court affirmed that High Courts can issue certiorari to quash not only orders that are without jurisdiction but also orders that are vitiated by errors of law apparent on the face of the record. The case helped establish that Article 226 certiorari reaches further than its narrow English original — it is a constitutional remedy adapted to the needs of an administrative state, not merely a technical writ for jurisdictional error.
+
+### Private parties and public functions
+
+**Zee Telefilms Ltd. v. Union of India (2005)** — The Supreme Court considered whether the BCCI was subject to writ jurisdiction, holding it was not a "State" for Article 32 purposes. But the judgment expressly preserved the possibility that Article 226 — with its "any person or authority" language — might reach private bodies exercising public functions, even if Article 32 does not. This case marks the doctrinal boundary between the two articles in private-party writ jurisdiction and has been extensively relied upon by High Courts granting writs against private universities, sports bodies, and statutory agencies.
+
+**Tata Steel Ltd. v. Union of India (various proceedings)** — In a series of High Court and Supreme Court decisions on government contracts, disinvestment decisions, and regulatory permissions affecting private companies, courts have used Article 226 to review the legality of government conduct even where the other party to the transaction is a private entity. The cases confirm that the test is not the private character of the petitioner or respondent, but the public law character of the power being exercised. A government decision about a private company's licence or permit is public law action subject to Article 226 review.
+
+### The emergency and internet shutdown era
+
+**Anuradha Bhasin v. Union of India (2020)** — The Supreme Court's ruling on the internet shutdown in Jammu and Kashmir — delivered in an Article 32 petition but deeply shaping how High Courts now approach similar challenges under Article 226 — established that orders restricting communication must be published, that restrictions must be proportionate, and that courts are entitled to review executive orders on necessity and proportionality grounds. High Courts have applied this proportionality framework in Article 226 petitions challenging state-level internet restrictions, surveillance orders, and emergency restrictions on the press.
+
+## Current significance
+
+Article 226 is the constitutional foundation of judicial review in India at the state level. It handles more litigation volume than any other provision of the Constitution — annually, the High Courts collectively decide hundreds of thousands of writ petitions across every domain of public law, from income tax assessments to land acquisitions, from service matters to environmental clearances. This volume reflects both the breadth of the provision and the fact that it offers the most efficient route to challenging executive action: no exhaustion of all administrative remedies is strictly required, interim relief is obtainable quickly, and constitutional principles apply across the board.
+
+The basic structure status of Article 226, confirmed in L. Chandra Kumar, has become increasingly important as Parliament has created specialist tribunals — the National Company Law Tribunal, the National Green Tribunal, the Telecom Disputes Settlement and Appellate Tribunal, and others — to absorb subject-matter categories that were previously handled exclusively by High Courts. The settled position is that such tribunals can function, and High Courts should ordinarily not entertain writ petitions against first-instance tribunal orders, but that the supervisory jurisdiction of the High Court over tribunal decisions on questions of jurisdiction and constitutional validity cannot be excluded. The competition between tribunalisation and judicial review is the major structural tension in Article 226's operation today.
+
+The exhaustion doctrine debate has intensified in recent years, particularly in service and tax matters where high volumes of writ petitions bypass specialist appellate channels. The Supreme Court has repeatedly urged High Courts to be more disciplined in insisting on exhaustion of statutory remedies before entertaining writ petitions in routine matters, while acknowledging that the exceptions for fundamental rights and jurisdictional challenges must remain robust. Finding the right calibration — accessible enough to protect genuine rights, disciplined enough not to overwhelm courts or undermine tribunals — is the central managerial challenge for Article 226 jurisprudence.
+
+High Court PIL jurisdiction under Article 226 has both complemented and complicated the Supreme Court's PIL jurisprudence under Article 32. Where the Supreme Court addresses national-level systemic issues, High Courts address regional ones — prison conditions in a particular state, pollution in a specific river, accountability of a state government department, access to public health infrastructure in a particular district. This regional constitutional oversight function is irreplaceable, and proposals to restrict it in the name of docket management must confront Article 226's basic structure status. The challenge is not to reduce High Court PIL jurisdiction but to ensure it is exercised with appropriate institutional discipline, so that the constitutional remedy remains powerful without displacing the executive's primary responsibility to govern.

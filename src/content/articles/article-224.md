@@ -4,8 +4,9 @@ slug: article-224
 number: '224'
 part: Part VI - The States
 partSlug: part-vi
-summary: Article 224 covers appointment of additional and acting Judges.
-plainEnglish: This page reproduces the official text of Article 224. The constitutional wording is the primary reference point, and interpretive layers are added through linked cases, amendments, topics, and current-affairs pages.
+summary: Article 224 covers appointment of additional and acting judges.
+plainEnglish: >-
+  When a High Court faces a temporary surge in business or accumulated arrears, the President may appoint additional judges for up to two years to help clear the backlog. A separate power allows the President to appoint an acting judge when a permanent judge is temporarily absent or is acting as Chief Justice. Neither category of judge may serve past the age of sixty-two, and both are appointed through the collegium process in practice — despite the official text still referencing the now-struck-down National Judicial Appointments Commission. In practice, additional judgeships have become a near-permanent feature of court composition given India's chronic backlog levels, generating constitutional concern that the fixed-term structure amounts to an extended probationary period inconsistent with genuine security of tenure. Critics argue that each renewal or non-renewal gives the executive and collegium a periodic opportunity to evaluate whether a judge's rulings meet their approval before confirming them permanently, which is corrosive of judicial independence. The Supreme Court established in Sankalchand Himatlal Sheth that additional judges enjoy the same independence protections as permanent judges during their term — the short tenure does not diminish constitutional authority while in office. Reform debates have consistently called for sufficient permanent strength so that additional judgeships can return to their intended role as exceptional instruments rather than structural fixtures.
 officialText: |-
   [224. Appointment of additional and acting Judges.—(1) If by reason of any temporary increase in the business of a High Court or by reason of arrears of work therein, it appears to the President that the number of the Judges of that Court should be for the time being increased, [the President may, in consultation with the National Judicial Appointments Commission, appoint] duly qualified persons to be additional Judges of the Court for such period not exceeding two years as he may specify.
 
@@ -13,18 +14,60 @@ officialText: |-
 
   (3) No person appointed as an additional or acting Judge of a High Court shall hold office after attaining the age of [sixty-two years].]
 relatedArticles:
+  - article-217
   - article-223
   - article-224a
 schedules: []
-topics: []
+topics:
+  - judicial-appointments
+  - judiciary
 sources:
   - constitution-of-india
+  - supreme-court-of-india
 ---
 
-## Editorial status
+## Why it matters
 
-This reference page is generated from the official constitutional text so every Article has a reliable primary-source anchor on the site. Interpretive notes, case law, amendment history, and current-affairs links can now be layered on top without losing the underlying text.
+Article 224 was conceived as a safety valve — a flexible mechanism to address temporary and exceptional spikes in court workload without permanently expanding the bench. The distinction between an additional judge and a permanent judge was intended to be meaningful: a permanent judge is appointed with constitutional security of tenure until retirement; an additional judge is appointed for a fixed term not exceeding two years to address a specific, time-bound need. The framers expected that once arrears were cleared or the surge in filings subsided, the additional appointment would expire without renewal.
 
-## Reading note
+In practice, however, chronic pendency has made additional judgeships a structural rather than exceptional feature of High Court composition. Many High Courts have functioned for years with a significant proportion of their working strength made up of additional judges serving consecutive fixed terms before being considered for permanent appointment. This reality has generated constitutional concern about whether the additional judge mechanism is being used as an extended probationary arrangement — one that gives the executive and the collegium a periodic opportunity to assess whether a judge's rulings meet with their approval before confirming them permanently. The Supreme Court in Sankalchand Himatlal Sheth acknowledged this concern while confirming that it does not diminish the independence protections applicable to an additional judge during the term being served.
 
-Start with the official wording on this page. Then move outward to the linked Part, amendments, cases, and live issue pages for doctrine and contemporary relevance.
+The constitutional stakes extend beyond the individual judge's situation. When a High Court functions with a large proportion of additional judges serving consecutive short terms, the institutional culture changes. Judges aware of impending non-renewal may — even subconsciously — calibrate their rulings. The independence of the court as an institution is not merely the aggregate of individual judges' formal protections; it depends also on the structural conditions that enable every judge to decide without calculation of career consequences. Article 224, deployed chronically rather than exceptionally, undermines those conditions in a way the framers did not anticipate.
+
+## Reading the provision
+
+**Clause (1) — additional judges**: Two distinct grounds justify appointment. The first is "any temporary increase in the business of a High Court" — a surge in filings beyond what the permanent bench can absorb. The second is "arrears of work therein" — accumulated pending cases. These grounds are related but not identical: arrears may persist even when current filings have stabilised, and the arrears ground can justify additional judges even in the absence of a new surge. The President's satisfaction that the number "should be for the time being increased" is the constitutional trigger. The phrase "for the time being" signals that the additional strength is intrinsically provisional, not permanent. The maximum term is two years, but a shorter period may be specified. Renewal of an additional appointment after the initial term expires is not expressly prohibited by Article 224, but repeated renewal without movement to permanent appointment is constitutionally suspect.
+
+**Clause (2) — acting judges**: This provision addresses a narrower, more precisely bounded situation. An acting judge may be appointed only when a permanent judge is absent or for some other reason cannot perform duties, or has been designated to act temporarily as Chief Justice under Article 223. The acting appointment endures only until the permanent judge resumes duties — there is no two-year maximum in the acting judge context because the duration is defined by the return of the permanent judge. This makes acting appointments less constitutionally controversial than additional appointments: there is no question of renewal or confirmation, and the endpoint is clearly defined.
+
+**Clause (3) — age limit**: The standard High Court retirement age of sixty-two applies to both additional and acting judges. An additional judge appointed at age sixty-one will serve for at most one year, regardless of whether the President specified a two-year term. This age-limit interaction requires the President and the collegium to be attentive to the appointment's effective duration.
+
+**The NJAC textual anomaly**: The current official text of Article 224 refers to appointment "in consultation with the National Judicial Appointments Commission." The Supreme Court struck down the Ninety-ninth Amendment and the NJAC Act in Supreme Court Advocates-on-Record Association v. Union of India (2015), rendering the NJAC constitutionally invalid. The collegium process therefore governs in practice. The official text has not been re-amended to remove the NJAC references — a technical anomaly that creates a divergence between the Constitution's formal text and its operative legal effect. The same anomaly appears in Article 217.
+
+## The Constituent Assembly debate
+
+The Constituent Assembly debates on Article 224 (then draft Article 200) were relatively brief, reflecting a consensus that some flexible mechanism for managing workload fluctuations was necessary. Dr. B.R. Ambedkar explained that the provision was designed to enable the government to respond to temporary judicial needs without going through the full constitutional amendment process or permanently inflating bench strength. T.T. Krishnamachari raised the concern that temporary appointments could be misused to create a category of judges beholden to those who controlled their renewal — a concern Ambedkar acknowledged but assessed as manageable given the constitutional conventions surrounding appointment.
+
+The Assembly did not extensively debate the specific question of what constraints should govern renewal of additional appointments, apparently sharing the assumption that the appointments would be genuinely temporary. The possibility that additional judgeships would become semi-permanent fixtures — with judges serving consecutive two-year terms — was not foreseen and was not addressed in the design of the provision.
+
+## Key cases
+
+**Sankalchand Himatlal Sheth v. Union of India (1977)** — The Supreme Court held that additional judges hold constitutional office and are entitled to the same protection of judicial independence during their term as permanent judges. The government cannot use the non-confirmation of an additional judge as a punitive measure to signal displeasure at particular rulings. The Court held that while the executive has a role in decisions about renewal, that role cannot be exercised to punish judicial behaviour. This case remains the foundational authority for the proposition that short tenure does not diminish judicial independence during the period of the appointment.
+
+**All India Judges Association v. Union of India (various)** — In the ongoing monitoring proceedings arising from this case, the Supreme Court emphasised that the power under Article 224 must be exercised promptly when arrears establish the need. Executive delay in appointing additional judges — where the constitutional basis for appointment clearly exists and the collegium has made recommendations — is inconsistent with the State's obligation to maintain an effective judicial system accessible to all citizens. The Court also noted that persistent dependence on additional judges rather than adequate permanent strength represents a systemic failure.
+
+**Supreme Court Advocates-on-Record Association v. Union of India (Second Judges Case, 1993)** — The collegium principles established in this case apply to additional and acting judge appointments under Article 224. The recommendation of the collegium governs, and the executive cannot decline to act on those recommendations except through the reconsideration process that the collegium doctrine provides. This means that decisions about which additional judges are renewed and which are recommended for permanent appointment are the collegium's, not the executive's, to make — subject to the usual consultation and reconsideration protocols.
+
+**Supreme Court Advocates-on-Record Association v. Union of India (NJAC Case, 2015)** — The striking down of the Ninety-ninth Amendment returned the collegium system to full operation for Article 224 appointments. The Court confirmed that the primacy of the judiciary in its own appointments, including for additional and acting judges, is part of the basic structure and cannot be diminished by conferring a decisive role on the executive through any appointment commission.
+
+**Reena Banerjee v. Union of India (Delhi High Court)** — This High Court decision addressed the seniority consequences of additional judge status, confirming that additional judges' placement on the seniority list upon permanent appointment is calculated from the date of their original additional appointment, not from a fresh starting point. Seniority disputes of this character arise because the period served as an additional judge does affect eventual placement, transfer eligibility, and candidacy for Chief Justiceship of smaller High Courts.
+
+## Current significance
+
+The chronic use of Article 224 as a structural tool rather than a temporary relief mechanism has administrative consequences that compound over time. Additional judges' seniority is calculated differently from that of permanent judges appointed at the same time, affecting position when they are eventually confirmed and their candidacy for chief justiceship of smaller High Courts. An additional judge who serves two consecutive two-year terms before being made permanent has served four years but may be placed below permanent judges appointed during that period — depending on the seniority calculation methodology. This asymmetry has generated recurring litigation and recommendations for reform.
+
+The Law Commission and various parliamentary standing committee reports have recommended that High Courts be given sanctioned strength sufficient to handle their actual workloads without recourse to large numbers of additional judges, and that the additional judge mechanism be genuinely reserved for exceptional circumstances. The Twenty-first Law Commission's reports on judicial reforms, and the Standing Committee on Personnel, Public Grievances and Law and Justice, have both flagged this issue. Those recommendations have not been translated into comprehensive structural reform, and Article 224 operates in a landscape where the temporary has become permanent and the exceptional has become routine.
+
+The interaction between Article 224 and the broader vacancies crisis is significant. High Courts have chronically operated at 20 to 25 percent below their sanctioned permanent strength while simultaneously maintaining rosters of additional judges. This combination — large permanent vacancies alongside large additional judge appointments — reflects a dysfunction in the appointment process that goes beyond Article 224 itself. Filling permanent vacancies under Article 217 would reduce reliance on Article 224, but the delays in the collegium-executive pipeline for permanent appointments have been at least as significant as those for additional appointments.
+
+The question of whether an additional judge has any constitutional entitlement to be considered for permanent appointment — and whether the failure to recommend permanent appointment requires explanation — remains unresolved. The collegium's recommendation about permanent appointment for each additional judge is not published with reasons, and the individual judge has no formal mechanism to challenge a decision not to recommend permanent appointment. This opacity, combined with the career significance of the decision, is a structural tension in Article 224's operation.
