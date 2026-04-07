@@ -1073,6 +1073,14 @@ h3 {
 	box-shadow: 0 16px 34px rgba(63, 45, 28, 0.1);
 }
 
+.graph-preset.is-disabled,
+.graph-preset:disabled {
+	transform: none;
+	opacity: 0.5;
+	cursor: not-allowed;
+	box-shadow: none;
+}
+
 .graph-preset__kicker {
 	font-size: 0.75rem;
 	text-transform: uppercase;
@@ -1107,6 +1115,10 @@ h3 {
 .graph-toolbar__cluster {
 	display: grid;
 	gap: 0.35rem;
+}
+
+.graph-toolbar__cluster--wide {
+	flex: 1 1 30rem;
 }
 
 .graph-toolbar__label {

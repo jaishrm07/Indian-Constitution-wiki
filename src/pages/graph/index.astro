@@ -7,7 +7,8 @@ import { defaultGraphPresets } from '../../lib/graph-presets';
 import { getGraphExplorerData } from '../../lib/graph';
 import { withBase } from '../../lib/content';
 
-const graph = await getGraphExplorerData({ profile: 'display' });
+const backboneGraph = await getGraphExplorerData({ profile: 'home' });
+const expandedGraph = await getGraphExplorerData({ profile: 'display' });
 ---
 
 <Layout
@@ -42,11 +43,32 @@ const graph = await getGraphExplorerData({ profile: 'display' });
 			<a class="filter-pill" href={withBase('/graph/backbone')}>Backbone View</a>
 		</div>
 		<p>
-			Start in Overview mode to see the strongest constitutional anchors, switch to Focus mode for a node-centered
-			dossier, and use Path mode when you need the shortest explainable route through the curated graph rather than
-			through weak editorial cross-links.
+			Start in Overview mode to see the strongest constitutional anchors, then switch scopes inside the explorer
+			when you want a tighter backbone or a broader dossier. Path mode favors explainable constitutional routes over
+			weak editorial cross-links.
 		</p>
 	</section>
 
-	<GraphExplorer nodes={graph.nodes} edges={graph.edges} stats={graph.stats} legend={graph.legend} presets={defaultGraphPresets} />
+	<GraphExplorer
+		datasets={{
+			backbone: {
+				label: 'Backbone',
+				description: 'Highest-signal doctrine, constitutional anchors, institutions, reforms, and live disputes only.',
+				nodes: backboneGraph.nodes,
+				edges: backboneGraph.edges,
+				stats: backboneGraph.stats,
+				legend: backboneGraph.legend,
+			},
+			expanded: {
+				label: 'Expanded',
+				description: 'Broader constitutional neighborhood with more supporting pages, context, and bridge nodes.',
+				nodes: expandedGraph.nodes,
+				edges: expandedGraph.edges,
+				stats: expandedGraph.stats,
+				legend: expandedGraph.legend,
+			},
+		}}
+		defaultScope="expanded"
+		presets={defaultGraphPresets}
+	/>
 </Layout>

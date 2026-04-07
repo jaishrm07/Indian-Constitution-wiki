@@ -7,7 +7,8 @@ import { withBase } from '../../lib/content';
 import { defaultGraphPresets } from '../../lib/graph-presets';
 import { getGraphExplorerData } from '../../lib/graph';
 
-const graph = await getGraphExplorerData({ profile: 'home' });
+const backboneGraph = await getGraphExplorerData({ profile: 'home' });
+const expandedGraph = await getGraphExplorerData({ profile: 'display' });
 ---
 
 <Layout
@@ -43,16 +44,31 @@ const graph = await getGraphExplorerData({ profile: 'home' });
 			<a class="filter-pill is-active" href={withBase('/graph/backbone')}>Backbone View</a>
 		</div>
 		<p>
-			Use this view when you want the graph to behave like a constitutional map rather than a large content network.
-			It is optimized for legibility and trust first, then exploration.
+			Use this route when you want the explorer to open directly in the backbone scope. You can still switch in-place
+			to the broader graph once you have the map oriented.
 		</p>
 	</section>
 
 	<GraphExplorer
-		nodes={graph.nodes}
-		edges={graph.edges}
-		stats={graph.stats}
-		legend={graph.legend}
+		datasets={{
+			backbone: {
+				label: 'Backbone',
+				description: 'Highest-signal doctrine, constitutional anchors, institutions, reforms, and live disputes only.',
+				nodes: backboneGraph.nodes,
+				edges: backboneGraph.edges,
+				stats: backboneGraph.stats,
+				legend: backboneGraph.legend,
+			},
+			expanded: {
+				label: 'Expanded',
+				description: 'Broader constitutional neighborhood with more supporting pages, context, and bridge nodes.',
+				nodes: expandedGraph.nodes,
+				edges: expandedGraph.edges,
+				stats: expandedGraph.stats,
+				legend: expandedGraph.legend,
+			},
+		}}
+		defaultScope="backbone"
 		presets={defaultGraphPresets}
 	/>
 </Layout>

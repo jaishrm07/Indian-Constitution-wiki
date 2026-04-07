@@ -74,11 +74,22 @@ interface GraphPreset {
 	accent?: string;
 }
 
-interface Props {
+interface GraphDataset {
+	label: string;
+	description?: string;
 	nodes: GraphNode[];
 	edges: GraphEdge[];
 	stats: GraphStat[];
 	legend: GraphLegendItem[];
+}
+
+interface Props {
+	nodes?: GraphNode[];
+	edges?: GraphEdge[];
+	stats?: GraphStat[];
+	legend?: GraphLegendItem[];
+	datasets?: Record<string, GraphDataset>;
+	defaultScope?: string;
 	variant?: 'default' | 'home';
 	eyebrow?: string;
 	title?: string;
@@ -87,18 +98,35 @@ interface Props {
 }
 
 const {
-	nodes,
-	edges,
-	stats,
-	legend,
+	nodes = [],
+	edges = [],
+	stats = [],
+	legend = [],
+	datasets,
+	defaultScope,
 	variant = 'default',
 	eyebrow,
 	title,
 	summary,
 	presets = [],
 } = Astro.props;
-const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
-const nodeOptions = [...nodes].sort((left, right) => {
+const normalizedDatasets =
+	datasets && Object.keys(datasets).length > 0
+		? datasets
+		: {
+				default: {
+					label: 'Graph',
+					nodes,
+					edges,
+					stats,
+					legend,
+				},
+			};
+const datasetEntries = Object.entries(normalizedDatasets);
+const initialScope = defaultScope && normalizedDatasets[defaultScope] ? defaultScope : datasetEntries[0][0];
+const activeDataset = normalizedDatasets[initialScope];
+const filterTypes = ['All', ...new Set(activeDataset.nodes.map((node) => node.type))];
+const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 	if (left.type !== right.type) {
 		return left.type.localeCompare(right.type);
 	}
@@ -116,18 +144,18 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		{
 			(eyebrow || title || summary) && (
 				<div class="graph-stage">
-					<div class="graph-stage__copy">
-						{eyebrow && <p class="eyebrow">{eyebrow}</p>}
-						{title && <h2>{title}</h2>}
-						{summary && <p class="graph-stage__summary">{summary}</p>}
-					</div>
-					<div class="graph-stage__metrics">
-						{stats.slice(0, 3).map((stat) => (
-							<div class="graph-stage__metric">
-								<strong>{stat.value}</strong>
-								<span>{stat.label}</span>
-							</div>
-						))}
+				<div class="graph-stage__copy">
+					{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+					{title && <h2>{title}</h2>}
+					{summary && <p class="graph-stage__summary">{summary}</p>}
+				</div>
+				<div class="graph-stage__metrics" data-graph-stage-metrics>
+					{activeDataset.stats.slice(0, 3).map((stat) => (
+						<div class="graph-stage__metric">
+							<strong>{stat.value}</strong>
+							<span>{stat.label}</span>
+						</div>
+					))}
 					</div>
 				</div>
 			)
@@ -164,6 +192,29 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		}
 
 		<div class="graph-toolbar">
+			{
+				datasetEntries.length > 1 && (
+					<div class="graph-toolbar__row graph-toolbar__row--modes">
+						<div class="graph-toolbar__cluster graph-toolbar__cluster--wide">
+							<span class="graph-toolbar__label">Scope</span>
+							<div class="graph-mode-switch" data-graph-scopes>
+								{datasetEntries.map(([scopeId, dataset]) => (
+									<button
+										type="button"
+										class:list={['filter-pill', { 'is-active': scopeId === initialScope }]}
+										data-graph-scope={scopeId}
+										title={dataset.description}
+									>
+										{dataset.label}
+									</button>
+								))}
+							</div>
+							<p class="graph-toolbar__hint" data-graph-scope-summary>{activeDataset.description ?? `Currently showing the ${activeDataset.label.toLowerCase()}.`}</p>
+						</div>
+					</div>
+				)
+			}
+
 			<div class="graph-toolbar__row graph-toolbar__row--modes">
 				<div class="graph-toolbar__cluster">
 					<span class="graph-toolbar__label">Mode</span>
@@ -193,7 +244,7 @@ const nodeOptions = [...nodes].sort((left, right) => {
 				</label>
 			</div>
 
-			<datalist id="graph-node-options">
+			<datalist id="graph-node-options" data-graph-node-options>
 				{
 					nodeOptions.map((node) => (
 						<option value={node.label} label={`${node.type} • ${node.subtitle}`} data-node-id={node.id} />
@@ -218,7 +269,7 @@ const nodeOptions = [...nodes].sort((left, right) => {
 				</div>
 				<div class="graph-legend" data-graph-legend>
 					{
-						legend.map((item) => (
+						activeDataset.legend.map((item) => (
 							<div class="graph-legend__item" title={item.description}>
 								<span class="graph-legend__swatch" style={`--legend-color:${item.color}`}></span>
 								<div>
@@ -241,9 +292,9 @@ const nodeOptions = [...nodes].sort((left, right) => {
 	</div>
 
 	<aside class="graph-aside">
-		<div class="graph-stats">
+		<div class="graph-stats" data-graph-stats>
 			{
-				stats.map((stat) =>
+				activeDataset.stats.map((stat) =>
 					stat.href ? (
 						<a class="stat-card" href={stat.href}>
 							<strong>{stat.value}</strong>
@@ -275,7 +326,11 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		</div>
 	</aside>
 
-	<script type="application/json" data-graph-payload set:html={JSON.stringify({ nodes, edges })} />
+	<script
+		type="application/json"
+		data-graph-payload
+		set:html={JSON.stringify({ datasets: normalizedDatasets, initialScope })}
+	/>
 </section>
 
 <script>
@@ -367,6 +422,12 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		const filterBar = root.querySelector('[data-graph-filters]');
 		const modeBar = root.querySelector('[data-graph-modes]');
 		const depthBar = root.querySelector('[data-graph-depths]');
+		const scopeBar = root.querySelector('[data-graph-scopes]');
+		const scopeSummary = root.querySelector('[data-graph-scope-summary]');
+		const stageMetrics = root.querySelector('[data-graph-stage-metrics]');
+		const statsPanel = root.querySelector('[data-graph-stats]');
+		const legendPanel = root.querySelector('[data-graph-legend]');
+		const nodeOptionsList = root.querySelector('[data-graph-node-options]');
 		const presetButtons = [...root.querySelectorAll('[data-graph-preset]')];
 		const resetButton = root.querySelector('[data-graph-reset]');
 		const viewSummary = root.querySelector('[data-graph-view-summary]');
@@ -398,22 +459,20 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			return;
 		}
 
-		const payload = JSON.parse(payloadScript.textContent ?? '{"nodes":[],"edges":[]}');
-		const nodes = payload.nodes ?? [];
-		const edges = payload.edges ?? [];
-		const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-		const edgeMap = new Map(edges.map((edge) => [edge.id, edge]));
-		const edgeByPair = new Map(edges.map((edge) => [pairKey(edge.source, edge.target), edge]));
-		const adjacency = new Map();
-
-		for (const node of nodes) {
-			adjacency.set(node.id, new Set());
-		}
-
-		for (const edge of edges) {
-			adjacency.get(edge.source)?.add(edge.target);
-			adjacency.get(edge.target)?.add(edge.source);
-		}
+		const payload = JSON.parse(payloadScript.textContent ?? '{"datasets":{"default":{"nodes":[],"edges":[],"stats":[],"legend":[]}},"initialScope":"default"}');
+		const datasets = payload.datasets ?? {
+			default: { label: 'Graph', description: '', nodes: [], edges: [], stats: [], legend: [] },
+		};
+		const datasetIds = Object.keys(datasets);
+		let activeScope = payload.initialScope && datasets[payload.initialScope] ? payload.initialScope : datasetIds[0];
+		let nodes = [];
+		let edges = [];
+		let stats = [];
+		let legend = [];
+		let nodeMap = new Map();
+		let edgeMap = new Map();
+		let edgeByPair = new Map();
+		let adjacency = new Map();
 
 		let mode = 'explore';
 		let activeType = 'All';
@@ -541,6 +600,217 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			layout: OVERVIEW_LAYOUT,
 			wheelSensitivity: 0.18,
 		});
+
+		function datasetFor(scopeId) {
+			return datasets[scopeId] ?? datasets[datasetIds[0]] ?? {
+				label: 'Graph',
+				description: '',
+				nodes: [],
+				edges: [],
+				stats: [],
+				legend: [],
+			};
+		}
+
+		function rebuildIndexes() {
+			nodeMap = new Map(nodes.map((node) => [node.id, node]));
+			edgeMap = new Map(edges.map((edge) => [edge.id, edge]));
+			edgeByPair = new Map(edges.map((edge) => [pairKey(edge.source, edge.target), edge]));
+			adjacency = new Map();
+
+			for (const node of nodes) {
+				adjacency.set(node.id, new Set());
+			}
+
+			for (const edge of edges) {
+				adjacency.get(edge.source)?.add(edge.target);
+				adjacency.get(edge.target)?.add(edge.source);
+			}
+		}
+
+		function renderStageMetrics() {
+			if (!(stageMetrics instanceof HTMLDivElement)) {
+				return;
+			}
+
+			stageMetrics.innerHTML = stats
+				.slice(0, 3)
+				.map(
+					(stat) => `
+						<div class="graph-stage__metric">
+							<strong>${escapeHtml(stat.value)}</strong>
+							<span>${escapeHtml(stat.label)}</span>
+						</div>`,
+				)
+				.join('');
+		}
+
+		function renderStatsPanel() {
+			if (!(statsPanel instanceof HTMLDivElement)) {
+				return;
+			}
+
+			statsPanel.innerHTML = stats
+				.map((stat) =>
+					stat.href
+						? `
+							<a class="stat-card" href="${escapeHtml(stat.href)}">
+								<strong>${escapeHtml(stat.value)}</strong>
+								<span>${escapeHtml(stat.label)}</span>
+							</a>`
+						: `
+							<div class="stat-card">
+								<strong>${escapeHtml(stat.value)}</strong>
+								<span>${escapeHtml(stat.label)}</span>
+							</div>`,
+				)
+				.join('');
+		}
+
+		function renderLegend() {
+			if (!(legendPanel instanceof HTMLDivElement)) {
+				return;
+			}
+
+			legendPanel.innerHTML = legend
+				.map(
+					(item) => `
+						<div class="graph-legend__item" title="${escapeHtml(item.description)}">
+							<span class="graph-legend__swatch" style="--legend-color:${escapeHtml(item.color)}"></span>
+							<div>
+								<strong>${escapeHtml(item.label)}</strong>
+								<small>${escapeHtml(item.count)} edges</small>
+							</div>
+						</div>`,
+				)
+				.join('');
+		}
+
+		function renderNodeOptions() {
+			if (!(nodeOptionsList instanceof HTMLDataListElement)) {
+				return;
+			}
+
+			const sortedNodes = [...nodes].sort((left, right) => {
+				if (left.type !== right.type) {
+					return left.type.localeCompare(right.type);
+				}
+
+				if (right.degree !== left.degree) {
+					return right.degree - left.degree;
+				}
+
+				return left.label.localeCompare(right.label);
+			});
+
+			nodeOptionsList.innerHTML = sortedNodes
+				.map(
+					(node) => `
+						<option value="${escapeHtml(node.label)}" label="${escapeHtml(`${node.type} • ${node.subtitle}`)}"></option>`,
+				)
+				.join('');
+		}
+
+		function renderFilterBar() {
+			if (!(filterBar instanceof HTMLDivElement)) {
+				return;
+			}
+
+			const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
+			if (!filterTypes.includes(activeType)) {
+				activeType = 'All';
+			}
+
+			filterBar.innerHTML = filterTypes
+				.map(
+					(type) => `
+						<button type="button" class="filter-pill${type === activeType ? ' is-active' : ''}" data-graph-filter="${escapeHtml(type)}">
+							${escapeHtml(type)}
+						</button>`,
+				)
+				.join('');
+		}
+
+		function renderScopeBar() {
+			if (!(scopeBar instanceof HTMLDivElement)) {
+				return;
+			}
+
+			scopeBar.querySelectorAll('[data-graph-scope]').forEach((button) => {
+				const buttonScope = button.getAttribute('data-graph-scope');
+				button.classList.toggle('is-active', buttonScope === activeScope);
+			});
+
+			if (scopeSummary instanceof HTMLElement) {
+				const dataset = datasetFor(activeScope);
+				scopeSummary.textContent = dataset.description || `Currently showing the ${dataset.label.toLowerCase()}.`;
+			}
+		}
+
+		function syncPresetAvailability() {
+			presetButtons.forEach((button) => {
+				const startId = button.getAttribute('data-graph-preset-start-id');
+				const targetId = button.getAttribute('data-graph-preset-target-id');
+				const isAvailable = Boolean(startId && nodeMap.has(startId) && (!targetId || nodeMap.has(targetId)));
+				button.disabled = !isAvailable;
+				button.classList.toggle('is-disabled', !isAvailable);
+			});
+		}
+
+		function syncInputs() {
+			startInput.value = startNodeId ? nodeMap.get(startNodeId)?.label ?? '' : '';
+			targetInput.value = targetNodeId ? nodeMap.get(targetNodeId)?.label ?? '' : '';
+		}
+
+		function setActiveDataset(scopeId) {
+			activeScope = datasets[scopeId] ? scopeId : activeScope;
+			const dataset = datasetFor(activeScope);
+
+			nodes = dataset.nodes ?? [];
+			edges = dataset.edges ?? [];
+			stats = dataset.stats ?? [];
+			legend = dataset.legend ?? [];
+			rebuildIndexes();
+
+			if (selectedNodeId && !nodeMap.has(selectedNodeId)) {
+				selectedNodeId = null;
+			}
+			if (selectedEdgeId && !edgeMap.has(selectedEdgeId)) {
+				selectedEdgeId = null;
+			}
+			if (startNodeId && !nodeMap.has(startNodeId)) {
+				startNodeId = null;
+			}
+			if (targetNodeId && !nodeMap.has(targetNodeId)) {
+				targetNodeId = null;
+			}
+			if (mode === 'path' && startNodeId && targetNodeId && startNodeId === targetNodeId) {
+				targetNodeId = null;
+			}
+
+			cy.elements().remove();
+			cy.add([
+				...nodes.map((node) => ({
+					data: {
+						...node,
+						weight: Math.min(12, Math.max(2, node.degree || 1)),
+						isAnchor: false,
+					},
+				})),
+				...edges.map((edge) => ({
+					data: edge,
+				})),
+			]);
+
+			renderStageMetrics();
+			renderStatsPanel();
+			renderLegend();
+			renderNodeOptions();
+			renderFilterBar();
+			renderScopeBar();
+			syncPresetAvailability();
+			syncInputs();
+		}
 
 		function resolveNodeId(rawValue) {
 			const value = rawValue.trim().toLowerCase();
@@ -859,15 +1129,14 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		}
 
 		function updateControls() {
+			renderScopeBar();
 			modeBar.querySelectorAll('[data-graph-mode]').forEach((button) => {
 				button.classList.toggle('is-active', button.getAttribute('data-graph-mode') === mode);
 			});
 			depthBar.querySelectorAll('[data-graph-depth]').forEach((button) => {
 				button.classList.toggle('is-active', Number(button.getAttribute('data-graph-depth')) === depth);
 			});
-			filterBar.querySelectorAll('[data-graph-filter]').forEach((button) => {
-				button.classList.toggle('is-active', button.getAttribute('data-graph-filter') === activeType);
-			});
+			renderFilterBar();
 			targetField.classList.toggle('is-hidden', mode !== 'path');
 		}
 
@@ -891,6 +1160,10 @@ const nodeOptions = [...nodes].sort((left, right) => {
 
 		function applyPreset(button) {
 			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			if (button.disabled) {
 				return;
 			}
 
@@ -1061,14 +1334,14 @@ const nodeOptions = [...nodes].sort((left, right) => {
 
 			if (mode === 'path' && startNodeId && targetNodeId) {
 				if (pathNodeIds.length > 0) {
-					viewSummary.textContent = `Shortest path mode: ${pathNodeIds.length} nodes connect ${nodeMap.get(startNodeId)?.label ?? 'start'} to ${nodeMap.get(targetNodeId)?.label ?? 'target'}.`;
+					viewSummary.textContent = `${datasetFor(activeScope).label}: shortest path mode connects ${nodeMap.get(startNodeId)?.label ?? 'start'} to ${nodeMap.get(targetNodeId)?.label ?? 'target'} through ${pathNodeIds.length} nodes.`;
 				} else {
-					viewSummary.textContent = 'Shortest path mode: no path is currently indexed between those two nodes.';
+					viewSummary.textContent = `${datasetFor(activeScope).label}: no path is currently indexed between those two nodes.`;
 				}
 			} else if (mode === 'explore' && selectedNodeId) {
-				viewSummary.textContent = `Explore mode: ${visibleNodeIds.size} nodes in a ${depth}-hop neighborhood around ${nodeMap.get(selectedNodeId)?.label ?? 'the selected node'}.`;
+				viewSummary.textContent = `${datasetFor(activeScope).label}: ${visibleNodeIds.size} nodes in a ${depth}-hop neighborhood around ${nodeMap.get(selectedNodeId)?.label ?? 'the selected node'}.`;
 			} else {
-				viewSummary.textContent = `Overview mode: ${visibleNodeIds.size} core nodes. Select a node to open a tighter constitutional neighborhood.`;
+				viewSummary.textContent = `${datasetFor(activeScope).label}: ${visibleNodeIds.size} core nodes. Select a node to open a tighter constitutional neighborhood.`;
 			}
 
 			syncPresetState();
@@ -1140,6 +1413,21 @@ const nodeOptions = [...nodes].sort((left, right) => {
 				targetNodeId = null;
 				targetInput.value = '';
 			}
+			render();
+		});
+
+		scopeBar?.addEventListener('click', (event) => {
+			const button = event.target.closest('[data-graph-scope]');
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			const scopeId = button.getAttribute('data-graph-scope');
+			if (!scopeId || scopeId === activeScope) {
+				return;
+			}
+
+			setActiveDataset(scopeId);
 			render();
 		});
 
@@ -1217,6 +1505,8 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			}
 			render();
 		});
+
+		setActiveDataset(activeScope);
 
 		if (presetButtons.length > 0 && root.getAttribute('data-graph-variant') === 'home') {
 			applyPreset(presetButtons[0]);

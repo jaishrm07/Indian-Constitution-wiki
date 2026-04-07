@@ -304,3 +304,7 @@ A homepage graph is a product statement, not a dumping ground for every valid ed
 ### 65. A graph becomes trustworthy only when it can explain its edges
 
 Users do not trust a legal knowledge graph merely because the nodes look organized. They trust it when clicking an edge reveals the actual relation type, the note explaining the link, and the sources behind it. In practice this means the graph payload needs relation-level evidence, not just aggregate edge labels.
+
+### 66. Graph scope should switch datasets, not just views
+
+Backbone and expanded graph modes are not merely alternative camera angles on the same network. They are different density budgets with different intended trust profiles. Treating them as separate datasets inside one explorer produces better behavior than trying to hide or dim a single oversized graph: filters stay honest, pathfinding only uses relationships that actually exist in the active scope, legends and stats remain accurate, and readers can switch between legibility and breadth without feeling that the graph is lying about what it contains.
