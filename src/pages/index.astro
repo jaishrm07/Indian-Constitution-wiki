@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import ContentCard from '../components/ContentCard.astro';
 import GraphExplorer from '../components/GraphExplorer.astro';
 import Layout from '../layouts/Layout.astro';
+import { defaultGraphPresets } from '../lib/graph-presets';
 import { buildGraphExplorerData } from '../lib/graph';
 import {
 	formatDate,
@@ -134,7 +135,17 @@ const graph = buildGraphExplorerData({
 		</div>
 	</section>
 
-	<GraphExplorer nodes={graph.nodes} edges={graph.edges} stats={graph.stats} legend={graph.legend} />
+	<GraphExplorer
+		nodes={graph.nodes}
+		edges={graph.edges}
+		stats={graph.stats}
+		legend={graph.legend}
+		variant="home"
+		eyebrow="Knowledge Graph"
+		title="See constitutional ideas as a living network"
+		summary="The homepage graph now opens with guided constitutional storylines, cleaner labels, and a tighter default view so the project’s core idea is visible immediately."
+		presets={defaultGraphPresets}
+	/>
 
 	<section class="section-block">
 		<div class="section-heading">

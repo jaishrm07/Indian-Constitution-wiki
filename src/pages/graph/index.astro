@@ -3,6 +3,7 @@ import GraphExplorer from '../../components/GraphExplorer.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import SearchSignals from '../../components/SearchSignals.astro';
 import Layout from '../../layouts/Layout.astro';
+import { defaultGraphPresets } from '../../lib/graph-presets';
 import { getGraphExplorerData } from '../../lib/graph';
 
 const graph = await getGraphExplorerData();
@@ -41,5 +42,5 @@ const graph = await getGraphExplorerData();
 		</p>
 	</section>
 
-	<GraphExplorer nodes={graph.nodes} edges={graph.edges} stats={graph.stats} legend={graph.legend} />
+	<GraphExplorer nodes={graph.nodes} edges={graph.edges} stats={graph.stats} legend={graph.legend} presets={defaultGraphPresets} />
 </Layout>

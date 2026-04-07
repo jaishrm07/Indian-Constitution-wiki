@@ -55,14 +55,41 @@ interface GraphLegendItem {
 	count: number;
 }
 
+interface GraphPreset {
+	id: string;
+	label: string;
+	description: string;
+	startId: string;
+	targetId?: string;
+	mode?: 'explore' | 'path';
+	depth?: 1 | 2;
+	filter?: string;
+	accent?: string;
+}
+
 interface Props {
 	nodes: GraphNode[];
 	edges: GraphEdge[];
 	stats: GraphStat[];
 	legend: GraphLegendItem[];
+	variant?: 'default' | 'home';
+	eyebrow?: string;
+	title?: string;
+	summary?: string;
+	presets?: GraphPreset[];
 }
 
-const { nodes, edges, stats, legend } = Astro.props;
+const {
+	nodes,
+	edges,
+	stats,
+	legend,
+	variant = 'default',
+	eyebrow,
+	title,
+	summary,
+	presets = [],
+} = Astro.props;
 const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
 const nodeOptions = [...nodes].sort((left, right) => {
 	if (left.type !== right.type) {
@@ -77,17 +104,73 @@ const nodeOptions = [...nodes].sort((left, right) => {
 });
 ---
 
-<section class="graph-shell" data-graph-shell>
+<section class:list={['graph-shell', { 'graph-shell--home': variant === 'home' }]} data-graph-shell data-graph-variant={variant}>
 	<div class="graph-main">
+		{
+			(eyebrow || title || summary) && (
+				<div class="graph-stage">
+					<div class="graph-stage__copy">
+						{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+						{title && <h2>{title}</h2>}
+						{summary && <p class="graph-stage__summary">{summary}</p>}
+					</div>
+					<div class="graph-stage__metrics">
+						{stats.slice(0, 3).map((stat) => (
+							<div class="graph-stage__metric">
+								<strong>{stat.value}</strong>
+								<span>{stat.label}</span>
+							</div>
+						))}
+					</div>
+				</div>
+			)
+		}
+
+		{
+			presets.length > 0 && (
+				<div class="graph-presets-shell">
+					<div class="graph-presets-shell__copy">
+						<strong>Guided entry points</strong>
+						<p>Open one constitutional story first, then branch outward once the map has context.</p>
+					</div>
+					<div class="graph-presets" data-graph-presets>
+						{presets.map((preset, index) => (
+							<button
+								type="button"
+								class:list={['graph-preset', { 'is-active': index === 0 }]}
+								data-graph-preset={preset.id}
+								data-graph-preset-start-id={preset.startId}
+								data-graph-preset-target-id={preset.targetId}
+								data-graph-preset-mode={preset.mode ?? 'explore'}
+								data-graph-preset-depth={preset.depth ?? 1}
+								data-graph-preset-filter={preset.filter ?? 'All'}
+								style={preset.accent ? `--graph-preset-accent:${preset.accent}` : undefined}
+							>
+								<span class="graph-preset__kicker">Preset</span>
+								<strong>{preset.label}</strong>
+								<p>{preset.description}</p>
+							</button>
+						))}
+					</div>
+				</div>
+			)
+		}
+
 		<div class="graph-toolbar">
 			<div class="graph-toolbar__row graph-toolbar__row--modes">
-				<div class="graph-mode-switch" data-graph-modes>
-					<button type="button" class:list={['filter-pill', 'is-active']} data-graph-mode="explore">Explore</button>
-					<button type="button" class="filter-pill" data-graph-mode="path">Shortest path</button>
+				<div class="graph-toolbar__cluster">
+					<span class="graph-toolbar__label">Mode</span>
+					<div class="graph-mode-switch" data-graph-modes>
+						<button type="button" class:list={['filter-pill', 'is-active']} data-graph-mode="explore">Explore</button>
+						<button type="button" class="filter-pill" data-graph-mode="path">Shortest path</button>
+					</div>
 				</div>
-				<div class="graph-depth-switch" data-graph-depths>
-					<button type="button" class:list={['filter-pill', 'is-active']} data-graph-depth="1">1 hop</button>
-					<button type="button" class="filter-pill" data-graph-depth="2">2 hops</button>
+				<div class="graph-toolbar__cluster">
+					<span class="graph-toolbar__label">Depth</span>
+					<div class="graph-depth-switch" data-graph-depths>
+						<button type="button" class:list={['filter-pill', 'is-active']} data-graph-depth="1">1 hop</button>
+						<button type="button" class="filter-pill" data-graph-depth="2">2 hops</button>
+					</div>
 				</div>
 				<button type="button" class="button-secondary graph-reset" data-graph-reset>Reset view</button>
 			</div>
@@ -121,18 +204,24 @@ const nodeOptions = [...nodes].sort((left, right) => {
 				}
 			</div>
 
-			<div class="graph-legend" data-graph-legend>
-				{
-					legend.map((item) => (
-						<div class="graph-legend__item" title={item.description}>
-							<span class="graph-legend__swatch" style={`--legend-color:${item.color}`}></span>
-							<div>
-								<strong>{item.label}</strong>
-								<small>{item.count} edges</small>
+			<div class="graph-legend-shell">
+				<div class="graph-legend-shell__copy">
+					<strong>Relationship families</strong>
+					<p>Color tells you whether a connection comes from constitutional structure, doctrine, reform, live practice, or history.</p>
+				</div>
+				<div class="graph-legend" data-graph-legend>
+					{
+						legend.map((item) => (
+							<div class="graph-legend__item" title={item.description}>
+								<span class="graph-legend__swatch" style={`--legend-color:${item.color}`}></span>
+								<div>
+									<strong>{item.label}</strong>
+									<small>{item.count} edges</small>
+								</div>
 							</div>
-						</div>
-					))
-				}
+						))
+					}
+				</div>
 			</div>
 		</div>
 
@@ -164,7 +253,7 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		</div>
 
 		<div class="graph-detail" data-graph-detail>
-			<p class="eyebrow">Graph Detail</p>
+			<p class="eyebrow">Active Focus</p>
 			<h2 data-detail-title>Curated overview</h2>
 			<p class="graph-detail__summary" data-detail-summary>
 				Start with a case, Article, or live desk. The graph will collapse into a focused neighborhood instead of
@@ -253,6 +342,7 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		const filterBar = root.querySelector('[data-graph-filters]');
 		const modeBar = root.querySelector('[data-graph-modes]');
 		const depthBar = root.querySelector('[data-graph-depths]');
+		const presetButtons = [...root.querySelectorAll('[data-graph-preset]')];
 		const resetButton = root.querySelector('[data-graph-reset]');
 		const viewSummary = root.querySelector('[data-graph-view-summary]');
 		const detailTitle = root.querySelector('[data-detail-title]');
@@ -326,19 +416,31 @@ const nodeOptions = [...nodes].sort((left, right) => {
 				{
 					selector: 'node',
 					style: {
-						label: 'data(label)',
+						label: (element) => element.data('labelVisible') ? element.data('label') : '',
 						'background-color': (element) => COLOR_BY_TYPE[element.data('type')] ?? '#64584b',
-						color: '#1f1b17',
-						'font-size': 11,
+						color: '#16110d',
+						'font-size': 11.5,
 						'font-family': 'Avenir Next, Segoe UI, Helvetica Neue, Helvetica, sans-serif',
 						'text-wrap': 'wrap',
-						'text-max-width': 110,
-						'text-valign': 'center',
+						'text-max-width': 150,
+						'text-valign': 'bottom',
 						'text-halign': 'center',
+						'text-margin-y': 11,
+						'text-background-color': 'rgba(255, 252, 247, 0.94)',
+						'text-background-opacity': 1,
+						'text-background-padding': '5px',
+						'text-background-shape': 'round-rectangle',
+						'text-border-width': 1,
+						'text-border-color': 'rgba(74, 57, 40, 0.1)',
 						'border-width': 2,
-						'border-color': '#fff7ef',
-						width: 'mapData(weight, 2, 12, 34, 66)',
-						height: 'mapData(weight, 2, 12, 34, 66)',
+						'border-color': 'rgba(255, 247, 239, 0.92)',
+						width: 'mapData(weight, 2, 12, 32, 74)',
+						height: 'mapData(weight, 2, 12, 32, 74)',
+						'shadow-blur': 16,
+						'shadow-color': 'rgba(38, 28, 18, 0.16)',
+						'shadow-opacity': 0.7,
+						'shadow-offset-x': 0,
+						'shadow-offset-y': 8,
 					},
 				},
 				{
@@ -348,7 +450,10 @@ const nodeOptions = [...nodes].sort((left, right) => {
 						'line-color': 'data(familyColor)',
 						'line-style': (element) => element.data('explicit') ? 'solid' : 'dashed',
 						width: 'mapData(weight, 1, 5, 1.5, 4)',
-						opacity: 0.72,
+						opacity: 0.58,
+						'shadow-blur': 6,
+						'shadow-color': 'rgba(32, 24, 16, 0.08)',
+						'shadow-opacity': 0.35,
 					},
 				},
 				{
@@ -368,7 +473,21 @@ const nodeOptions = [...nodes].sort((left, right) => {
 					style: {
 						'border-width': 4,
 						'border-color': '#7a3514',
+						'border-opacity': 1,
+						'overlay-color': '#7a3514',
+						'overlay-opacity': 0.08,
+						'overlay-padding': 8,
 						opacity: 1,
+					},
+				},
+				{
+					selector: 'node.is-anchor',
+					style: {
+						'border-width': 4.5,
+						'border-color': '#1f4f74',
+						'overlay-color': '#1f4f74',
+						'overlay-opacity': 0.08,
+						'overlay-padding': 10,
 					},
 				},
 				{
@@ -395,6 +514,7 @@ const nodeOptions = [...nodes].sort((left, right) => {
 				},
 			],
 			layout: OVERVIEW_LAYOUT,
+			wheelSensitivity: 0.18,
 		});
 
 		function resolveNodeId(rawValue) {
@@ -623,6 +743,44 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			targetField.classList.toggle('is-hidden', mode !== 'path');
 		}
 
+		function syncPresetState() {
+			presetButtons.forEach((button) => {
+				const buttonMode = button.getAttribute('data-graph-preset-mode') ?? 'explore';
+				const buttonStartId = button.getAttribute('data-graph-preset-start-id');
+				const buttonTargetId = button.getAttribute('data-graph-preset-target-id');
+				const buttonDepth = Number(button.getAttribute('data-graph-preset-depth') ?? '1');
+				const buttonFilter = button.getAttribute('data-graph-preset-filter') ?? 'All';
+				const isActive =
+					buttonMode === mode &&
+					buttonStartId === (startNodeId ?? '') &&
+					(buttonTargetId ?? '') === (targetNodeId ?? '') &&
+					buttonDepth === depth &&
+					buttonFilter === activeType;
+
+				button.classList.toggle('is-active', isActive);
+			});
+		}
+
+		function applyPreset(button) {
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+
+			mode = button.getAttribute('data-graph-preset-mode') ?? 'explore';
+			depth = Number(button.getAttribute('data-graph-preset-depth') ?? '1') || 1;
+			activeType = button.getAttribute('data-graph-preset-filter') ?? 'All';
+			selectedEdgeId = null;
+
+			startNodeId = button.getAttribute('data-graph-preset-start-id');
+			targetNodeId = mode === 'path' ? button.getAttribute('data-graph-preset-target-id') : null;
+			selectedNodeId = mode === 'explore' ? startNodeId : null;
+
+			startInput.value = startNodeId ? nodeMap.get(startNodeId)?.label ?? '' : '';
+			targetInput.value = targetNodeId ? nodeMap.get(targetNodeId)?.label ?? '' : '';
+
+			render();
+		}
+
 		function applyTypeFilter(visibleNodeIds) {
 			if (activeType === 'All') {
 				return visibleNodeIds;
@@ -727,9 +885,26 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			cy.batch(() => {
 				cy.elements().removeClass('is-hidden is-selected is-path');
 				cy.nodes().forEach((node) => {
-					node.data('isAnchor', node.id() === selectedNodeId || node.id() === startNodeId || node.id() === targetNodeId);
+					const isAnchor = node.id() === selectedNodeId || node.id() === startNodeId || node.id() === targetNodeId;
+					const showLabel =
+						visibleNodeIds.has(node.id()) &&
+						(
+							isAnchor ||
+							pathNodeIds.includes(node.id()) ||
+							(mode === 'explore' && selectedNodeId && visibleNodeIds.size <= 22) ||
+							(!selectedNodeId && !startNodeId && node.data('degree') >= 12) ||
+							(node.data('explicitlyConnected') && node.data('degree') >= 9)
+						);
+
+					node.data('isAnchor', isAnchor);
+					node.data('labelVisible', showLabel);
 					if (!visibleNodeIds.has(node.id())) {
 						node.addClass('is-hidden');
+					}
+					if (isAnchor) {
+						node.addClass('is-anchor');
+					} else {
+						node.removeClass('is-anchor');
 					}
 				});
 				cy.edges().forEach((edge) => {
@@ -767,6 +942,8 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			} else {
 				viewSummary.textContent = `Overview mode: ${visibleNodeIds.size} core nodes. Select a node to open a tighter constitutional neighborhood.`;
 			}
+
+			syncPresetState();
 
 			if (mode === 'path' && startNodeId && targetNodeId) {
 				renderPathDetail(pathNodeIds);
@@ -856,6 +1033,14 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			render();
 		});
 
+		root.querySelector('[data-graph-presets]')?.addEventListener('click', (event) => {
+			const button = event.target.closest('[data-graph-preset]');
+			if (!(button instanceof HTMLButtonElement)) {
+				return;
+			}
+			applyPreset(button);
+		});
+
 		resetButton.addEventListener('click', () => {
 			mode = 'explore';
 			activeType = 'All';
@@ -905,6 +1090,10 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			render();
 		});
 
-		render();
+		if (presetButtons.length > 0 && root.getAttribute('data-graph-variant') === 'home') {
+			applyPreset(presetButtons[0]);
+		} else {
+			render();
+		}
 	});
 </script>
