@@ -120,6 +120,10 @@ export type GraphExplorerData = {
 	legend: GraphLegendItem[];
 };
 
+export type GraphBuildOptions = {
+	profile?: 'home' | 'display' | 'full';
+};
+
 type GraphCollectionsInput = {
 	articles: CollectionEntry<'articles'>[];
 	parts: CollectionEntry<'parts'>[];
@@ -232,7 +236,7 @@ const relationMeta: Record<
 	'builds-on': { label: 'Builds on', family: 'doctrine', strength: 4 },
 	limits: { label: 'Limits', family: 'doctrine', strength: 4 },
 	frames: { label: 'Frames live dispute', family: 'live', strength: 4 },
-	establishes: { label: 'Establishes', family: 'doctrine', strength: 5 },
+	establishes: { label: 'Establishes', family: 'structure', strength: 5 },
 	applies: { label: 'Applies', family: 'live', strength: 4 },
 	tests: { label: 'Tests', family: 'live', strength: 4 },
 	operationalises: { label: 'Operationalises', family: 'change', strength: 4 },
@@ -244,6 +248,27 @@ const relationMeta: Record<
 };
 
 const familyPriority: GraphEdgeFamily[] = ['doctrine', 'live', 'change', 'history', 'structure'];
+
+const displayDerivedRelations = new Set<GraphRelationType>([
+	'interprets',
+	'amends',
+	'anchors',
+	'overrules',
+	'reaffirms',
+	'builds-on',
+	'limits',
+	'establishes',
+	'extends',
+	'applies',
+	'tests',
+]);
+
+const displayExplicitRelations = new Set<GraphRelationType>([
+	...displayDerivedRelations,
+	'frames',
+	'shapes',
+	'reforms',
+]);
 
 function nodeId(collection: GraphCollection, slug: string) {
 	return `${collection}:${slug}`;
@@ -510,344 +535,136 @@ function explicitStrengthToNumber(value: number | 'core' | 'strong' | 'context')
 	}
 }
 
-export function buildGraphExplorerData(input: GraphCollectionsInput): GraphExplorerData {
-	const nodes = [
-		...sortArticles(input.articles).map((entry) => createNode('articles', entry)),
-		...sortByNumericField(input.parts, 'order').map((entry) => createNode('parts', entry)),
-		...sortByNumericField(input.schedules, 'number').map((entry) => createNode('schedules', entry)),
-		...sortByTitle(input.topics).map((entry) => createNode('topics', entry)),
-		...sortByTitle(input.institutions).map((entry) => createNode('institutions', entry)),
-		...sortByTitle(input.cases).map((entry) => createNode('cases', entry)),
-		...[...sortByNumericField(input.amendments, 'number')].map((entry) => createNode('amendments', entry)),
-		...sortByTitle(input.glossary).map((entry) => createNode('glossary', entry)),
-		...sortByDateAsc(input.timeline, 'date').map((entry) => createNode('timeline', entry)),
-		...sortByDateDesc(input.currentAffairs, 'updatedAt').map((entry) => createNode('current-affairs', entry)),
-	];
-
-	const nodeIds = new Set(nodes.map((node) => node.id));
-	const nodeIndex = new Map(nodes.map((node) => [node.id, node]));
-	const edgeMap = new Map<string, EdgeAccumulator>();
-
-	for (const entry of input.articles) {
-		const from = nodeId('articles', entry.data.slug);
-		if (entry.data.partSlug) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', entry.data.partSlug),
-				relationType: 'belongs-to',
-			});
-		}
-		for (const related of entry.data.relatedArticles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', related),
-				relationType: 'cross-references',
-			});
-		}
-		for (const schedule of entry.data.schedules) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'operationalises',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'explains',
-			});
-		}
+function includeCollectionInProfile(collection: GraphCollection, profile: 'home' | 'display' | 'full') {
+	if (profile === 'full') {
+		return true;
 	}
 
-	for (const entry of input.parts) {
-		const from = nodeId('parts', entry.data.slug);
-		for (const article of entry.data.articleSlugs) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'contains',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'explains',
-			});
-		}
+	return ['articles', 'topics', 'institutions', 'cases', 'amendments', 'current-affairs'].includes(collection);
+}
+
+function includeRelationInProfile(
+	relationType: GraphRelationType,
+	explicit: boolean | undefined,
+	profile: 'home' | 'display' | 'full',
+) {
+	if (profile === 'full') {
+		return true;
 	}
 
-	for (const entry of input.schedules) {
-		const from = nodeId('schedules', entry.data.slug);
-		for (const article of entry.data.relatedArticles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'operationalises',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'explains',
-			});
-		}
+	if (explicit) {
+		return displayExplicitRelations.has(relationType);
 	}
 
-	for (const entry of input.topics) {
-		const from = nodeId('topics', entry.data.slug);
-		for (const part of entry.data.parts) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'explains',
-			});
-		}
-		for (const schedule of entry.data.schedules) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'explains',
-			});
-		}
-	}
+	return displayDerivedRelations.has(relationType);
+}
 
-	for (const entry of input.institutions) {
-		const from = nodeId('institutions', entry.data.slug);
-		for (const article of entry.data.articles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'belongs-to',
-			});
-		}
-		for (const part of entry.data.parts) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'belongs-to',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'shapes',
-			});
-		}
-		for (const caseSlug of entry.data.cases) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('cases', caseSlug),
-				relationType: 'involves',
-			});
-		}
-		for (const issue of entry.data.currentAffairs) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('current-affairs', issue),
-				relationType: 'involves',
-			});
-		}
-	}
+function scoreOverviewNode(node: GraphNode) {
+	const typeWeight = {
+		'Current Affair': 45,
+		Case: 40,
+		Topic: 38,
+		Institution: 34,
+		Amendment: 30,
+		Article: 24,
+		Part: 18,
+		Schedule: 18,
+		Glossary: 12,
+		Timeline: 10,
+	}[node.type] ?? 0;
 
-	for (const entry of input.cases) {
-		const from = nodeId('cases', entry.data.slug);
-		for (const article of entry.data.articles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'interprets',
-			});
-		}
-		for (const part of entry.data.parts) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'interprets',
-			});
-		}
-		for (const schedule of entry.data.schedules) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'interprets',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'shapes',
-			});
-		}
-	}
+	return (node.explicitlyConnected ? 120 : 0) + typeWeight + node.degree * 4;
+}
 
-	for (const entry of input.amendments) {
-		const from = nodeId('amendments', entry.data.slug);
-		for (const article of entry.data.affectedArticles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'amends',
-			});
-		}
-		for (const part of entry.data.affectedParts) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'amends',
-			});
-		}
-		for (const schedule of entry.data.affectedSchedules) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'amends',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'extends',
-			});
-		}
-	}
-
-	for (const entry of input.currentAffairs) {
-		const from = nodeId('current-affairs', entry.data.slug);
-		for (const article of entry.data.articles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'anchors',
-			});
-		}
-		for (const part of entry.data.parts) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'anchors',
-			});
-		}
-		for (const schedule of entry.data.schedules) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'anchors',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'frames',
-			});
-		}
-		for (const caseSlug of entry.data.cases) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('cases', caseSlug),
-				relationType: 'frames',
-			});
-		}
-		for (const institution of entry.data.institutions) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('institutions', institution),
-				relationType: 'involves',
-			});
-		}
-	}
-
-	for (const entry of input.glossary) {
-		const from = nodeId('glossary', entry.data.slug);
-		for (const article of entry.data.relatedArticles) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'defines',
-			});
-		}
-		for (const part of entry.data.relatedParts) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'defines',
-			});
-		}
-		for (const schedule of entry.data.relatedSchedules) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'defines',
-			});
-		}
-		for (const topic of entry.data.topics) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('topics', topic),
-				relationType: 'defines',
-			});
-		}
-		for (const caseSlug of entry.data.cases) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('cases', caseSlug),
-				relationType: 'defines',
-			});
-		}
-	}
-
-	for (const entry of input.timeline) {
-		const from = nodeId('timeline', entry.data.slug);
-		for (const article of entry.data.articleRefs) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('articles', article),
-				relationType: 'chronicles',
-			});
-		}
-		for (const part of entry.data.partRefs) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('parts', part),
-				relationType: 'chronicles',
-			});
-		}
-		for (const schedule of entry.data.scheduleRefs) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId('schedules', schedule),
-				relationType: 'chronicles',
-			});
-		}
-		if (entry.data.relatedCollection && entry.data.relatedSlug) {
-			accumulateEdge(edgeMap, nodeIds, {
-				from,
-				to: nodeId(entry.data.relatedCollection, entry.data.relatedSlug as string),
-				relationType: 'chronicles',
-			});
-		}
-	}
-
-	for (const entry of input.edges) {
-		accumulateEdge(edgeMap, nodeIds, {
-			from: nodeId(entry.data.fromCollection, entry.data.fromSlug),
-			to: nodeId(entry.data.toCollection, entry.data.toSlug),
-			relationType: entry.data.relationType,
-			explicit: true,
-			note: entry.data.note ?? entry.data.summary,
-			sources: entry.data.sources,
-			strength: explicitStrengthToNumber(entry.data.strength),
-		});
-	}
-
-	const edges = [...edgeMap.values()].map((edge, index) => finalizeEdge(edge, index));
+function applyGraphPruning(nodes: GraphNode[], edges: GraphEdge[], profile: 'home' | 'display' | 'full') {
+	const degreeMap = new Map<string, number>();
 	const explicitTouch = new Set<string>();
+	const highSignalTouch = new Set<string>();
+
+	for (const node of nodes) {
+		degreeMap.set(node.id, 0);
+	}
+
+	for (const edge of edges) {
+		degreeMap.set(edge.source, (degreeMap.get(edge.source) ?? 0) + 1);
+		degreeMap.set(edge.target, (degreeMap.get(edge.target) ?? 0) + 1);
+
+		if (edge.explicit) {
+			explicitTouch.add(edge.source);
+			explicitTouch.add(edge.target);
+		}
+
+		if (['doctrine', 'change', 'live'].includes(edge.family)) {
+			highSignalTouch.add(edge.source);
+			highSignalTouch.add(edge.target);
+		}
+	}
+
+	if (profile === 'home') {
+		const spotlightEdges = edges.filter(
+			(edge) => edge.explicit || (edge.weight >= 4 && (explicitTouch.has(edge.source) || explicitTouch.has(edge.target))),
+		);
+		const spotlightIds = new Set<string>();
+
+		for (const edge of spotlightEdges) {
+			spotlightIds.add(edge.source);
+			spotlightIds.add(edge.target);
+		}
+
+		return {
+			nodes: nodes.filter((node) => spotlightIds.has(node.id)),
+			edges: spotlightEdges,
+		};
+	}
+
+	const activeNodeIds = new Set(
+		nodes
+			.filter((node) => {
+				const degree = degreeMap.get(node.id) ?? 0;
+				if (degree === 0 && !explicitTouch.has(node.id)) {
+					return false;
+				}
+
+				if (node.collection === 'articles') {
+					return degree >= 2 || explicitTouch.has(node.id) || highSignalTouch.has(node.id);
+				}
+
+				if (node.collection === 'topics' || node.collection === 'cases' || node.collection === 'amendments') {
+					return degree >= 2 || explicitTouch.has(node.id) || highSignalTouch.has(node.id);
+				}
+
+				if (node.collection === 'current-affairs' || node.collection === 'institutions') {
+					return degree >= 2 || explicitTouch.has(node.id);
+				}
+
+				return degree >= 2;
+			})
+			.map((node) => node.id),
+	);
+
+	const filteredEdges = edges.filter((edge) => activeNodeIds.has(edge.source) && activeNodeIds.has(edge.target));
+	const survivingIds = new Set<string>();
+
+	for (const edge of filteredEdges) {
+		survivingIds.add(edge.source);
+		survivingIds.add(edge.target);
+	}
+
+	return {
+		nodes: nodes.filter((node) => survivingIds.has(node.id)),
+		edges: filteredEdges,
+	};
+}
+
+function hydrateNodeGraphState(nodes: GraphNode[], edges: GraphEdge[], profile: 'home' | 'display' | 'full') {
+	const nodeIndex = new Map(nodes.map((node) => [node.id, node]));
+	const explicitTouch = new Set<string>();
+
+	for (const node of nodes) {
+		node.degree = 0;
+		node.explicitlyConnected = false;
+		node.overview = false;
+	}
 
 	for (const edge of edges) {
 		nodeIndex.get(edge.source)!.degree += 1;
@@ -860,11 +677,425 @@ export function buildGraphExplorerData(input: GraphCollectionsInput): GraphExplo
 
 	for (const node of nodes) {
 		node.explicitlyConnected = explicitTouch.has(node.id);
+	}
+
+	if (profile === 'home' || profile === 'display') {
+		const overviewIds = new Set(
+			[...nodes]
+				.filter((node) => node.degree > 0)
+				.sort((left, right) => scoreOverviewNode(right) - scoreOverviewNode(left) || left.label.localeCompare(right.label))
+				.slice(0, profile === 'home' ? 18 : 28)
+				.map((node) => node.id),
+		);
+
+		for (const node of nodes) {
+			node.overview = overviewIds.has(node.id);
+		}
+
+		return;
+	}
+
+	for (const node of nodes) {
 		node.overview =
 			node.explicitlyConnected ||
 			node.degree >= 6 ||
 			['Part', 'Schedule', 'Topic', 'Institution', 'Amendment', 'Current Affair'].includes(node.type);
 	}
+}
+
+export function buildGraphExplorerData(input: GraphCollectionsInput, options: GraphBuildOptions = {}): GraphExplorerData {
+	const profile = options.profile ?? 'display';
+	const nodes = [
+		...(includeCollectionInProfile('articles', profile) ? sortArticles(input.articles).map((entry) => createNode('articles', entry)) : []),
+		...(includeCollectionInProfile('parts', profile) ? sortByNumericField(input.parts, 'order').map((entry) => createNode('parts', entry)) : []),
+		...(includeCollectionInProfile('schedules', profile) ? sortByNumericField(input.schedules, 'number').map((entry) => createNode('schedules', entry)) : []),
+		...(includeCollectionInProfile('topics', profile) ? sortByTitle(input.topics).map((entry) => createNode('topics', entry)) : []),
+		...(includeCollectionInProfile('institutions', profile) ? sortByTitle(input.institutions).map((entry) => createNode('institutions', entry)) : []),
+		...(includeCollectionInProfile('cases', profile) ? sortByTitle(input.cases).map((entry) => createNode('cases', entry)) : []),
+		...(includeCollectionInProfile('amendments', profile)
+			? [...sortByNumericField(input.amendments, 'number')].map((entry) => createNode('amendments', entry))
+			: []),
+		...(includeCollectionInProfile('glossary', profile) ? sortByTitle(input.glossary).map((entry) => createNode('glossary', entry)) : []),
+		...(includeCollectionInProfile('timeline', profile) ? sortByDateAsc(input.timeline, 'date').map((entry) => createNode('timeline', entry)) : []),
+		...(includeCollectionInProfile('current-affairs', profile)
+			? sortByDateDesc(input.currentAffairs, 'updatedAt').map((entry) => createNode('current-affairs', entry))
+			: []),
+	];
+
+	const nodeIds = new Set(nodes.map((node) => node.id));
+	const nodeIndex = new Map(nodes.map((node) => [node.id, node]));
+	const edgeMap = new Map<string, EdgeAccumulator>();
+
+	for (const entry of input.articles) {
+		const from = nodeId('articles', entry.data.slug);
+		if (entry.data.partSlug) {
+			if (includeRelationInProfile('belongs-to', false, profile)) {
+				accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', entry.data.partSlug),
+				relationType: 'belongs-to',
+				});
+			}
+		}
+		for (const related of entry.data.relatedArticles) {
+			if (!includeRelationInProfile('cross-references', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', related),
+				relationType: 'cross-references',
+			});
+		}
+		for (const schedule of entry.data.schedules) {
+			if (!includeRelationInProfile('operationalises', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'operationalises',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('explains', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'explains',
+			});
+		}
+	}
+
+	for (const entry of input.parts) {
+		const from = nodeId('parts', entry.data.slug);
+		for (const article of entry.data.articleSlugs) {
+			if (!includeRelationInProfile('contains', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'contains',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('explains', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'explains',
+			});
+		}
+	}
+
+	for (const entry of input.schedules) {
+		const from = nodeId('schedules', entry.data.slug);
+		for (const article of entry.data.relatedArticles) {
+			if (!includeRelationInProfile('operationalises', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'operationalises',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('explains', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'explains',
+			});
+		}
+	}
+
+	for (const entry of input.topics) {
+		const from = nodeId('topics', entry.data.slug);
+		for (const part of entry.data.parts) {
+			if (!includeRelationInProfile('explains', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', part),
+				relationType: 'explains',
+			});
+		}
+		for (const schedule of entry.data.schedules) {
+			if (!includeRelationInProfile('explains', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'explains',
+			});
+		}
+	}
+
+	for (const entry of input.institutions) {
+		const from = nodeId('institutions', entry.data.slug);
+		for (const article of entry.data.articles) {
+			if (!includeRelationInProfile('establishes', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from: nodeId('articles', article),
+				to: from,
+				relationType: 'establishes',
+			});
+		}
+		for (const part of entry.data.parts) {
+			if (!includeRelationInProfile('establishes', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from: nodeId('parts', part),
+				to: from,
+				relationType: 'establishes',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('shapes', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'shapes',
+			});
+		}
+		for (const caseSlug of entry.data.cases) {
+			if (!includeRelationInProfile('involves', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('cases', caseSlug),
+				relationType: 'involves',
+			});
+		}
+		for (const issue of entry.data.currentAffairs) {
+			if (!includeRelationInProfile('involves', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('current-affairs', issue),
+				relationType: 'involves',
+			});
+		}
+	}
+
+	for (const entry of input.cases) {
+		const from = nodeId('cases', entry.data.slug);
+		for (const article of entry.data.articles) {
+			if (!includeRelationInProfile('interprets', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'interprets',
+			});
+		}
+		for (const part of entry.data.parts) {
+			if (!includeRelationInProfile('interprets', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', part),
+				relationType: 'interprets',
+			});
+		}
+		for (const schedule of entry.data.schedules) {
+			if (!includeRelationInProfile('interprets', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'interprets',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('shapes', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'shapes',
+			});
+		}
+	}
+
+	for (const entry of input.amendments) {
+		const from = nodeId('amendments', entry.data.slug);
+		for (const article of entry.data.affectedArticles) {
+			if (!includeRelationInProfile('amends', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'amends',
+			});
+		}
+		for (const part of entry.data.affectedParts) {
+			if (!includeRelationInProfile('amends', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', part),
+				relationType: 'amends',
+			});
+		}
+		for (const schedule of entry.data.affectedSchedules) {
+			if (!includeRelationInProfile('amends', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'amends',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('extends', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'extends',
+			});
+		}
+	}
+
+	for (const entry of input.currentAffairs) {
+		const from = nodeId('current-affairs', entry.data.slug);
+		for (const article of entry.data.articles) {
+			if (!includeRelationInProfile('anchors', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'anchors',
+			});
+		}
+		for (const part of entry.data.parts) {
+			if (!includeRelationInProfile('anchors', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', part),
+				relationType: 'anchors',
+			});
+		}
+		for (const schedule of entry.data.schedules) {
+			if (!includeRelationInProfile('anchors', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'anchors',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('frames', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'frames',
+			});
+		}
+		for (const caseSlug of entry.data.cases) {
+			if (!includeRelationInProfile('frames', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('cases', caseSlug),
+				relationType: 'frames',
+			});
+		}
+		for (const institution of entry.data.institutions) {
+			if (!includeRelationInProfile('involves', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('institutions', institution),
+				relationType: 'involves',
+			});
+		}
+	}
+
+	for (const entry of input.glossary) {
+		const from = nodeId('glossary', entry.data.slug);
+		for (const article of entry.data.relatedArticles) {
+			if (!includeRelationInProfile('defines', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'defines',
+			});
+		}
+		for (const part of entry.data.relatedParts) {
+			if (!includeRelationInProfile('defines', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', part),
+				relationType: 'defines',
+			});
+		}
+		for (const schedule of entry.data.relatedSchedules) {
+			if (!includeRelationInProfile('defines', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'defines',
+			});
+		}
+		for (const topic of entry.data.topics) {
+			if (!includeRelationInProfile('defines', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('topics', topic),
+				relationType: 'defines',
+			});
+		}
+		for (const caseSlug of entry.data.cases) {
+			if (!includeRelationInProfile('defines', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('cases', caseSlug),
+				relationType: 'defines',
+			});
+		}
+	}
+
+	for (const entry of input.timeline) {
+		const from = nodeId('timeline', entry.data.slug);
+		for (const article of entry.data.articleRefs) {
+			if (!includeRelationInProfile('chronicles', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('articles', article),
+				relationType: 'chronicles',
+			});
+		}
+		for (const part of entry.data.partRefs) {
+			if (!includeRelationInProfile('chronicles', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('parts', part),
+				relationType: 'chronicles',
+			});
+		}
+		for (const schedule of entry.data.scheduleRefs) {
+			if (!includeRelationInProfile('chronicles', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId('schedules', schedule),
+				relationType: 'chronicles',
+			});
+		}
+		if (entry.data.relatedCollection && entry.data.relatedSlug) {
+			if (!includeRelationInProfile('chronicles', false, profile)) continue;
+			accumulateEdge(edgeMap, nodeIds, {
+				from,
+				to: nodeId(entry.data.relatedCollection, entry.data.relatedSlug as string),
+				relationType: 'chronicles',
+			});
+		}
+	}
+
+	for (const entry of input.edges) {
+		if (!includeRelationInProfile(entry.data.relationType, true, profile)) {
+			continue;
+		}
+		accumulateEdge(edgeMap, nodeIds, {
+			from: nodeId(entry.data.fromCollection, entry.data.fromSlug),
+			to: nodeId(entry.data.toCollection, entry.data.toSlug),
+			relationType: entry.data.relationType,
+			explicit: true,
+			note: entry.data.note ?? entry.data.summary,
+			sources: entry.data.sources,
+			strength: explicitStrengthToNumber(entry.data.strength),
+		});
+	}
+
+	let edges = [...edgeMap.values()].map((edge, index) => finalizeEdge(edge, index));
+	let finalNodes = nodes;
+
+	if (profile === 'home' || profile === 'display') {
+		const pruned = applyGraphPruning(nodes, edges, profile);
+		finalNodes = pruned.nodes;
+		edges = pruned.edges;
+	}
+
+	hydrateNodeGraphState(finalNodes, edges, profile);
 
 	const legend = familyPriority
 		.map((family) => {
@@ -880,23 +1111,23 @@ export function buildGraphExplorerData(input: GraphCollectionsInput): GraphExplo
 		.filter((item) => item.count > 0);
 
 	const stats = [
-		{ label: 'Nodes', value: nodes.length },
+		{ label: 'Nodes', value: finalNodes.length },
 		{ label: 'Relationships', value: edges.length },
 		{ label: 'Explicit links', value: edges.filter((edge) => edge.explicit).length },
-		{ label: 'Overview nodes', value: nodes.filter((node) => node.overview).length },
+		{ label: 'Overview nodes', value: finalNodes.filter((node) => node.overview).length },
 		{ label: 'Articles', value: input.articles.length, href: withBase('/articles') },
 		{ label: 'Cases', value: input.cases.length, href: withBase('/cases') },
 	] satisfies GraphStat[];
 
 	return {
-		nodes: nodes.sort((left, right) => left.label.localeCompare(right.label)),
+		nodes: finalNodes.sort((left, right) => left.label.localeCompare(right.label)),
 		edges,
 		stats,
 		legend,
 	};
 }
 
-export async function getGraphExplorerData() {
+export async function getGraphExplorerData(options: GraphBuildOptions = {}) {
 	const [articles, parts, schedules, topics, institutions, cases, glossary, amendments, timeline, currentAffairs, edges] =
 		await Promise.all([
 			getCollection('articles'),
@@ -912,17 +1143,20 @@ export async function getGraphExplorerData() {
 			getCollection('edges'),
 		]);
 
-	return buildGraphExplorerData({
-		articles,
-		parts,
-		schedules,
-		topics,
-		institutions,
-		cases,
-		glossary,
-		amendments,
-		timeline,
-		currentAffairs,
-		edges,
-	});
+	return buildGraphExplorerData(
+		{
+			articles,
+			parts,
+			schedules,
+			topics,
+			institutions,
+			cases,
+			glossary,
+			amendments,
+			timeline,
+			currentAffairs,
+			edges,
+		},
+		options,
+	);
 }

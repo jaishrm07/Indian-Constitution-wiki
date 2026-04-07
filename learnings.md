@@ -296,3 +296,7 @@ Showing the full constitutional network by default creates a hairball even when 
 ### 63. Build-time graph normalization is the right fit for a static legal reference site
 
 For this project, a static normalized graph payload generated from canonical content is more appropriate than introducing a graph database immediately. It keeps deployment simple, preserves source control over relationships, and still enables rich client-side interaction such as path search, typed-edge explanation, and mode-specific layouts. A graph database only becomes necessary once the product needs dynamic multi-user editing or much heavier query patterns.
+
+### 64. Homepage graph and explorer graph should not use the same density budget
+
+A homepage graph is a product statement, not a dumping ground for every valid edge in the corpus. The strongest default is a smaller backbone graph built around explicit doctrinal links plus their highest-signal constitutional anchors. The broader explorer can remain richer, but the first thing a user sees should optimize for legibility and trust, not raw coverage.

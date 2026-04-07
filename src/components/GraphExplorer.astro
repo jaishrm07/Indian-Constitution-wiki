@@ -333,6 +333,20 @@ const nodeOptions = [...nodes].sort((left, right) => {
 		return [...new Set(values)];
 	}
 
+	const CORE_RELATIONS = new Set([
+		'interprets',
+		'amends',
+		'anchors',
+		'overrules',
+		'reaffirms',
+		'builds-on',
+		'limits',
+		'establishes',
+		'extends',
+		'applies',
+		'tests',
+	]);
+
 	document.querySelectorAll('[data-graph-shell]').forEach((root) => {
 		const payloadScript = root.querySelector('[data-graph-payload]');
 		const canvas = root.querySelector('[data-graph-canvas]');
@@ -694,26 +708,71 @@ const nodeOptions = [...nodes].sort((left, right) => {
 			return seen;
 		}
 
+		function edgeCost(edge) {
+			const allContextual = edge.relationTypes.every((relationType) => !CORE_RELATIONS.has(relationType));
+			let cost = 1 + Math.max(0, 5 - (edge.weight ?? 1)) * 0.14;
+
+			if (!edge.explicit) {
+				cost += 0.35;
+			}
+
+			if (allContextual) {
+				cost += 1.75;
+			}
+
+			if (edge.family === 'history') {
+				cost += 1.2;
+			}
+
+			return cost;
+		}
+
 		function shortestPath(startId, endId) {
 			if (!startId || !endId) {
 				return [];
 			}
 
-			const queue = [startId];
+			const distances = new Map([[startId, 0]]);
 			const previous = new Map([[startId, null]]);
+			const queue = new Set(nodes.map((node) => node.id));
 
-			while (queue.length > 0) {
-				const current = queue.shift();
+			while (queue.size > 0) {
+				let current = null;
+				let currentDistance = Infinity;
+
+				for (const candidate of queue) {
+					const distance = distances.get(candidate) ?? Infinity;
+					if (distance < currentDistance) {
+						current = candidate;
+						currentDistance = distance;
+					}
+				}
+
+				if (!current || currentDistance === Infinity) {
+					break;
+				}
+
+				queue.delete(current);
+
 				if (current === endId) {
 					break;
 				}
 
 				for (const neighbor of adjacency.get(current) ?? []) {
-					if (previous.has(neighbor)) {
+					if (!queue.has(neighbor)) {
 						continue;
 					}
-					previous.set(neighbor, current);
-					queue.push(neighbor);
+
+					const edge = edgeByPair.get(pairKey(current, neighbor));
+					if (!edge) {
+						continue;
+					}
+
+					const trial = currentDistance + edgeCost(edge);
+					if (trial < (distances.get(neighbor) ?? Infinity)) {
+						distances.set(neighbor, trial);
+						previous.set(neighbor, current);
+					}
 				}
 			}
 

@@ -6,18 +6,18 @@ import Layout from '../../layouts/Layout.astro';
 import { defaultGraphPresets } from '../../lib/graph-presets';
 import { getGraphExplorerData } from '../../lib/graph';
 
-const graph = await getGraphExplorerData();
+const graph = await getGraphExplorerData({ profile: 'display' });
 ---
 
 <Layout
 	title="Relationship Explorer | Constitution Atlas"
-	description="Explore the constitutional knowledge graph linking Articles, cases, amendments, institutions, glossary terms, timelines, and live issues."
+	description="Explore a curated constitutional knowledge graph linking Articles, cases, amendments, institutions, and live issues through typed relationships."
 	pagefindIndexed={true}
 >
 	<PageIntro
 		eyebrow="Graph"
 		title="Explore the constitutional intelligence graph"
-		summary="This explorer turns the site into a typed knowledge graph so readers can trace doctrine, constitutional text, amendments, institutions, glossary terms, and live disputes as one connected system."
+		summary="This explorer focuses on the high-signal constitutional graph: doctrine, constitutional text, amendments, institutions, and live disputes with typed, source-backed relationships."
 		meta={['Focused graph modes', 'Typed constitutional relationships', 'Source-backed explicit edges']}
 		breadcrumbs={[
 			{ label: 'Home', href: '/' },
@@ -37,8 +37,9 @@ const graph = await getGraphExplorerData();
 
 	<section class="list-shell graph-page-copy" data-pagefind-body>
 		<p>
-			Start in Overview mode to see the most connected constitutional anchors, switch to Focus mode for a node-centered
-			dossier, and use Path mode when you need the shortest explainable route between two constitutional ideas.
+			Start in Overview mode to see the strongest constitutional anchors, switch to Focus mode for a node-centered
+			dossier, and use Path mode when you need the shortest explainable route through the curated graph rather than
+			through weak editorial cross-links.
 		</p>
 	</section>
 
