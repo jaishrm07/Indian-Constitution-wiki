@@ -131,7 +131,7 @@ function buildAdjacency(directedEdges: GraphDirectedEdge[]) {
 }
 
 function buildDatasetGraph(dataset: GraphRuntimeDataset) {
-	const graph = new Graph({ type: 'directed' });
+	const graph = new Graph({ type: 'directed', multi: true });
 
 	for (const node of dataset.nodes) {
 		graph.addNode(node.id, {
@@ -332,7 +332,7 @@ function createVisibleGraph(
 		pathNodeIds: string[];
 	},
 ) {
-	const graph = new Graph({ type: 'directed' });
+	const graph = new Graph({ type: 'directed', multi: true });
 
 	for (const node of sortNodes(dataset.nodes.filter((item) => visibleNodeIds.has(item.id)))) {
 		const isPath = state.pathNodeIds.includes(node.id);
@@ -510,6 +510,10 @@ function renderDetailLink(link: HTMLAnchorElement, href: string | null) {
 	link.href = href;
 }
 
+function escapeAttr(value: unknown) {
+	return escapeHtml(value).replaceAll('`', '&#96;');
+}
+
 function hasWebGLSupport() {
 	const canvas = document.createElement('canvas');
 	return Boolean(
@@ -517,6 +521,138 @@ function hasWebGLSupport() {
 		|| canvas.getContext('webgl')
 		|| canvas.getContext('experimental-webgl'),
 	);
+}
+
+function renderSvgFallback(container: HTMLElement, graph: Graph) {
+	const width = Math.max(720, container.clientWidth || 720);
+	const height = Math.max(640, container.clientHeight || 780);
+	const padding = 42;
+	const nodes = graph.nodes().map((nodeId) => ({
+		id: nodeId,
+		...graph.getNodeAttributes(nodeId),
+	})) as Array<{
+		id: string;
+		label?: string;
+		x?: number;
+		y?: number;
+		size?: number;
+		color?: string;
+		highlighted?: boolean;
+		pagerank?: number;
+	}>;
+
+	if (!nodes.length) {
+		container.innerHTML = '<div class="graph-fallback-empty">No graph nodes are available for this view.</div>';
+		return;
+	}
+
+	const xs = nodes.map((node) => Number(node.x ?? 0));
+	const ys = nodes.map((node) => Number(node.y ?? 0));
+	const minX = Math.min(...xs);
+	const maxX = Math.max(...xs);
+	const minY = Math.min(...ys);
+	const maxY = Math.max(...ys);
+	const spanX = Math.max(1, maxX - minX);
+	const spanY = Math.max(1, maxY - minY);
+	const scale = Math.min((width - padding * 2) / spanX, (height - padding * 2) / spanY);
+	const innerWidth = spanX * scale;
+	const innerHeight = spanY * scale;
+	const offsetX = padding + (width - padding * 2 - innerWidth) / 2;
+	const offsetY = padding + (height - padding * 2 - innerHeight) / 2;
+	const project = (x: number, y: number) => ({
+		x: offsetX + (x - minX) * scale,
+		y: offsetY + (y - minY) * scale,
+	});
+
+	const edges = graph.edges().map((edgeId) => {
+		const source = graph.source(edgeId);
+		const target = graph.target(edgeId);
+		return {
+			id: edgeId,
+			source,
+			target,
+			...graph.getEdgeAttributes(edgeId),
+		};
+	}) as Array<{
+		id: string;
+		source: string;
+		target: string;
+		color?: string;
+		size?: number;
+		highlighted?: boolean;
+	}>;
+
+	const labels = [...nodes]
+		.sort((left, right) => {
+			const rightScore = Number(right.highlighted ? 100 : 0) + Number(right.pagerank ?? 0) * 100 + Number(right.size ?? 0);
+			const leftScore = Number(left.highlighted ? 100 : 0) + Number(left.pagerank ?? 0) * 100 + Number(left.size ?? 0);
+			return rightScore - leftScore;
+		})
+		.slice(0, 14)
+		.map((node) => node.id);
+	const labelSet = new Set(labels);
+
+	const edgeMarkup = edges
+		.map((edge) => {
+			const source = nodes.find((node) => node.id === edge.source);
+			const target = nodes.find((node) => node.id === edge.target);
+			if (!source || !target) return '';
+			const from = project(Number(source.x ?? 0), Number(source.y ?? 0));
+			const to = project(Number(target.x ?? 0), Number(target.y ?? 0));
+			return `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" stroke="${escapeAttr(edge.color ?? '#9c8d7b')}" stroke-width="${Math.max(1.1, Number(edge.size ?? 1) * 0.9)}" stroke-opacity="${edge.highlighted ? '0.92' : '0.42'}" stroke-linecap="round" />`;
+		})
+		.join('');
+
+	const nodeMarkup = nodes
+		.map((node) => {
+			const point = project(Number(node.x ?? 0), Number(node.y ?? 0));
+			const radius = Math.max(4, Math.min(15, Number(node.size ?? 6) * 1.18));
+			const label = labelSet.has(node.id) && node.label
+				? `<text x="${point.x + radius + 5}" y="${point.y - radius - 2}" class="graph-fallback__label">${escapeHtml(node.label)}</text>`
+				: '';
+			return `
+				<g class="graph-fallback__node${node.highlighted ? ' is-highlighted' : ''}">
+					<circle cx="${point.x}" cy="${point.y}" r="${radius}" fill="${escapeAttr(node.color ?? '#b55e24')}" fill-opacity="${node.highlighted ? '0.96' : '0.88'}" stroke="${node.highlighted ? '#7a3514' : 'rgba(255,255,255,0.85)'}" stroke-width="${node.highlighted ? '2.6' : '1.2'}" />
+					${label}
+				</g>
+			`;
+		})
+		.join('');
+
+	container.innerHTML = `
+		<div class="graph-fallback-note">Stable graph view</div>
+		<svg class="graph-fallback" viewBox="0 0 ${width} ${height}" role="img" aria-label="Constitutional relationship graph fallback">
+			<rect x="0" y="0" width="${width}" height="${height}" rx="24" fill="rgba(255,252,246,0.98)" />
+			<g>${edgeMarkup}</g>
+			<g>${nodeMarkup}</g>
+		</svg>
+	`;
+}
+
+function graphBounds(graph: Graph) {
+	const xs: number[] = [];
+	const ys: number[] = [];
+
+	graph.forEachNode((nodeId) => {
+		xs.push(Number(graph.getNodeAttribute(nodeId, 'x') ?? 0));
+		ys.push(Number(graph.getNodeAttribute(nodeId, 'y') ?? 0));
+	});
+
+	if (!xs.length || !ys.length) {
+		return null;
+	}
+
+	const minX = Math.min(...xs);
+	const maxX = Math.max(...xs);
+	const minY = Math.min(...ys);
+	const maxY = Math.max(...ys);
+	const span = Math.max(maxX - minX, maxY - minY, 1);
+	const pad = Math.max(18, span * 0.08);
+
+	return {
+		x: [minX - pad, maxX + pad] as [number, number],
+		y: [minY - pad, maxY + pad] as [number, number],
+	};
 }
 
 function mountSigmaGraph(
@@ -599,12 +735,13 @@ export function mountGraphExplorer(root: HTMLElement) {
 	let pathNodeIds: string[] = [];
 	let sigma: Sigma | null = null;
 	let renderToken = 0;
+	let usingFallback = false;
 
 	function showGraphError(error: unknown) {
 		const rawMessage = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
 		const friendlyMessage = rawMessage.includes('WebGL')
 			|| rawMessage.includes('blendFunc')
-			? 'WebGL is unavailable, so the graph cannot render in this browser or environment.'
+			? 'WebGL is unavailable, so the interactive graph switched to a static fallback view.'
 			: rawMessage;
 		viewSummary.textContent = `Graph failed to render: ${friendlyMessage}`;
 		detailTitle.textContent = 'Graph error';
@@ -620,6 +757,22 @@ export function mountGraphExplorer(root: HTMLElement) {
 
 	function datasetFor(scopeId: string) {
 		return datasets[scopeId] ?? datasets[datasetIds[0]];
+	}
+
+	function seedFromActivePreset() {
+		const activePreset = presetButtons.find(
+			(button) => button.classList.contains('is-active') && !button.disabled,
+		) as HTMLButtonElement | undefined;
+		if (!activePreset) {
+			return;
+		}
+
+		activeMode = (activePreset.getAttribute('data-graph-preset-mode') as GraphMode) ?? 'explore';
+		activeDepth = (Number(activePreset.getAttribute('data-graph-preset-depth') ?? '1') as 1 | 2) || 1;
+		activeFilter = activePreset.getAttribute('data-graph-preset-filter') ?? 'All';
+		startNodeId = activePreset.getAttribute('data-graph-preset-start-id');
+		targetNodeId = activeMode === 'path' ? activePreset.getAttribute('data-graph-preset-target-id') : null;
+		selectedNodeId = activeMode === 'explore' ? startNodeId : null;
 	}
 
 	function refreshScopeControls() {
@@ -913,15 +1066,16 @@ export function mountGraphExplorer(root: HTMLElement) {
 	}
 
 	function viewSummaryText(dataset: GraphRuntimeDataset) {
+		const fallbackPrefix = usingFallback ? 'Stable graph view. ' : '';
 		if (activeMode === 'path' && pathNodeIds.length > 0) {
-			return `${dataset.label}: shortest path mode connects ${pathNodeIds.length} nodes through ${activeLayout} layout.`;
+			return `${fallbackPrefix}${dataset.label}: shortest path mode connects ${pathNodeIds.length} nodes through ${activeLayout} layout.`;
 		}
 
 		if (activeMode === 'explore' && selectedNodeId) {
-			return `${dataset.label}: focused neighborhood with ${activeDepth}-hop traversal, ${activeLayout} layout${activeFilter !== 'All' ? `, filtered to ${activeFilter}` : ''}.`;
+			return `${fallbackPrefix}${dataset.label}: focused neighborhood with ${activeDepth}-hop traversal, ${activeLayout} layout${activeFilter !== 'All' ? `, filtered to ${activeFilter}` : ''}.`;
 		}
 
-		return `${dataset.label}: ${dataset.metrics.nodeCount} nodes, ${dataset.metrics.directedEdgeCount} directed edges, ${dataset.metrics.communityCount} communities${activeFilter !== 'All' ? `, filtered to ${activeFilter}` : ''}.`;
+		return `${fallbackPrefix}${dataset.label}: ${dataset.metrics.nodeCount} nodes, ${dataset.metrics.directedEdgeCount} directed edges, ${dataset.metrics.communityCount} communities${activeFilter !== 'All' ? `, filtered to ${activeFilter}` : ''}.`;
 	}
 
 	async function render() {
@@ -1013,40 +1167,10 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		sigma?.kill();
-		sigma = mountSigmaGraph(canvas, visibleGraph);
-
-		sigma.on('clickNode', ({ node }) => {
-			selectedEdgeId = null;
-			if (activeMode === 'path') {
-				if (!startNodeId || (startNodeId && targetNodeId)) {
-					startNodeId = node;
-					targetNodeId = null;
-				} else if (node !== startNodeId) {
-					targetNodeId = node;
-				}
-			} else {
-				selectedNodeId = node;
-				startNodeId = node;
-			}
-			void render();
-		});
-
-		sigma.on('clickEdge', ({ edge }) => {
-			selectedEdgeId = edge;
-			if (activeMode === 'explore') {
-				selectedNodeId = null;
-			}
-			void render();
-		});
-
-		sigma.on('clickStage', () => {
-			selectedNodeId = null;
-			selectedEdgeId = null;
-			if (activeMode === 'path') {
-				targetNodeId = null;
-			}
-			void render();
-		});
+		sigma = null;
+		usingFallback = true;
+		canvas.innerHTML = '';
+		renderSvgFallback(canvas, visibleGraph);
 
 		viewSummary.textContent = viewSummaryText(dataset);
 		renderDetail(dataset, visibleGraph, visibleEdgeIds);
@@ -1171,5 +1295,6 @@ export function mountGraphExplorer(root: HTMLElement) {
 		void render();
 	});
 
+	seedFromActivePreset();
 	void render();
 }

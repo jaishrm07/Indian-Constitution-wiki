@@ -1269,6 +1269,47 @@ h3 {
 	display: block;
 }
 
+.graph-fallback,
+.graph-canvas svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.graph-fallback-note {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	z-index: 2;
+	padding: 0.35rem 0.7rem;
+	border-radius: 999px;
+	background: rgba(255, 252, 246, 0.92);
+	border: 1px solid rgba(70, 56, 41, 0.12);
+	color: var(--muted);
+	font-size: 0.78rem;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.graph-fallback__label {
+	fill: #3b332a;
+	font-family: var(--font-body);
+	font-size: 12px;
+	font-weight: 600;
+	paint-order: stroke;
+	stroke: rgba(255, 252, 246, 0.88);
+	stroke-width: 3px;
+	stroke-linejoin: round;
+}
+
+.graph-fallback-empty {
+	display: grid;
+	place-items: center;
+	height: 100%;
+	color: var(--muted);
+	font-size: 0.95rem;
+}
+
 .graph-aside {
 	padding: 1.5rem;
 	display: grid;
