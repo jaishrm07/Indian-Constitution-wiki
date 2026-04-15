@@ -1,4 +1,21 @@
 ---
+interface GraphSourceRef {
+	slug: string;
+	title: string;
+	href: string;
+}
+
+interface GraphEvidenceItem {
+	claim: string;
+	note: string;
+	passage?: string;
+	location?: string;
+	direction: 'source-to-target' | 'target-to-source' | 'both';
+	sources: string[];
+	sourceRefs: GraphSourceRef[];
+	weight: number;
+}
+
 interface GraphNode {
 	id: string;
 	label: string;
@@ -9,6 +26,14 @@ interface GraphNode {
 	slug: string;
 	href: string;
 	degree: number;
+	inDegree?: number;
+	outDegree?: number;
+	weightedDegree?: number;
+	pagerank?: number;
+	bridgeScore?: number;
+	communityId?: number;
+	communitySize?: number;
+	importance?: number;
 	overview: boolean;
 	explicitlyConnected: boolean;
 }
@@ -19,16 +44,13 @@ interface GraphEdgeRelation {
 	relationType: string;
 	relationLabel: string;
 	explicit: boolean;
+	directional: boolean;
+	direction: 'forward' | 'reverse' | 'bidirectional' | 'mixed';
 	note?: string;
 	sources: string[];
 	sourceRefs: GraphSourceRef[];
+	evidence: GraphEvidenceItem[];
 	strength: number;
-}
-
-interface GraphSourceRef {
-	slug: string;
-	title: string;
-	href: string;
 }
 
 interface GraphEdge {
@@ -43,9 +65,33 @@ interface GraphEdge {
 	relationTypes: string[];
 	relations: GraphEdgeRelation[];
 	explicit: boolean;
+	directional: boolean;
+	direction: 'forward' | 'reverse' | 'bidirectional' | 'mixed';
+	dominantSource: string;
+	dominantTarget: string;
 	note: string;
 	sourceCount: number;
+	evidenceCount: number;
 	weight: number;
+}
+
+interface GraphDirectedEdge {
+	id: string;
+	source: string;
+	target: string;
+	relationType: string;
+	relationLabel: string;
+	family: string;
+	familyLabel: string;
+	familyColor: string;
+	explicit: boolean;
+	note: string;
+	strength: number;
+	sourceCount: number;
+	sourceRefs: GraphSourceRef[];
+	evidence: GraphEvidenceItem[];
+	edgeId: string;
+	reversed: boolean;
 }
 
 interface GraphStat {
@@ -60,6 +106,28 @@ interface GraphLegendItem {
 	description: string;
 	color: string;
 	count: number;
+}
+
+interface GraphCommunity {
+	id: number;
+	size: number;
+	label: string;
+	members: string[];
+	anchors: string[];
+}
+
+interface GraphMetrics {
+	nodeCount: number;
+	edgeCount: number;
+	directedEdgeCount: number;
+	explicitEdgeCount: number;
+	overviewNodeCount: number;
+	communityCount: number;
+	bridgeNodeCount: number;
+	averageDegree: number;
+	averageImportance: number;
+	topCentralNodes: string[];
+	topBridgeNodes: string[];
 }
 
 interface GraphPreset {
@@ -79,15 +147,21 @@ interface GraphDataset {
 	description?: string;
 	nodes: GraphNode[];
 	edges: GraphEdge[];
+	directedEdges: GraphDirectedEdge[];
 	stats: GraphStat[];
 	legend: GraphLegendItem[];
+	metrics: GraphMetrics;
+	communities: GraphCommunity[];
 }
 
 interface Props {
 	nodes?: GraphNode[];
 	edges?: GraphEdge[];
+	directedEdges?: GraphDirectedEdge[];
 	stats?: GraphStat[];
 	legend?: GraphLegendItem[];
+	metrics?: GraphMetrics;
+	communities?: GraphCommunity[];
 	datasets?: Record<string, GraphDataset>;
 	defaultScope?: string;
 	variant?: 'default' | 'home';
@@ -97,11 +171,28 @@ interface Props {
 	presets?: GraphPreset[];
 }
 
+const EMPTY_METRICS: GraphMetrics = {
+	nodeCount: 0,
+	edgeCount: 0,
+	directedEdgeCount: 0,
+	explicitEdgeCount: 0,
+	overviewNodeCount: 0,
+	communityCount: 0,
+	bridgeNodeCount: 0,
+	averageDegree: 0,
+	averageImportance: 0,
+	topCentralNodes: [],
+	topBridgeNodes: [],
+};
+
 const {
 	nodes = [],
 	edges = [],
+	directedEdges = [],
 	stats = [],
 	legend = [],
+	metrics = EMPTY_METRICS,
+	communities = [],
 	datasets,
 	defaultScope,
 	variant = 'default',
@@ -110,6 +201,7 @@ const {
 	summary,
 	presets = [],
 } = Astro.props;
+
 const normalizedDatasets =
 	datasets && Object.keys(datasets).length > 0
 		? datasets
@@ -118,10 +210,14 @@ const normalizedDatasets =
 					label: 'Graph',
 					nodes,
 					edges,
+					directedEdges,
 					stats,
 					legend,
+					metrics,
+					communities,
 				},
 			};
+
 const datasetEntries = Object.entries(normalizedDatasets);
 const initialScope = defaultScope && normalizedDatasets[defaultScope] ? defaultScope : datasetEntries[0][0];
 const activeDataset = normalizedDatasets[initialScope];
@@ -131,8 +227,10 @@ const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 		return left.type.localeCompare(right.type);
 	}
 
-	if (right.degree !== left.degree) {
-		return right.degree - left.degree;
+	const rightScore = (right.importance ?? 0) * 100 + (right.bridgeScore ?? 0) * 40 + right.degree;
+	const leftScore = (left.importance ?? 0) * 100 + (left.bridgeScore ?? 0) * 40 + left.degree;
+	if (rightScore !== leftScore) {
+		return rightScore - leftScore;
 	}
 
 	return left.label.localeCompare(right.label);
@@ -144,18 +242,18 @@ const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 		{
 			(eyebrow || title || summary) && (
 				<div class="graph-stage">
-				<div class="graph-stage__copy">
-					{eyebrow && <p class="eyebrow">{eyebrow}</p>}
-					{title && <h2>{title}</h2>}
-					{summary && <p class="graph-stage__summary">{summary}</p>}
-				</div>
-				<div class="graph-stage__metrics" data-graph-stage-metrics>
-					{activeDataset.stats.slice(0, 3).map((stat) => (
-						<div class="graph-stage__metric">
-							<strong>{stat.value}</strong>
-							<span>{stat.label}</span>
-						</div>
-					))}
+					<div class="graph-stage__copy">
+						{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+						{title && <h2>{title}</h2>}
+						{summary && <p class="graph-stage__summary">{summary}</p>}
+					</div>
+					<div class="graph-stage__metrics" data-graph-stage-metrics>
+						{activeDataset.stats.slice(0, 3).map((stat) => (
+							<div class="graph-stage__metric">
+								<strong>{stat.value}</strong>
+								<span>{stat.label}</span>
+							</div>
+						))}
 					</div>
 				</div>
 			)
@@ -224,6 +322,14 @@ const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 					</div>
 				</div>
 				<div class="graph-toolbar__cluster">
+					<span class="graph-toolbar__label">Layout</span>
+					<div class="graph-mode-switch" data-graph-layouts>
+						<button type="button" class:list={['filter-pill', 'is-active']} data-graph-layout="organic">Organic</button>
+						<button type="button" class="filter-pill" data-graph-layout="layered">Layered</button>
+						<button type="button" class="filter-pill" data-graph-layout="timeline">Timeline</button>
+					</div>
+				</div>
+				<div class="graph-toolbar__cluster">
 					<span class="graph-toolbar__label">Depth</span>
 					<div class="graph-depth-switch" data-graph-depths>
 						<button type="button" class:list={['filter-pill', 'is-active']} data-graph-depth="1">1 hop</button>
@@ -247,7 +353,7 @@ const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 			<datalist id="graph-node-options" data-graph-node-options>
 				{
 					nodeOptions.map((node) => (
-						<option value={node.label} label={`${node.type} • ${node.subtitle}`} data-node-id={node.id} />
+						<option value={node.label} label={`${node.type} • ${node.subtitle}`} />
 					))
 				}
 			</datalist>
@@ -320,7 +426,7 @@ const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 			<p class="graph-detail__meta" data-detail-meta>Overview mode • core constitutional nodes only</p>
 			<div class="graph-detail__chips" data-detail-chips></div>
 			<div class="graph-detail__panel" data-detail-panel>
-				<p class="muted">Typed edges are color-coded by family so you can tell structure, doctrine, reform, live dispute, and history apart.</p>
+				<p class="muted">Typed edges are color-coded by family and direction so you can tell structure, doctrine, reform, live dispute, and history apart.</p>
 			</div>
 			<a class="button-secondary graph-detail__cta is-disabled" href="#" data-detail-link aria-disabled="true">Open page</a>
 		</div>
@@ -334,1184 +440,11 @@ const nodeOptions = [...activeDataset.nodes].sort((left, right) => {
 </section>
 
 <script>
-	import cytoscape from 'cytoscape';
-
-	const COLOR_BY_TYPE = {
-		Article: '#bc6324',
-		Part: '#1f4f74',
-		Schedule: '#3c7453',
-		Topic: '#7a3514',
-		Institution: '#355d73',
-		Case: '#6b4618',
-		Amendment: '#7c6a1b',
-		Glossary: '#5d5a4d',
-		Timeline: '#556264',
-		'Current Affair': '#92473a',
-	};
-
-	const OVERVIEW_LAYOUT = {
-		name: 'cose',
-		animate: false,
-		fit: true,
-		padding: 36,
-		idealEdgeLength: 130,
-		nodeRepulsion: 320000,
-		gravity: 0.42,
-	};
-
-	const FOCUS_LAYOUT = {
-		name: 'concentric',
-		animate: false,
-		fit: true,
-		padding: 36,
-		spacingFactor: 1.15,
-		concentric: (node) => node.data('isAnchor') ? 10 : Math.max(1, node.data('degree') || 1),
-		levelWidth: () => 2,
-	};
-
-	const PATH_LAYOUT = {
-		name: 'breadthfirst',
-		animate: false,
-		fit: true,
-		padding: 42,
-		directed: false,
-		spacingFactor: 1.25,
-	};
-
-	function escapeHtml(value) {
-		return String(value)
-			.replaceAll('&', '&amp;')
-			.replaceAll('<', '&lt;')
-			.replaceAll('>', '&gt;')
-			.replaceAll('"', '&quot;')
-			.replaceAll("'", '&#39;');
-	}
-
-	function pairKey(left, right) {
-		return [left, right].sort().join('__');
-	}
-
-	function unique(values) {
-		return [...new Set(values)];
-	}
-
-	function relationTone(relation) {
-		return relation.explicit ? 'Explicitly modeled' : 'Derived from canonical content';
-	}
-
-	const CORE_RELATIONS = new Set([
-		'interprets',
-		'amends',
-		'anchors',
-		'overrules',
-		'reaffirms',
-		'builds-on',
-		'limits',
-		'establishes',
-		'extends',
-		'applies',
-		'tests',
-	]);
+	import { mountGraphExplorer } from '../lib/graph-runtime';
 
 	document.querySelectorAll('[data-graph-shell]').forEach((root) => {
-		const payloadScript = root.querySelector('[data-graph-payload]');
-		const canvas = root.querySelector('[data-graph-canvas]');
-		const startInput = root.querySelector('[data-graph-start]');
-		const targetInput = root.querySelector('[data-graph-target]');
-		const targetField = root.querySelector('[data-graph-target-field]');
-		const filterBar = root.querySelector('[data-graph-filters]');
-		const modeBar = root.querySelector('[data-graph-modes]');
-		const depthBar = root.querySelector('[data-graph-depths]');
-		const scopeBar = root.querySelector('[data-graph-scopes]');
-		const scopeSummary = root.querySelector('[data-graph-scope-summary]');
-		const stageMetrics = root.querySelector('[data-graph-stage-metrics]');
-		const statsPanel = root.querySelector('[data-graph-stats]');
-		const legendPanel = root.querySelector('[data-graph-legend]');
-		const nodeOptionsList = root.querySelector('[data-graph-node-options]');
-		const presetButtons = [...root.querySelectorAll('[data-graph-preset]')];
-		const resetButton = root.querySelector('[data-graph-reset]');
-		const viewSummary = root.querySelector('[data-graph-view-summary]');
-		const detailTitle = root.querySelector('[data-detail-title]');
-		const detailSummary = root.querySelector('[data-detail-summary]');
-		const detailMeta = root.querySelector('[data-detail-meta]');
-		const detailChips = root.querySelector('[data-detail-chips]');
-		const detailPanel = root.querySelector('[data-detail-panel]');
-		const detailLink = root.querySelector('[data-detail-link]');
-
-		if (
-			!(payloadScript instanceof HTMLScriptElement) ||
-			!(canvas instanceof HTMLDivElement) ||
-			!(startInput instanceof HTMLInputElement) ||
-			!(targetInput instanceof HTMLInputElement) ||
-			!(targetField instanceof HTMLElement) ||
-			!(filterBar instanceof HTMLDivElement) ||
-			!(modeBar instanceof HTMLDivElement) ||
-			!(depthBar instanceof HTMLDivElement) ||
-			!(resetButton instanceof HTMLButtonElement) ||
-			!(viewSummary instanceof HTMLDivElement) ||
-			!(detailTitle instanceof HTMLElement) ||
-			!(detailSummary instanceof HTMLElement) ||
-			!(detailMeta instanceof HTMLElement) ||
-			!(detailChips instanceof HTMLDivElement) ||
-			!(detailPanel instanceof HTMLDivElement) ||
-			!(detailLink instanceof HTMLAnchorElement)
-		) {
-			return;
-		}
-
-		const payload = JSON.parse(payloadScript.textContent ?? '{"datasets":{"default":{"nodes":[],"edges":[],"stats":[],"legend":[]}},"initialScope":"default"}');
-		const datasets = payload.datasets ?? {
-			default: { label: 'Graph', description: '', nodes: [], edges: [], stats: [], legend: [] },
-		};
-		const datasetIds = Object.keys(datasets);
-		let activeScope = payload.initialScope && datasets[payload.initialScope] ? payload.initialScope : datasetIds[0];
-		let nodes = [];
-		let edges = [];
-		let stats = [];
-		let legend = [];
-		let nodeMap = new Map();
-		let edgeMap = new Map();
-		let edgeByPair = new Map();
-		let adjacency = new Map();
-
-		let mode = 'explore';
-		let activeType = 'All';
-		let depth = 1;
-		let selectedNodeId = null;
-		let selectedEdgeId = null;
-		let startNodeId = null;
-		let targetNodeId = null;
-
-		const cy = cytoscape({
-			container: canvas,
-			elements: [
-				...nodes.map((node) => ({
-					data: {
-						...node,
-						weight: Math.min(12, Math.max(2, node.degree || 1)),
-						isAnchor: false,
-					},
-				})),
-				...edges.map((edge) => ({
-					data: edge,
-				})),
-			],
-			style: [
-				{
-					selector: 'node',
-					style: {
-						label: (element) => element.data('labelVisible') ? element.data('label') : '',
-						'background-color': (element) => COLOR_BY_TYPE[element.data('type')] ?? '#64584b',
-						color: '#16110d',
-						'font-size': 11.5,
-						'font-family': 'Avenir Next, Segoe UI, Helvetica Neue, Helvetica, sans-serif',
-						'text-wrap': 'wrap',
-						'text-max-width': 150,
-						'text-valign': 'bottom',
-						'text-halign': 'center',
-						'text-margin-y': 11,
-						'text-background-color': 'rgba(255, 252, 247, 0.94)',
-						'text-background-opacity': 1,
-						'text-background-padding': '5px',
-						'text-background-shape': 'round-rectangle',
-						'text-border-width': 1,
-						'text-border-color': 'rgba(74, 57, 40, 0.1)',
-						'border-width': 2,
-						'border-color': 'rgba(255, 247, 239, 0.92)',
-						width: 'mapData(weight, 2, 12, 32, 74)',
-						height: 'mapData(weight, 2, 12, 32, 74)',
-						'shadow-blur': 16,
-						'shadow-color': 'rgba(38, 28, 18, 0.16)',
-						'shadow-opacity': 0.7,
-						'shadow-offset-x': 0,
-						'shadow-offset-y': 8,
-					},
-				},
-				{
-					selector: 'edge',
-					style: {
-						'curve-style': 'bezier',
-						'line-color': 'data(familyColor)',
-						'line-style': (element) => element.data('explicit') ? 'solid' : 'dashed',
-						width: 'mapData(weight, 1, 5, 1.5, 4)',
-						opacity: 0.58,
-						'shadow-blur': 6,
-						'shadow-color': 'rgba(32, 24, 16, 0.08)',
-						'shadow-opacity': 0.35,
-					},
-				},
-				{
-					selector: '.is-hidden',
-					style: {
-						display: 'none',
-					},
-				},
-				{
-					selector: '.is-muted',
-					style: {
-						opacity: 0.16,
-					},
-				},
-				{
-					selector: 'node.is-selected',
-					style: {
-						'border-width': 4,
-						'border-color': '#7a3514',
-						'border-opacity': 1,
-						'overlay-color': '#7a3514',
-						'overlay-opacity': 0.08,
-						'overlay-padding': 8,
-						opacity: 1,
-					},
-				},
-				{
-					selector: 'node.is-anchor',
-					style: {
-						'border-width': 4.5,
-						'border-color': '#1f4f74',
-						'overlay-color': '#1f4f74',
-						'overlay-opacity': 0.08,
-						'overlay-padding': 10,
-					},
-				},
-				{
-					selector: 'node.is-path',
-					style: {
-						'border-width': 4,
-						'border-color': '#20486a',
-						opacity: 1,
-					},
-				},
-				{
-					selector: 'edge.is-selected',
-					style: {
-						width: 4.5,
-						opacity: 1,
-					},
-				},
-				{
-					selector: 'edge.is-path',
-					style: {
-						width: 4.8,
-						opacity: 1,
-					},
-				},
-			],
-			layout: OVERVIEW_LAYOUT,
-			wheelSensitivity: 0.18,
-		});
-
-		function datasetFor(scopeId) {
-			return datasets[scopeId] ?? datasets[datasetIds[0]] ?? {
-				label: 'Graph',
-				description: '',
-				nodes: [],
-				edges: [],
-				stats: [],
-				legend: [],
-			};
-		}
-
-		function rebuildIndexes() {
-			nodeMap = new Map(nodes.map((node) => [node.id, node]));
-			edgeMap = new Map(edges.map((edge) => [edge.id, edge]));
-			edgeByPair = new Map(edges.map((edge) => [pairKey(edge.source, edge.target), edge]));
-			adjacency = new Map();
-
-			for (const node of nodes) {
-				adjacency.set(node.id, new Set());
-			}
-
-			for (const edge of edges) {
-				adjacency.get(edge.source)?.add(edge.target);
-				adjacency.get(edge.target)?.add(edge.source);
-			}
-		}
-
-		function renderStageMetrics() {
-			if (!(stageMetrics instanceof HTMLDivElement)) {
-				return;
-			}
-
-			stageMetrics.innerHTML = stats
-				.slice(0, 3)
-				.map(
-					(stat) => `
-						<div class="graph-stage__metric">
-							<strong>${escapeHtml(stat.value)}</strong>
-							<span>${escapeHtml(stat.label)}</span>
-						</div>`,
-				)
-				.join('');
-		}
-
-		function renderStatsPanel() {
-			if (!(statsPanel instanceof HTMLDivElement)) {
-				return;
-			}
-
-			statsPanel.innerHTML = stats
-				.map((stat) =>
-					stat.href
-						? `
-							<a class="stat-card" href="${escapeHtml(stat.href)}">
-								<strong>${escapeHtml(stat.value)}</strong>
-								<span>${escapeHtml(stat.label)}</span>
-							</a>`
-						: `
-							<div class="stat-card">
-								<strong>${escapeHtml(stat.value)}</strong>
-								<span>${escapeHtml(stat.label)}</span>
-							</div>`,
-				)
-				.join('');
-		}
-
-		function renderLegend() {
-			if (!(legendPanel instanceof HTMLDivElement)) {
-				return;
-			}
-
-			legendPanel.innerHTML = legend
-				.map(
-					(item) => `
-						<div class="graph-legend__item" title="${escapeHtml(item.description)}">
-							<span class="graph-legend__swatch" style="--legend-color:${escapeHtml(item.color)}"></span>
-							<div>
-								<strong>${escapeHtml(item.label)}</strong>
-								<small>${escapeHtml(item.count)} edges</small>
-							</div>
-						</div>`,
-				)
-				.join('');
-		}
-
-		function renderNodeOptions() {
-			if (!(nodeOptionsList instanceof HTMLDataListElement)) {
-				return;
-			}
-
-			const sortedNodes = [...nodes].sort((left, right) => {
-				if (left.type !== right.type) {
-					return left.type.localeCompare(right.type);
-				}
-
-				if (right.degree !== left.degree) {
-					return right.degree - left.degree;
-				}
-
-				return left.label.localeCompare(right.label);
-			});
-
-			nodeOptionsList.innerHTML = sortedNodes
-				.map(
-					(node) => `
-						<option value="${escapeHtml(node.label)}" label="${escapeHtml(`${node.type} • ${node.subtitle}`)}"></option>`,
-				)
-				.join('');
-		}
-
-		function renderFilterBar() {
-			if (!(filterBar instanceof HTMLDivElement)) {
-				return;
-			}
-
-			const filterTypes = ['All', ...new Set(nodes.map((node) => node.type))];
-			if (!filterTypes.includes(activeType)) {
-				activeType = 'All';
-			}
-
-			filterBar.innerHTML = filterTypes
-				.map(
-					(type) => `
-						<button type="button" class="filter-pill${type === activeType ? ' is-active' : ''}" data-graph-filter="${escapeHtml(type)}">
-							${escapeHtml(type)}
-						</button>`,
-				)
-				.join('');
-		}
-
-		function renderScopeBar() {
-			if (!(scopeBar instanceof HTMLDivElement)) {
-				return;
-			}
-
-			scopeBar.querySelectorAll('[data-graph-scope]').forEach((button) => {
-				const buttonScope = button.getAttribute('data-graph-scope');
-				button.classList.toggle('is-active', buttonScope === activeScope);
-			});
-
-			if (scopeSummary instanceof HTMLElement) {
-				const dataset = datasetFor(activeScope);
-				scopeSummary.textContent = dataset.description || `Currently showing the ${dataset.label.toLowerCase()}.`;
-			}
-		}
-
-		function syncPresetAvailability() {
-			presetButtons.forEach((button) => {
-				const startId = button.getAttribute('data-graph-preset-start-id');
-				const targetId = button.getAttribute('data-graph-preset-target-id');
-				const isAvailable = Boolean(startId && nodeMap.has(startId) && (!targetId || nodeMap.has(targetId)));
-				button.disabled = !isAvailable;
-				button.classList.toggle('is-disabled', !isAvailable);
-			});
-		}
-
-		function syncInputs() {
-			startInput.value = startNodeId ? nodeMap.get(startNodeId)?.label ?? '' : '';
-			targetInput.value = targetNodeId ? nodeMap.get(targetNodeId)?.label ?? '' : '';
-		}
-
-		function setActiveDataset(scopeId) {
-			activeScope = datasets[scopeId] ? scopeId : activeScope;
-			const dataset = datasetFor(activeScope);
-
-			nodes = dataset.nodes ?? [];
-			edges = dataset.edges ?? [];
-			stats = dataset.stats ?? [];
-			legend = dataset.legend ?? [];
-			rebuildIndexes();
-
-			if (selectedNodeId && !nodeMap.has(selectedNodeId)) {
-				selectedNodeId = null;
-			}
-			if (selectedEdgeId && !edgeMap.has(selectedEdgeId)) {
-				selectedEdgeId = null;
-			}
-			if (startNodeId && !nodeMap.has(startNodeId)) {
-				startNodeId = null;
-			}
-			if (targetNodeId && !nodeMap.has(targetNodeId)) {
-				targetNodeId = null;
-			}
-			if (mode === 'path' && startNodeId && targetNodeId && startNodeId === targetNodeId) {
-				targetNodeId = null;
-			}
-
-			cy.elements().remove();
-			cy.add([
-				...nodes.map((node) => ({
-					data: {
-						...node,
-						weight: Math.min(12, Math.max(2, node.degree || 1)),
-						isAnchor: false,
-					},
-				})),
-				...edges.map((edge) => ({
-					data: edge,
-				})),
-			]);
-
-			renderStageMetrics();
-			renderStatsPanel();
-			renderLegend();
-			renderNodeOptions();
-			renderFilterBar();
-			renderScopeBar();
-			syncPresetAvailability();
-			syncInputs();
-		}
-
-		function resolveNodeId(rawValue) {
-			const value = rawValue.trim().toLowerCase();
-			if (!value) {
-				return null;
-			}
-
-			const exact = nodes.find((node) => node.label.toLowerCase() === value);
-			if (exact) {
-				return exact.id;
-			}
-
-			const exactSlug = nodes.find((node) => node.slug.toLowerCase() === value);
-			if (exactSlug) {
-				return exactSlug.id;
-			}
-
-			const fuzzy = nodes.find((node) =>
-				`${node.label} ${node.subtitle} ${node.summary}`.toLowerCase().includes(value),
-			);
-			return fuzzy?.id ?? null;
-		}
-
-		function resetDetail() {
-			detailTitle.textContent = 'Curated overview';
-			detailSummary.textContent =
-				'Start with a case, Article, or live desk. The graph will collapse into a focused neighborhood instead of showing the whole network at once.';
-			detailMeta.textContent = 'Overview mode • core constitutional nodes only';
-			detailChips.innerHTML = '';
-			detailPanel.innerHTML =
-				'<p class="muted">Typed edges are color-coded by family so you can tell structure, doctrine, reform, live dispute, and history apart.</p>';
-			detailLink.classList.add('is-disabled');
-			detailLink.setAttribute('aria-disabled', 'true');
-			detailLink.setAttribute('tabindex', '-1');
-			detailLink.href = '#';
-		}
-
-		function setDetailLink(node) {
-			detailLink.classList.remove('is-disabled');
-			detailLink.removeAttribute('aria-disabled');
-			detailLink.removeAttribute('tabindex');
-			detailLink.href = node.href;
-		}
-
-		function renderSourceLinks(sourceRefs) {
-			if (!sourceRefs?.length) {
-				return '';
-			}
-
-			return `
-				<div class="graph-source-links">
-					${sourceRefs
-						.map(
-							(sourceRef) => `
-								<a class="graph-source-link" href="${sourceRef.href}">
-									${escapeHtml(sourceRef.title)}
-								</a>`,
-						)
-						.join('')}
-				</div>
-			`;
-		}
-
-		function neighborsFor(nodeId) {
-			return edges
-				.filter((edge) => edge.source === nodeId || edge.target === nodeId)
-				.map((edge) => {
-					const otherId = edge.source === nodeId ? edge.target : edge.source;
-					return {
-						edge,
-						node: nodeMap.get(otherId),
-					};
-				})
-				.filter((item) => item.node)
-				.sort((left, right) => {
-					if (right.edge.weight !== left.edge.weight) {
-						return right.edge.weight - left.edge.weight;
-					}
-					return left.node.label.localeCompare(right.node.label);
-				});
-		}
-
-		function renderNodeDetail(nodeId) {
-			const node = nodeMap.get(nodeId);
-			if (!node) {
-				resetDetail();
-				return;
-			}
-
-			const neighbors = neighborsFor(nodeId).slice(0, 10);
-			detailTitle.textContent = node.label;
-			detailSummary.textContent = node.summary;
-			detailMeta.textContent = `${node.type} • ${node.degree} direct link${node.degree === 1 ? '' : 's'} • ${node.subtitle}`;
-			detailChips.innerHTML = unique([
-				node.type,
-				node.collection,
-				node.explicitlyConnected ? 'Explicit doctrine edge' : '',
-			])
-				.filter(Boolean)
-				.map((item) => `<span class="tag-chip">${escapeHtml(item)}</span>`)
-				.join('');
-
-			detailPanel.innerHTML = neighbors.length
-				? `
-					<div class="graph-detail__section">
-						<strong>Why this node matters</strong>
-						<div class="graph-connection-list">
-							${neighbors
-								.map(
-									(item) => `
-										<article class="graph-connection-card">
-											<div class="graph-connection-card__header">
-												<a class="graph-connection-card__title" href="${item.node.href}">${escapeHtml(item.node.label)}</a>
-												<span class="graph-connection-card__meta">${escapeHtml(item.edge.familyLabel)}</span>
-											</div>
-											<div class="graph-connection-card__tags">
-												${item.edge.relationLabels
-													.map(
-														(label) => `
-															<span class="relation-pill" style="--relation-color:${item.edge.familyColor}">
-																${escapeHtml(label)}
-															</span>`,
-													)
-													.join('')}
-											</div>
-											<p class="graph-connection-card__note">${escapeHtml(item.edge.note)}</p>
-											${renderSourceLinks(
-												(item.edge.relations ?? [])
-													.flatMap((relation) => relation.sourceRefs ?? [])
-													.filter((value, index, array) => array.findIndex((candidate) => candidate.href === value.href) === index)
-													.slice(0, 3),
-											)}
-										</article>`,
-								)
-								.join('')}
-						</div>
-					</div>
-				`
-				: '<p class="muted">No direct neighbors are currently visible for this node.</p>';
-
-			setDetailLink(node);
-		}
-
-		function renderEdgeDetail(edgeId) {
-			const edge = edgeMap.get(edgeId);
-			if (!edge) {
-				resetDetail();
-				return;
-			}
-
-			const left = nodeMap.get(edge.source);
-			const right = nodeMap.get(edge.target);
-			if (!left || !right) {
-				resetDetail();
-				return;
-			}
-
-			detailTitle.textContent = edge.familyLabel;
-			detailSummary.textContent = edge.note;
-			detailMeta.textContent = `${left.label} ↔ ${right.label}`;
-			detailChips.innerHTML = unique([
-				...edge.relationLabels,
-				edge.explicit ? 'Explicit edge' : 'Derived from content',
-				edge.sourceCount ? `${edge.sourceCount} source${edge.sourceCount === 1 ? '' : 's'}` : '',
-			])
-				.filter(Boolean)
-				.map((item) => `<span class="tag-chip">${escapeHtml(item)}</span>`)
-				.join('');
-
-			detailPanel.innerHTML = `
-				<div class="graph-detail__section">
-					<strong>Why these are linked</strong>
-					<div class="graph-detail__relations">
-						${[...edge.relations]
-							.sort((leftRelation, rightRelation) => {
-								if (leftRelation.explicit !== rightRelation.explicit) {
-									return leftRelation.explicit ? -1 : 1;
-								}
-								return rightRelation.strength - leftRelation.strength;
-							})
-							.map(
-								(relation) => `
-									<article class="graph-relation-card">
-										<div class="graph-connection-card__header">
-											<p class="graph-relation-card__title">${escapeHtml(relation.relationLabel)}</p>
-											<small>${escapeHtml(relationTone(relation))}</small>
-										</div>
-										<p>${escapeHtml(relation.note ?? edge.note)}</p>
-										${renderSourceLinks(relation.sourceRefs)}
-									</article>`,
-							)
-							.join('')}
-					</div>
-				</div>
-				<div class="graph-detail__section">
-					<strong>Linked pages</strong>
-					<ul class="graph-related-list">
-						<li class="graph-related-list__item">
-							<a href="${left.href}">${escapeHtml(left.label)}</a>
-							<small>${escapeHtml(left.type)}</small>
-						</li>
-						<li class="graph-related-list__item">
-							<a href="${right.href}">${escapeHtml(right.label)}</a>
-							<small>${escapeHtml(right.type)}</small>
-						</li>
-					</ul>
-				</div>
-			`;
-
-			detailLink.classList.add('is-disabled');
-			detailLink.setAttribute('aria-disabled', 'true');
-			detailLink.setAttribute('tabindex', '-1');
-			detailLink.href = '#';
-		}
-
-		function neighborhood(nodeId, hops) {
-			const seen = new Set([nodeId]);
-			let frontier = [nodeId];
-
-			for (let index = 0; index < hops; index += 1) {
-				const next = [];
-				for (const current of frontier) {
-					for (const neighbor of adjacency.get(current) ?? []) {
-						if (seen.has(neighbor)) {
-							continue;
-						}
-						seen.add(neighbor);
-						next.push(neighbor);
-					}
-				}
-				frontier = next;
-			}
-
-			return seen;
-		}
-
-		function edgeCost(edge) {
-			const allContextual = edge.relationTypes.every((relationType) => !CORE_RELATIONS.has(relationType));
-			let cost = 1 + Math.max(0, 5 - (edge.weight ?? 1)) * 0.14;
-
-			if (!edge.explicit) {
-				cost += 0.35;
-			}
-
-			if (allContextual) {
-				cost += 1.75;
-			}
-
-			if (edge.family === 'history') {
-				cost += 1.2;
-			}
-
-			return cost;
-		}
-
-		function shortestPath(startId, endId) {
-			if (!startId || !endId) {
-				return [];
-			}
-
-			const distances = new Map([[startId, 0]]);
-			const previous = new Map([[startId, null]]);
-			const queue = new Set(nodes.map((node) => node.id));
-
-			while (queue.size > 0) {
-				let current = null;
-				let currentDistance = Infinity;
-
-				for (const candidate of queue) {
-					const distance = distances.get(candidate) ?? Infinity;
-					if (distance < currentDistance) {
-						current = candidate;
-						currentDistance = distance;
-					}
-				}
-
-				if (!current || currentDistance === Infinity) {
-					break;
-				}
-
-				queue.delete(current);
-
-				if (current === endId) {
-					break;
-				}
-
-				for (const neighbor of adjacency.get(current) ?? []) {
-					if (!queue.has(neighbor)) {
-						continue;
-					}
-
-					const edge = edgeByPair.get(pairKey(current, neighbor));
-					if (!edge) {
-						continue;
-					}
-
-					const trial = currentDistance + edgeCost(edge);
-					if (trial < (distances.get(neighbor) ?? Infinity)) {
-						distances.set(neighbor, trial);
-						previous.set(neighbor, current);
-					}
-				}
-			}
-
-			if (!previous.has(endId)) {
-				return [];
-			}
-
-			const path = [];
-			let current = endId;
-			while (current) {
-				path.unshift(current);
-				current = previous.get(current) ?? null;
-			}
-			return path;
-		}
-
-		function updateControls() {
-			renderScopeBar();
-			modeBar.querySelectorAll('[data-graph-mode]').forEach((button) => {
-				button.classList.toggle('is-active', button.getAttribute('data-graph-mode') === mode);
-			});
-			depthBar.querySelectorAll('[data-graph-depth]').forEach((button) => {
-				button.classList.toggle('is-active', Number(button.getAttribute('data-graph-depth')) === depth);
-			});
-			renderFilterBar();
-			targetField.classList.toggle('is-hidden', mode !== 'path');
-		}
-
-		function syncPresetState() {
-			presetButtons.forEach((button) => {
-				const buttonMode = button.getAttribute('data-graph-preset-mode') ?? 'explore';
-				const buttonStartId = button.getAttribute('data-graph-preset-start-id');
-				const buttonTargetId = button.getAttribute('data-graph-preset-target-id');
-				const buttonDepth = Number(button.getAttribute('data-graph-preset-depth') ?? '1');
-				const buttonFilter = button.getAttribute('data-graph-preset-filter') ?? 'All';
-				const isActive =
-					buttonMode === mode &&
-					buttonStartId === (startNodeId ?? '') &&
-					(buttonTargetId ?? '') === (targetNodeId ?? '') &&
-					buttonDepth === depth &&
-					buttonFilter === activeType;
-
-				button.classList.toggle('is-active', isActive);
-			});
-		}
-
-		function applyPreset(button) {
-			if (!(button instanceof HTMLButtonElement)) {
-				return;
-			}
-
-			if (button.disabled) {
-				return;
-			}
-
-			mode = button.getAttribute('data-graph-preset-mode') ?? 'explore';
-			depth = Number(button.getAttribute('data-graph-preset-depth') ?? '1') || 1;
-			activeType = button.getAttribute('data-graph-preset-filter') ?? 'All';
-			selectedEdgeId = null;
-
-			startNodeId = button.getAttribute('data-graph-preset-start-id');
-			targetNodeId = mode === 'path' ? button.getAttribute('data-graph-preset-target-id') : null;
-			selectedNodeId = mode === 'explore' ? startNodeId : null;
-
-			startInput.value = startNodeId ? nodeMap.get(startNodeId)?.label ?? '' : '';
-			targetInput.value = targetNodeId ? nodeMap.get(targetNodeId)?.label ?? '' : '';
-
-			render();
-		}
-
-		function applyTypeFilter(visibleNodeIds) {
-			if (activeType === 'All') {
-				return visibleNodeIds;
-			}
-
-			const anchors = new Set([selectedNodeId, startNodeId, targetNodeId].filter(Boolean));
-			const filtered = new Set(
-				[...visibleNodeIds].filter((nodeId) => {
-					const node = nodeMap.get(nodeId);
-					return node && (node.type === activeType || anchors.has(nodeId));
-				}),
-			);
-
-			return filtered.size > 0 ? filtered : visibleNodeIds;
-		}
-
-		function applyLayout(modeForRender) {
-			const visibleElements = cy.elements().not('.is-hidden');
-			if (visibleElements.length === 0) {
-				return;
-			}
-
-			if (modeForRender === 'path') {
-				visibleElements.layout(PATH_LAYOUT).run();
-				return;
-			}
-
-			if (selectedNodeId) {
-				visibleElements.layout(FOCUS_LAYOUT).run();
-				return;
-			}
-
-			visibleElements.layout(OVERVIEW_LAYOUT).run();
-		}
-
-		function renderPathDetail(path) {
-			if (path.length === 0) {
-				detailTitle.textContent = 'No path found';
-				detailSummary.textContent = 'Those two nodes are not currently connected in the indexed constitutional graph.';
-				detailMeta.textContent = 'Path mode';
-				detailChips.innerHTML = '';
-				detailPanel.innerHTML = '<p class="muted">Try a different pair or reset to the overview.</p>';
-				detailLink.classList.add('is-disabled');
-				detailLink.setAttribute('aria-disabled', 'true');
-				detailLink.setAttribute('tabindex', '-1');
-				detailLink.href = '#';
-				return;
-			}
-
-			const steps = [];
-			for (let index = 0; index < path.length - 1; index += 1) {
-				const from = nodeMap.get(path[index]);
-				const to = nodeMap.get(path[index + 1]);
-				const edge = edgeByPair.get(pairKey(path[index], path[index + 1]));
-				if (!from || !to || !edge) {
-					continue;
-				}
-
-				steps.push(`
-					<li class="graph-related-list__item">
-						<div>
-							<a href="${from.href}">${escapeHtml(from.label)}</a>
-							<small>${escapeHtml(edge.relationLabels.join(' • '))}</small>
-						</div>
-						<span class="graph-path-arrow">→</span>
-						<a href="${to.href}">${escapeHtml(to.label)}</a>
-					</li>
-				`);
-			}
-
-			detailTitle.textContent = 'Shortest constitutional path';
-			detailSummary.textContent = `${nodeMap.get(path[0])?.label ?? 'Start'} to ${nodeMap.get(path[path.length - 1])?.label ?? 'target'}`;
-			detailMeta.textContent = `${path.length} nodes • ${Math.max(0, path.length - 1)} relationships`;
-			detailChips.innerHTML = `<span class="tag-chip">Path mode</span><span class="tag-chip">Focused explanation</span>`;
-			detailPanel.innerHTML = `<ol class="graph-related-list graph-related-list--path">${steps.join('')}</ol>`;
-			detailLink.classList.add('is-disabled');
-			detailLink.setAttribute('aria-disabled', 'true');
-			detailLink.setAttribute('tabindex', '-1');
-			detailLink.href = '#';
-		}
-
-		function render() {
-			updateControls();
-
-			const baseVisible =
-				mode === 'path'
-					? startNodeId && targetNodeId
-						? new Set(shortestPath(startNodeId, targetNodeId))
-						: startNodeId
-							? neighborhood(startNodeId, 1)
-							: new Set(nodes.filter((node) => node.overview).map((node) => node.id))
-					: selectedNodeId
-						? neighborhood(selectedNodeId, depth)
-						: new Set(nodes.filter((node) => node.overview).map((node) => node.id));
-
-			const visibleNodeIds = applyTypeFilter(baseVisible);
-			const pathNodeIds = mode === 'path' && startNodeId && targetNodeId ? shortestPath(startNodeId, targetNodeId) : [];
-			const pathEdgeKeys = new Set(
-				pathNodeIds.slice(0, -1).map((nodeId, index) => pairKey(nodeId, pathNodeIds[index + 1])),
-			);
-
-			cy.batch(() => {
-				cy.elements().removeClass('is-hidden is-selected is-path');
-				cy.nodes().forEach((node) => {
-					const isAnchor = node.id() === selectedNodeId || node.id() === startNodeId || node.id() === targetNodeId;
-					const showLabel =
-						visibleNodeIds.has(node.id()) &&
-						(
-							isAnchor ||
-							pathNodeIds.includes(node.id()) ||
-							(mode === 'explore' && selectedNodeId && visibleNodeIds.size <= 22) ||
-							(!selectedNodeId && !startNodeId && node.data('degree') >= 12) ||
-							(node.data('explicitlyConnected') && node.data('degree') >= 9)
-						);
-
-					node.data('isAnchor', isAnchor);
-					node.data('labelVisible', showLabel);
-					if (!visibleNodeIds.has(node.id())) {
-						node.addClass('is-hidden');
-					}
-					if (isAnchor) {
-						node.addClass('is-anchor');
-					} else {
-						node.removeClass('is-anchor');
-					}
-				});
-				cy.edges().forEach((edge) => {
-					if (!(visibleNodeIds.has(edge.data('source')) && visibleNodeIds.has(edge.data('target')))) {
-						edge.addClass('is-hidden');
-					}
-				});
-
-				if (selectedNodeId) {
-					cy.getElementById(selectedNodeId).addClass('is-selected');
-				}
-				if (selectedEdgeId) {
-					cy.getElementById(selectedEdgeId).addClass('is-selected');
-				}
-				for (const nodeId of pathNodeIds) {
-					cy.getElementById(nodeId).addClass('is-path');
-				}
-				cy.edges().forEach((edge) => {
-					if (pathEdgeKeys.has(pairKey(edge.data('source'), edge.data('target')))) {
-						edge.addClass('is-path');
-					}
-				});
-			});
-
-			applyLayout(mode === 'path' && pathNodeIds.length > 0 ? 'path' : 'explore');
-
-			if (mode === 'path' && startNodeId && targetNodeId) {
-				if (pathNodeIds.length > 0) {
-					viewSummary.textContent = `${datasetFor(activeScope).label}: shortest path mode connects ${nodeMap.get(startNodeId)?.label ?? 'start'} to ${nodeMap.get(targetNodeId)?.label ?? 'target'} through ${pathNodeIds.length} nodes.`;
-				} else {
-					viewSummary.textContent = `${datasetFor(activeScope).label}: no path is currently indexed between those two nodes.`;
-				}
-			} else if (mode === 'explore' && selectedNodeId) {
-				viewSummary.textContent = `${datasetFor(activeScope).label}: ${visibleNodeIds.size} nodes in a ${depth}-hop neighborhood around ${nodeMap.get(selectedNodeId)?.label ?? 'the selected node'}.`;
-			} else {
-				viewSummary.textContent = `${datasetFor(activeScope).label}: ${visibleNodeIds.size} core nodes. Select a node to open a tighter constitutional neighborhood.`;
-			}
-
-			syncPresetState();
-
-			if (mode === 'path' && startNodeId && targetNodeId) {
-				renderPathDetail(pathNodeIds);
-				return;
-			}
-
-			if (selectedEdgeId) {
-				renderEdgeDetail(selectedEdgeId);
-				return;
-			}
-
-			if (selectedNodeId) {
-				renderNodeDetail(selectedNodeId);
-				return;
-			}
-
-			resetDetail();
-		}
-
-		function commitStart() {
-			const nodeId = resolveNodeId(startInput.value);
-			startNodeId = nodeId;
-			selectedNodeId = mode === 'explore' ? nodeId : selectedNodeId;
-			selectedEdgeId = null;
-			if (!nodeId) {
-				if (mode === 'explore') {
-					selectedNodeId = null;
-				}
-				render();
-				return;
-			}
-
-			const node = nodeMap.get(nodeId);
-			if (node) {
-				startInput.value = node.label;
-			}
-
-			if (mode === 'explore') {
-				selectedNodeId = nodeId;
-			}
-			render();
-		}
-
-		function commitTarget() {
-			const nodeId = resolveNodeId(targetInput.value);
-			targetNodeId = nodeId;
-			selectedEdgeId = null;
-			if (nodeId) {
-				const node = nodeMap.get(nodeId);
-				if (node) {
-					targetInput.value = node.label;
-				}
-			}
-			render();
-		}
-
-		modeBar.addEventListener('click', (event) => {
-			const button = event.target.closest('[data-graph-mode]');
-			if (!(button instanceof HTMLButtonElement)) {
-				return;
-			}
-			mode = button.getAttribute('data-graph-mode') ?? 'explore';
-			selectedEdgeId = null;
-			if (mode === 'explore') {
-				selectedNodeId = startNodeId ?? selectedNodeId;
-				targetNodeId = null;
-				targetInput.value = '';
-			}
-			render();
-		});
-
-		scopeBar?.addEventListener('click', (event) => {
-			const button = event.target.closest('[data-graph-scope]');
-			if (!(button instanceof HTMLButtonElement)) {
-				return;
-			}
-
-			const scopeId = button.getAttribute('data-graph-scope');
-			if (!scopeId || scopeId === activeScope) {
-				return;
-			}
-
-			setActiveDataset(scopeId);
-			render();
-		});
-
-		depthBar.addEventListener('click', (event) => {
-			const button = event.target.closest('[data-graph-depth]');
-			if (!(button instanceof HTMLButtonElement)) {
-				return;
-			}
-			depth = Number(button.getAttribute('data-graph-depth')) || 1;
-			render();
-		});
-
-		filterBar.addEventListener('click', (event) => {
-			const button = event.target.closest('[data-graph-filter]');
-			if (!(button instanceof HTMLButtonElement)) {
-				return;
-			}
-			activeType = button.getAttribute('data-graph-filter') ?? 'All';
-			render();
-		});
-
-		root.querySelector('[data-graph-presets]')?.addEventListener('click', (event) => {
-			const button = event.target.closest('[data-graph-preset]');
-			if (!(button instanceof HTMLButtonElement)) {
-				return;
-			}
-			applyPreset(button);
-		});
-
-		resetButton.addEventListener('click', () => {
-			mode = 'explore';
-			activeType = 'All';
-			depth = 1;
-			selectedNodeId = null;
-			selectedEdgeId = null;
-			startNodeId = null;
-			targetNodeId = null;
-			startInput.value = '';
-			targetInput.value = '';
-			render();
-		});
-
-		startInput.addEventListener('change', commitStart);
-		startInput.addEventListener('search', commitStart);
-		targetInput.addEventListener('change', commitTarget);
-		targetInput.addEventListener('search', commitTarget);
-
-		cy.on('tap', 'node', (event) => {
-			const nodeId = event.target.id();
-			selectedEdgeId = null;
-
-			if (mode === 'path') {
-				if (!startNodeId || (startNodeId && targetNodeId)) {
-					startNodeId = nodeId;
-					targetNodeId = null;
-					startInput.value = nodeMap.get(nodeId)?.label ?? '';
-					targetInput.value = '';
-				} else if (nodeId !== startNodeId) {
-					targetNodeId = nodeId;
-					targetInput.value = nodeMap.get(nodeId)?.label ?? '';
-				}
-			} else {
-				selectedNodeId = nodeId;
-				startNodeId = nodeId;
-				startInput.value = nodeMap.get(nodeId)?.label ?? '';
-			}
-
-			render();
-		});
-
-		cy.on('tap', 'edge', (event) => {
-			selectedEdgeId = event.target.id();
-			if (mode === 'explore') {
-				selectedNodeId = null;
-			}
-			render();
-		});
-
-		setActiveDataset(activeScope);
-
-		if (presetButtons.length > 0 && root.getAttribute('data-graph-variant') === 'home') {
-			applyPreset(presetButtons[0]);
-		} else {
-			render();
+		if (root instanceof HTMLElement) {
+			mountGraphExplorer(root);
 		}
 	});
 </script>

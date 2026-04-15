@@ -13,6 +13,14 @@ directional: true
 sources:
   - nabam-rebia-judgment-2016
   - supreme-court-of-india
+evidence:
+  - claim: Nabam Rebia frames later disputes over Governor discretion and legislative standoffs.
+    note: The case narrows gubernatorial discretion and supplies the broader constitutional logic for later assent-delay conflicts.
+    direction: source-to-target
+    sourceRefs:
+      - nabam-rebia-judgment-2016
+      - supreme-court-of-india
+    weight: 4
 ---
 
 This is a cross-doctrine bridge from assembly procedure and Article 356 disputes into the newer assent-delay litigation.

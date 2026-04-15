@@ -13,6 +13,14 @@ directional: true
 sources:
   - state-of-punjab-v-davinder-singh-judgment-2024
   - supreme-court-of-india
+evidence:
+  - claim: Davinder Singh is the key doctrinal reference for reservation sub-classification disputes.
+    note: The case is directly relevant to whether states can differentiate within reservation categories.
+    direction: source-to-target
+    sourceRefs:
+      - state-of-punjab-v-davinder-singh-judgment-2024
+      - supreme-court-of-india
+    weight: 4
 ---
 
 This edge ties a doctrinally dense judgment to an active policy and litigation cluster.

@@ -219,6 +219,18 @@ A well-framed current-affairs page can still become stale if its milestone chain
 
 Candidate-disclosure and criminalisation-of-politics coverage becomes much stronger when the site models the actual public infrastructure voters use, such as affidavit portals, KYC apps, disclosure press notes, and qualification timelines. That turns abstract election law into an operational accountability system readers can inspect and revisit.
 
+### 45. A superior graph starts with directional semantics, not better colors
+
+The biggest jump in graph quality came from making relationships directional and typed at the data-model level. Once `overrules`, `builds-on`, `amends`, `anchors`, and similar relations become first-class directed edges, pathfinding, layout choice, and detail panels all start making more sense. Visual polish matters, but it cannot rescue weak graph semantics.
+
+### 46. Claim-level edge evidence changes the graph from a navigation toy into a reference instrument
+
+An edge becomes much more defensible when it can show exactly what is being claimed, why the claim is being made, and which source records support it. Page-level linking is enough to hint at a relationship; claim-level evidence is what makes a constitutional graph trustworthy for serious readers.
+
+### 47. Layout mode should answer the user’s question, not just arrange the nodes
+
+Force layouts are good for open-ended exploration, layered layouts are better for doctrine and institutional flow, and timeline layouts help readers understand historical evolution. Once a graph supports more than one legitimate question, a single default layout starts to feel like an architectural limitation rather than a simplification.
+
 ### 45. Cross-country demography needs one official baseline and an explicit date convention
 
 When comparing countries, the hard part is not finding a number but keeping the dates and definitions aligned. The UN `World Population Prospects` files are unusually useful because they expose annual mid-year population, growth, fertility, age, natural change, and migration in one schema across countries. For this project, any cross-country population comparison should state the exact reference date, for example `1 July 2026`, and whether the figure is an estimate or a projection rather than mixing clocks, census years, and modelled mid-year series.

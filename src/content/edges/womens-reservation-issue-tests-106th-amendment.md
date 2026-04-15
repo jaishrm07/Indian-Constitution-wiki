@@ -12,4 +12,11 @@ note: The constitutional controversy is not whether women's reservation text exi
 directional: true
 sources:
   - constitution-106th-amendment-act-2023
+evidence:
+  - claim: The women's-reservation implementation dispute turns on the 106th Amendment.
+    note: The live controversy is whether the amendment's census-and-delimitation trigger can postpone the guarantee.
+    direction: source-to-target
+    sourceRefs:
+      - constitution-106th-amendment-act-2023
+    weight: 4
 ---

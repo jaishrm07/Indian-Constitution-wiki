@@ -12,17 +12,17 @@ Constitution Atlas is a static-first Astro site for the Indian Constitution. The
 
 Current corpus snapshot:
 
-- `501` Articles
+- `503` Articles
 - `26` Parts
 - `12` Schedules
-- `24` Amendments
-- `33` Cases
+- `28` Amendments
+- `67` Cases
 - `22` Topics
-- `14` Current Affairs desks
-- `48` Timeline entries
-- `10` Institutions
+- `24` Current Affairs desks
+- `120` Timeline entries
+- `11` Institutions
 - `13` Glossary entries
-- `30` Source records
+- `82` Source records
 
 ## Commands
 
@@ -61,6 +61,8 @@ Each entry uses frontmatter for metadata and Markdown for body sections. Relatio
 
 - `docs/source-research.md` tracks the source hierarchy and data acquisition plan for official constitutional, judicial, parliamentary, and current-affairs material.
 - `docs/knowledge-system.md` explains how research, raw sources, the Obsidian-style vault, and the publishable site content fit together.
+- `docs/architecture.md` gives a clean system view of the evidence layer, research graph, canonical publishing graph, build pipeline, and graph engine.
+- `docs/architecture-c4.md` adds a C4-style diagram set for system context, containers, components, graph/data structure, and editorial workflow.
 - `learnings.md` is a running log of product and editorial lessons from building a knowledge-intensive constitutional reference site.
 - `raw/` is the immutable evidence layer for source captures and extraction artifacts.
 - `knowledge-vault/` is the Obsidian-compatible research graph.

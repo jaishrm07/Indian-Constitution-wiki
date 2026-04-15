@@ -13,4 +13,12 @@ directional: true
 sources:
   - tamil-nadu-governor-assent-judgment-2025
   - supreme-court-of-india
+evidence:
+  - claim: The Governor-assent dispute is a concrete slice of the broader governor-state conflict pattern.
+    note: Bill-silence and assent-delay disputes are the most visible current instance of the wider standoff cluster.
+    direction: source-to-target
+    sourceRefs:
+      - tamil-nadu-governor-assent-judgment-2025
+      - supreme-court-of-india
+    weight: 4
 ---

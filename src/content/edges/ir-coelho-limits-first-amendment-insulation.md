@@ -13,6 +13,14 @@ directional: true
 sources:
   - ir-coelho-judgment-2007
   - constitution-of-india
+evidence:
+  - claim: I.R. Coelho limits the insulation created by the First Amendment's Ninth Schedule device.
+    note: The case keeps post-Kesavananda Ninth Schedule insertions subject to basic-structure review.
+    direction: source-to-target
+    sourceRefs:
+      - ir-coelho-judgment-2007
+      - constitution-of-india
+    weight: 4
 ---
 
 The edge is important because it connects a landmark amendment device to the later case that cuts it back.

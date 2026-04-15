@@ -13,6 +13,14 @@ directional: true
 sources:
   - navtej-singh-johar-judgment-2018
   - supreme-court-of-india
+evidence:
+  - claim: Navtej Singh Johar expressly overrules the core reasoning in Suresh Kumar Koushal.
+    note: The judgment restores constitutional protection for consensual same-sex intimacy through dignity, equality, and constitutional morality.
+    direction: source-to-target
+    sourceRefs:
+      - navtej-singh-johar-judgment-2018
+      - supreme-court-of-india
+    weight: 5
 ---
 
 Navtej Singh Johar is a clear case of doctrinal correction. It replaces Koushal's narrow approach with a dignity-and-equality framework.

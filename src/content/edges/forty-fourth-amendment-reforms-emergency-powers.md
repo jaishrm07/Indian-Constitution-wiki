@@ -13,4 +13,12 @@ directional: true
 sources:
   - legislative-department
   - constitution-of-india
+evidence:
+  - claim: The Forty-Fourth Amendment directly narrows Emergency power after the 1975 to 1977 crisis.
+    note: It tightens Article 352 and protects Articles 20 and 21 from suspension.
+    direction: source-to-target
+    sourceRefs:
+      - legislative-department
+      - constitution-of-india
+    weight: 5
 ---

@@ -12,4 +12,11 @@ note: The current Governor-bill standoff litigation is no longer abstract after 
 directional: true
 sources:
   - tamil-nadu-governor-assent-judgment-2025
+evidence:
+  - claim: The Tamil Nadu Governor assent ruling directly applies to bill-silence disputes.
+    note: The judgment treats Article 200 timelines and gubernatorial inaction as constitutionally reviewable.
+    direction: source-to-target
+    sourceRefs:
+      - tamil-nadu-governor-assent-judgment-2025
+    weight: 5
 ---

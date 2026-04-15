@@ -13,4 +13,12 @@ directional: true
 sources:
   - puttaswamy-judgment-2017
   - adm-jabalpur-judgment-1976
+evidence:
+  - claim: The Puttaswamy bench expressly rejects the ADM Jabalpur approach to liberty during Emergency.
+    note: The privacy judgment restores the connection between liberty and judicial review that ADM Jabalpur had denied.
+    direction: source-to-target
+    sourceRefs:
+      - puttaswamy-judgment-2017
+      - adm-jabalpur-judgment-1976
+    weight: 5
 ---

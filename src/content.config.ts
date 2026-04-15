@@ -305,6 +305,19 @@ const edges = defineCollection({
 		summary: z.string().optional(),
 		note: z.string().optional(),
 		directional: z.boolean().default(false),
+		evidence: z
+			.array(
+				z.object({
+					claim: z.string(),
+					note: z.string(),
+					passage: z.string().optional(),
+					location: z.string().optional(),
+					direction: z.enum(['source-to-target', 'target-to-source', 'both']).default('source-to-target'),
+					sourceRefs: z.array(z.string()).default([]),
+					weight: z.number().int().min(1).max(5).default(3),
+				}),
+			)
+			.default([]),
 		sources: z.array(z.string()).default([]),
 	}),
 });

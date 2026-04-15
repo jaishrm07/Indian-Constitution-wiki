@@ -1429,6 +1429,11 @@ h3 {
 	gap: 1rem;
 }
 
+.graph-detail__evidence {
+	display: grid;
+	gap: 0.65rem;
+}
+
 .graph-detail__section {
 	display: grid;
 	gap: 0.45rem;
@@ -1595,6 +1600,33 @@ h3 {
 .graph-relation-card p:last-of-type,
 .graph-relation-card small {
 	margin: 0;
+	color: var(--muted);
+}
+
+.graph-evidence-card {
+	display: grid;
+	gap: 0.35rem;
+	padding: 0.8rem 0.9rem;
+	border-radius: calc(var(--radius-md) - 6px);
+	border: 1px solid rgba(32, 72, 106, 0.12);
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 240, 231, 0.92));
+}
+
+.graph-evidence-card strong {
+	font-size: 0.95rem;
+}
+
+.graph-evidence-card p,
+.graph-evidence-card small {
+	margin: 0;
+	color: var(--muted);
+}
+
+.graph-evidence-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	font-size: 0.8rem;
 	color: var(--muted);
 }
 

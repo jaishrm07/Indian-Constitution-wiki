@@ -12,4 +12,11 @@ note: Every contemporary dispute about the collegium, judicial primacy, and exec
 directional: true
 sources:
   - second-judges-case-judgment-1993
+evidence:
+  - claim: The Second Judges Case establishes the modern collegium structure.
+    note: Contemporary appointments disputes still trace back to the appointment architecture created by this decision.
+    direction: source-to-target
+    sourceRefs:
+      - second-judges-case-judgment-1993
+    weight: 5
 ---

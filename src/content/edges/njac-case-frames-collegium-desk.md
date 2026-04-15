@@ -13,6 +13,14 @@ directional: true
 sources:
   - supreme-court-of-india
   - department-of-justice-appointments
+evidence:
+  - claim: The NJAC judgment is the central doctrinal frame for the collegium debate.
+    note: The case restores the collegium after striking down the NJAC package and remains the baseline for appointments reform disputes.
+    direction: source-to-target
+    sourceRefs:
+      - supreme-court-of-india
+      - department-of-justice-appointments
+    weight: 5
 ---
 
 This edge bridges judicial-appointments doctrine to the site's live appointments desk.

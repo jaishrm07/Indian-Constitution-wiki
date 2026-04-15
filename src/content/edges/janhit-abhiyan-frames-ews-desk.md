@@ -13,6 +13,14 @@ directional: true
 sources:
   - janhit-abhiyan-judgment-2022
   - constitution-of-india
+evidence:
+  - claim: Janhit Abhiyan is the core judicial reference point for the EWS reservation desk.
+    note: The judgment upholds the amendment while leaving equality and reservation design as an active constitutional issue.
+    direction: source-to-target
+    sourceRefs:
+      - janhit-abhiyan-judgment-2022
+      - constitution-of-india
+    weight: 5
 ---
 
 The live desk becomes easier to navigate when it is directly tied to the controlling Constitution Bench judgment.

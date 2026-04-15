@@ -12,4 +12,11 @@ note: Current fights over online speech moderation, intermediary obligations, an
 directional: true
 sources:
   - shreya-singhal-judgment-2015
+evidence:
+  - claim: Shreya Singhal is the core constitutional reference for platform-regulation disputes.
+    note: The judgment sets the baseline for online speech moderation, intermediary duties, and criminal online expression.
+    direction: source-to-target
+    sourceRefs:
+      - shreya-singhal-judgment-2015
+    weight: 4
 ---

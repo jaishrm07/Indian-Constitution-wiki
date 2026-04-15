@@ -13,6 +13,14 @@ directional: true
 sources:
   - maneka-gandhi-judgment-1978
   - ak-gopalan-judgment-1950
+evidence:
+  - claim: Maneka Gandhi displaces the narrow formalism associated with A.K. Gopalan.
+    note: The case ties Article 21 to fairness, non-arbitrariness, and the interrelationship of fundamental rights.
+    direction: source-to-target
+    sourceRefs:
+      - maneka-gandhi-judgment-1978
+      - ak-gopalan-judgment-1950
+    weight: 5
 ---
 
 This is one of the most important doctrinal pivots in the graph because it changes how liberty, due process, and equality connect.

@@ -13,6 +13,14 @@ directional: true
 sources:
   - sita-soren-judgment-2024
   - supreme-court-of-india
+evidence:
+  - claim: Sita Soren overrules the bribery-linked privilege reasoning in P.V. Narasimha Rao.
+    note: The judgment narrows Articles 105 and 194 by refusing to treat bribery as protected legislative speech or voting conduct.
+    direction: source-to-target
+    sourceRefs:
+      - sita-soren-judgment-2024
+      - supreme-court-of-india
+    weight: 5
 ---
 
 This edge turns a hard-to-follow privilege line into a visible doctrinal reversal.

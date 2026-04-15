@@ -12,4 +12,11 @@ note: Minerva Mills sharpened the doctrine by invalidating parts of the 42nd Ame
 directional: true
 sources:
   - minerva-mills-judgment-1980
+evidence:
+  - claim: Minerva Mills deepens the basic-structure doctrine.
+    note: The case invalidates parts of the Forty-Second Amendment and treats limited amending power and judicial review as basic-structure elements.
+    direction: source-to-target
+    sourceRefs:
+      - minerva-mills-judgment-1980
+    weight: 5
 ---

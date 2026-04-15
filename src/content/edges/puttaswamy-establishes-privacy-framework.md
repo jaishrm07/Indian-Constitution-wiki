@@ -12,4 +12,11 @@ note: The nine-judge bench converted privacy from scattered liberty reasoning in
 directional: true
 sources:
   - puttaswamy-judgment-2017
+evidence:
+  - claim: Puttaswamy establishes privacy as a named constitutional doctrine.
+    note: The nine-judge bench ties privacy to dignity, autonomy, and informational self-determination.
+    direction: source-to-target
+    sourceRefs:
+      - puttaswamy-judgment-2017
+    weight: 5
 ---

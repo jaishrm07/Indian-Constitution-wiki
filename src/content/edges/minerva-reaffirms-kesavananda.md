@@ -13,6 +13,14 @@ directional: true
 sources:
   - minerva-mills-judgment-1980
   - kesavananda-bharati-judgment-1973
+evidence:
+  - claim: Minerva Mills reaffirms the basic-structure holding in Kesavananda Bharati.
+    note: The judgment confirms that limited amending power and the balance between Parts III and IV remain constitutionally constrained.
+    direction: source-to-target
+    sourceRefs:
+      - minerva-mills-judgment-1980
+      - kesavananda-bharati-judgment-1973
+    weight: 5
 ---
 
 This edge makes the amendment-control lineage visible instead of leaving basic structure as a single isolated case.

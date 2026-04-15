@@ -56,16 +56,22 @@ const expandedGraph = await getGraphExplorerData({ profile: 'display' });
 				description: 'Highest-signal doctrine, constitutional anchors, institutions, reforms, and live disputes only.',
 				nodes: backboneGraph.nodes,
 				edges: backboneGraph.edges,
+				directedEdges: backboneGraph.directedEdges,
 				stats: backboneGraph.stats,
 				legend: backboneGraph.legend,
+				metrics: backboneGraph.metrics,
+				communities: backboneGraph.communities,
 			},
 			expanded: {
 				label: 'Expanded',
 				description: 'Broader constitutional neighborhood with more supporting pages, context, and bridge nodes.',
 				nodes: expandedGraph.nodes,
 				edges: expandedGraph.edges,
+				directedEdges: expandedGraph.directedEdges,
 				stats: expandedGraph.stats,
 				legend: expandedGraph.legend,
+				metrics: expandedGraph.metrics,
+				communities: expandedGraph.communities,
 			},
 		}}
 		defaultScope="backbone"

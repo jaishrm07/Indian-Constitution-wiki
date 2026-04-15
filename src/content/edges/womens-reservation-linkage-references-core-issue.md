@@ -13,4 +13,12 @@ directional: true
 sources:
   - constitution-106th-amendment-act-2023
   - supreme-court-observer
+evidence:
+  - claim: The narrower women's-reservation linkage desk is a subset of the broader implementation debate.
+    note: It focuses on the constitutional vulnerability created by tying the guarantee to future census and delimitation triggers.
+    direction: source-to-target
+    sourceRefs:
+      - constitution-106th-amendment-act-2023
+      - supreme-court-observer
+    weight: 3
 ---

@@ -12,4 +12,11 @@ note: The EWS debate asks whether the amendment's redesign of Articles 15 and 16
 directional: true
 sources:
   - janhit-abhiyan-judgment-2022
+evidence:
+  - claim: The EWS desk turns on the constitutional validity and operation of the 103rd Amendment.
+    note: The live controversy asks whether the amendment's Article 15 and Article 16 redesign fits the equality structure.
+    direction: source-to-target
+    sourceRefs:
+      - janhit-abhiyan-judgment-2022
+    weight: 4
 ---

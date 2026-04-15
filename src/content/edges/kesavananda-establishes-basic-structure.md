@@ -12,4 +12,11 @@ note: The case created the controlling doctrine that Parliament's amending power
 directional: true
 sources:
   - kesavananda-bharati-judgment-1973
+evidence:
+  - claim: Kesavananda Bharati is the originating case for the basic-structure doctrine.
+    note: The decision holds that Parliament cannot use the amending power to destroy the Constitution's basic structure.
+    direction: source-to-target
+    sourceRefs:
+      - kesavananda-bharati-judgment-1973
+    weight: 5
 ---

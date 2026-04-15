@@ -13,6 +13,14 @@ directional: true
 sources:
   - anoop-baranwal-judgment-2023
   - supreme-court-of-india
+evidence:
+  - claim: Anoop Baranwal supplies the current constitutional frame for appointments to the Election Commission.
+    note: The case reads Article 324 as requiring a constitutionally meaningful appointments process.
+    direction: source-to-target
+    sourceRefs:
+      - anoop-baranwal-judgment-2023
+      - supreme-court-of-india
+    weight: 5
 ---
 
 The live appointments desk makes much more sense when readers can see the case that sets the constitutional baseline.

@@ -12,4 +12,11 @@ note: The modern debate on affidavits, criminal antecedents, and voter informati
 directional: true
 sources:
   - supreme-court-of-india
+evidence:
+  - claim: ADR is the constitutional starting point for candidate-disclosure disputes.
+    note: The case ties meaningful electoral choice to disclosure of information about candidates.
+    direction: source-to-target
+    sourceRefs:
+      - supreme-court-of-india
+    weight: 5
 ---
