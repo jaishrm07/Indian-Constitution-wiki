@@ -1257,6 +1257,16 @@ h3 {
 .graph-canvas {
 	min-height: 780px;
 	border-radius: calc(var(--radius-lg) - 12px);
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+}
+
+.graph-canvas canvas {
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
 }
 
 .graph-aside {

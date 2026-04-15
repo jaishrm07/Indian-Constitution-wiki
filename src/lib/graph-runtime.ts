@@ -3,7 +3,6 @@ import circular from 'graphology-layout/circular';
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 import dijkstra from 'graphology-shortest-path/dijkstra';
 import Sigma from 'sigma';
-import { EdgeArrowProgram } from 'sigma/rendering';
 import type {
 	GraphCommunity,
 	GraphDirectedEdge,
@@ -136,10 +135,11 @@ function buildDatasetGraph(dataset: GraphRuntimeDataset) {
 
 	for (const node of dataset.nodes) {
 		graph.addNode(node.id, {
+			type: 'circle',
 			label: node.label,
 			subtitle: node.subtitle,
 			summary: node.summary,
-			type: node.type,
+			contentType: node.type,
 			collection: node.collection,
 			slug: node.slug,
 			href: node.href,
@@ -229,7 +229,7 @@ async function applyLayout(graph: Graph, layoutMode: LayoutMode, directedEdges: 
 				label: String(graph.getNodeAttribute(node, 'label') ?? node),
 				subtitle: String(graph.getNodeAttribute(node, 'subtitle') ?? ''),
 				summary: String(graph.getNodeAttribute(node, 'summary') ?? ''),
-				type: String(graph.getNodeAttribute(node, 'type') ?? ''),
+				type: String(graph.getNodeAttribute(node, 'contentType') ?? ''),
 				collection: 'articles',
 				slug: '',
 				href: '#',
@@ -249,7 +249,7 @@ async function applyLayout(graph: Graph, layoutMode: LayoutMode, directedEdges: 
 				label: String(graph.getNodeAttribute(nodeId, 'label') ?? nodeId),
 				subtitle: String(graph.getNodeAttribute(nodeId, 'subtitle') ?? ''),
 				summary: String(graph.getNodeAttribute(nodeId, 'summary') ?? ''),
-				type: String(graph.getNodeAttribute(nodeId, 'type') ?? ''),
+				type: String(graph.getNodeAttribute(nodeId, 'contentType') ?? ''),
 				collection: 'articles',
 				slug: '',
 				href: '#',
@@ -338,10 +338,11 @@ function createVisibleGraph(
 		const isPath = state.pathNodeIds.includes(node.id);
 		const isAnchor = node.id === state.selectedNodeId;
 		graph.addNode(node.id, {
+			type: 'circle',
 			label: node.label,
 			subtitle: node.subtitle,
 			summary: node.summary,
-			type: node.type,
+			contentType: node.type,
 			collection: node.collection,
 			slug: node.slug,
 			href: node.href,
@@ -509,21 +510,29 @@ function renderDetailLink(link: HTMLAnchorElement, href: string | null) {
 	link.href = href;
 }
 
+function hasWebGLSupport() {
+	const canvas = document.createElement('canvas');
+	return Boolean(
+		canvas.getContext('webgl2')
+		|| canvas.getContext('webgl')
+		|| canvas.getContext('experimental-webgl'),
+	);
+}
+
 function mountSigmaGraph(
 	container: HTMLElement,
 	graph: Graph,
 ) {
+	if (!hasWebGLSupport()) {
+		throw new Error('WebGL is unavailable in this browser or environment.');
+	}
+
 	return new Sigma(graph, container, {
 		renderLabels: true,
 		renderEdgeLabels: false,
 		labelRenderedSizeThreshold: 7,
 		minCameraRatio: 0.05,
 		maxCameraRatio: 25,
-		edgeProgramClasses: {
-			arrow: EdgeArrowProgram,
-		},
-		defaultEdgeType: 'arrow',
-		defaultNodeType: 'circle',
 		hideEdgesOnMove: true,
 		hideLabelsOnMove: true,
 	});
@@ -590,6 +599,24 @@ export function mountGraphExplorer(root: HTMLElement) {
 	let pathNodeIds: string[] = [];
 	let sigma: Sigma | null = null;
 	let renderToken = 0;
+
+	function showGraphError(error: unknown) {
+		const rawMessage = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+		const friendlyMessage = rawMessage.includes('WebGL')
+			|| rawMessage.includes('blendFunc')
+			? 'WebGL is unavailable, so the graph cannot render in this browser or environment.'
+			: rawMessage;
+		viewSummary.textContent = `Graph failed to render: ${friendlyMessage}`;
+		detailTitle.textContent = 'Graph error';
+		detailSummary.textContent = friendlyMessage;
+		detailMeta.textContent = 'Runtime failure';
+		detailChips.innerHTML = '';
+		detailPanel.innerHTML = `
+			<p class="muted">The graph runtime could not acquire the rendering stack it needs.</p>
+			<p class="muted">Try a modern browser with hardware acceleration enabled. Chrome, Edge, Safari, and Firefox should all work when WebGL is available.</p>
+		`;
+		renderDetailLink(detailLink, null);
+	}
 
 	function datasetFor(scopeId: string) {
 		return datasets[scopeId] ?? datasets[datasetIds[0]];
@@ -898,6 +925,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 	}
 
 	async function render() {
+		try {
 		const token = ++renderToken;
 		const dataset = datasetFor(activeScope);
 		if (!dataset) {
@@ -1022,6 +1050,9 @@ export function mountGraphExplorer(root: HTMLElement) {
 
 		viewSummary.textContent = viewSummaryText(dataset);
 		renderDetail(dataset, visibleGraph, visibleEdgeIds);
+		} catch (error) {
+			showGraphError(error);
+		}
 	}
 
 	modeBar.addEventListener('click', (event) => {
