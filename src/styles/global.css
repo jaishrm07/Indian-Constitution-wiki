@@ -1262,7 +1262,16 @@ h3 {
 	isolation: isolate;
 }
 
+.graph-canvas.is-interactive {
+	cursor: grab;
+}
+
+.graph-canvas.is-interactive:active {
+	cursor: grabbing;
+}
+
 .graph-canvas canvas {
+	position: absolute;
 	inset: 0;
 	width: 100%;
 	height: 100%;

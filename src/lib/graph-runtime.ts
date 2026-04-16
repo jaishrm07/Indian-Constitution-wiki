@@ -674,6 +674,16 @@ function mountSigmaGraph(
 	});
 }
 
+function fitSigmaToGraph(instance: Sigma, graph: Graph) {
+	const bounds = graphBounds(graph);
+	if (bounds) {
+		instance.setCustomBBox(bounds);
+	}
+
+	instance.refresh();
+	void instance.getCamera().animatedReset({ duration: 260 }).catch(() => {});
+}
+
 export function mountGraphExplorer(root: HTMLElement) {
 	const payloadScript = root.querySelector('[data-graph-payload]');
 	const canvas = root.querySelector('[data-graph-canvas]');
@@ -736,6 +746,8 @@ export function mountGraphExplorer(root: HTMLElement) {
 	let sigma: Sigma | null = null;
 	let renderToken = 0;
 	let usingFallback = false;
+	let lastVisibleGraph: Graph | null = null;
+	let activePresetId = (presetButtons.find((button) => button.classList.contains('is-active')) as HTMLButtonElement | undefined)?.getAttribute('data-graph-preset') ?? null;
 
 	function showGraphError(error: unknown) {
 		const rawMessage = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
@@ -796,6 +808,11 @@ export function mountGraphExplorer(root: HTMLElement) {
 			button.classList.toggle('is-active', button.getAttribute('data-graph-filter') === activeFilter);
 		});
 
+		presetButtons.forEach((button) => {
+			const isActive = activePresetId && button.getAttribute('data-graph-preset') === activePresetId && !button.disabled;
+			button.classList.toggle('is-active', Boolean(isActive));
+		});
+
 		targetField.classList.toggle('is-hidden', activeMode !== 'path');
 	}
 
@@ -807,6 +824,9 @@ export function mountGraphExplorer(root: HTMLElement) {
 			const isAvailable = Boolean(startId && nodeIds.has(startId) && (!targetId || nodeIds.has(targetId)));
 			button.disabled = !isAvailable;
 			button.classList.toggle('is-disabled', !isAvailable);
+			if (!isAvailable && button.getAttribute('data-graph-preset') === activePresetId) {
+				activePresetId = null;
+			}
 		});
 	}
 
@@ -1116,6 +1136,12 @@ export function mountGraphExplorer(root: HTMLElement) {
 			}
 		} else if (activeMode === 'explore' && selectedNodeId) {
 			directedNeighborhood(dataset.directedEdges, selectedNodeId, activeDepth).forEach((nodeId) => activeNodeSet.add(nodeId));
+		} else if (activeMode === 'explore' && selectedEdgeId) {
+			const selectedEdge = dataset.directedEdges.find((edge) => edge.id === selectedEdgeId);
+			if (selectedEdge) {
+				directedNeighborhood(dataset.directedEdges, selectedEdge.source, Math.max(1, activeDepth)).forEach((nodeId) => activeNodeSet.add(nodeId));
+				directedNeighborhood(dataset.directedEdges, selectedEdge.target, Math.max(1, activeDepth)).forEach((nodeId) => activeNodeSet.add(nodeId));
+			}
 		}
 
 		if (activeNodeSet.size === 0) {
@@ -1166,11 +1192,85 @@ export function mountGraphExplorer(root: HTMLElement) {
 			return;
 		}
 
+		lastVisibleGraph = visibleGraph;
 		sigma?.kill();
 		sigma = null;
-		usingFallback = true;
 		canvas.innerHTML = '';
-		renderSvgFallback(canvas, visibleGraph);
+		canvas.classList.remove('is-fallback');
+		canvas.classList.add('is-interactive');
+		usingFallback = false;
+
+		try {
+			sigma = mountSigmaGraph(canvas, visibleGraph);
+			sigma.getContainer().style.cursor = 'grab';
+			fitSigmaToGraph(sigma, visibleGraph);
+
+			sigma.on('clickNode', ({ node, event }) => {
+				event.preventSigmaDefault();
+				activePresetId = null;
+				selectedEdgeId = null;
+				if (activeMode === 'path') {
+					activeMode = 'explore';
+					targetNodeId = null;
+					pathNodeIds = [];
+				}
+				startNodeId = node;
+				selectedNodeId = node;
+				void render();
+			});
+
+			sigma.on('clickEdge', ({ edge, event }) => {
+				event.preventSigmaDefault();
+				activePresetId = null;
+				if (activeMode === 'path') {
+					activeMode = 'explore';
+					targetNodeId = null;
+					pathNodeIds = [];
+				}
+				selectedNodeId = null;
+				selectedEdgeId = edge;
+				void render();
+			});
+
+			sigma.on('clickStage', ({ event }) => {
+				event.preventSigmaDefault();
+				activePresetId = null;
+				if (activeMode === 'explore') {
+					selectedNodeId = null;
+					selectedEdgeId = null;
+					startNodeId = null;
+					startInput.value = '';
+				}
+				void render();
+			});
+
+			sigma.on('enterNode', () => {
+				sigma?.getContainer().style.setProperty('cursor', 'pointer');
+			});
+
+			sigma.on('leaveNode', () => {
+				sigma?.getContainer().style.setProperty('cursor', 'grab');
+			});
+
+			sigma.on('enterEdge', () => {
+				sigma?.getContainer().style.setProperty('cursor', 'pointer');
+			});
+
+			sigma.on('leaveEdge', () => {
+				sigma?.getContainer().style.setProperty('cursor', 'grab');
+			});
+		} catch (error) {
+			sigma?.kill();
+			sigma = null;
+			usingFallback = true;
+			canvas.classList.add('is-fallback');
+			canvas.classList.remove('is-interactive');
+			canvas.innerHTML = '';
+			renderSvgFallback(canvas, visibleGraph);
+			if (!(error instanceof Error) || !error.message.includes('WebGL')) {
+				console.error('Graph runtime degraded to SVG fallback.', error);
+			}
+		}
 
 		viewSummary.textContent = viewSummaryText(dataset);
 		renderDetail(dataset, visibleGraph, visibleEdgeIds);
@@ -1186,6 +1286,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		activeMode = (button.getAttribute('data-graph-mode') as GraphMode) ?? 'explore';
+		activePresetId = null;
 		if (activeMode === 'explore') {
 			targetNodeId = null;
 		}
@@ -1202,6 +1303,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		activeLayout = (button.getAttribute('data-graph-layout') as LayoutMode) ?? 'organic';
+		activePresetId = null;
 		void render();
 	});
 
@@ -1217,6 +1319,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		activeScope = scopeId;
+		activePresetId = null;
 		selectedNodeId = null;
 		selectedEdgeId = null;
 		startNodeId = null;
@@ -1232,6 +1335,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		activeDepth = (Number(button.getAttribute('data-graph-depth')) as 1 | 2) || 1;
+		activePresetId = null;
 		void render();
 	});
 
@@ -1242,6 +1346,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		activeFilter = button.getAttribute('data-graph-filter') ?? 'All';
+		activePresetId = null;
 		void render();
 	});
 
@@ -1256,6 +1361,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		}
 
 		activeMode = (button.getAttribute('data-graph-preset-mode') as GraphMode) ?? 'explore';
+		activePresetId = button.getAttribute('data-graph-preset');
 		activeDepth = (Number(button.getAttribute('data-graph-preset-depth') ?? '1') as 1 | 2) || 1;
 		activeFilter = button.getAttribute('data-graph-preset-filter') ?? 'All';
 		selectedEdgeId = null;
@@ -1269,6 +1375,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 		activeMode = 'explore';
 		activeLayout = 'organic';
 		activeFilter = 'All';
+		activePresetId = null;
 		activeDepth = 1;
 		selectedNodeId = null;
 		selectedEdgeId = null;
@@ -1282,6 +1389,7 @@ export function mountGraphExplorer(root: HTMLElement) {
 
 	startInput.addEventListener('change', () => {
 		const dataset = datasetFor(activeScope);
+		activePresetId = null;
 		startNodeId = resolveNodeId(dataset, startInput.value);
 		if (activeMode === 'explore') {
 			selectedNodeId = startNodeId;
@@ -1291,9 +1399,26 @@ export function mountGraphExplorer(root: HTMLElement) {
 
 	targetInput.addEventListener('change', () => {
 		const dataset = datasetFor(activeScope);
+		activePresetId = null;
 		targetNodeId = resolveNodeId(dataset, targetInput.value);
 		void render();
 	});
+
+	if (typeof ResizeObserver !== 'undefined') {
+		const resizeObserver = new ResizeObserver(() => {
+			if (sigma) {
+				sigma.resize();
+				sigma.refresh();
+				return;
+			}
+
+			if (usingFallback && lastVisibleGraph) {
+				renderSvgFallback(canvas, lastVisibleGraph);
+			}
+		});
+
+		resizeObserver.observe(canvas);
+	}
 
 	seedFromActivePreset();
 	void render();
